@@ -12,8 +12,10 @@ class PlanCloud
 {
 public:
 	PlanCloud();
-	void display();
+	void display_cloud();
 	void info();
+	void display_planar_components();
+	void reset();
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud()
 	{
