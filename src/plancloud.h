@@ -5,6 +5,7 @@
 #include <fstream>
 #include <pcl/point_types.h>
 #include <pcl/ModelCoefficients.h>
+#include <sensor_msgs/PointCloud2.h>
 
 
 class PlanCloud
@@ -32,6 +33,15 @@ public:
 		return coefficients_;
 	}
 
+	sensor_msgs::PointCloud2::Ptr cloud2()
+	{
+		return cloud2_;
+	}
+	const sensor_msgs::PointCloud2::Ptr cloud2() const
+	{
+		return cloud2_;
+	}
+
 	int size()
 	{
 		return cloud_->points.size();
@@ -41,6 +51,7 @@ public:
 
 private:
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_;
+	sensor_msgs::PointCloud2::Ptr cloud2_;
 	pcl::ModelCoefficients::Ptr coefficients_;
 };
 

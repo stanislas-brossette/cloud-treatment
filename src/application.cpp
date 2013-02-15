@@ -23,14 +23,16 @@ void Application::Run()
 	std::string originPath = "/home/stanislas/coding/PCLTests/PointCloudFiles/";
 	std::string fileName = "cloud17(Floor).pcd";
 	fileCell.sync(originPath + fileName, planCloudListPtr);
-	planCloudListPtr->at(0).info();
-	planCloudListPtr->at(0).display();
+//	planCloudListPtr->at(0).info();
+//	planCloudListPtr->at(0).display();
 
 	planCloudListPtr = xyzSwitchCell.compute(planCloudListPtr);
 	planCloudListPtr->at(0).info();
 	planCloudListPtr->at(0).display();
 
 	planCloudListPtr = filterCell.compute(planCloudListPtr);
+	planCloudListPtr->at(0).info();
+	planCloudListPtr->at(0).display();
 
 }
 
