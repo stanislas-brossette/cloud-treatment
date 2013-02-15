@@ -11,6 +11,8 @@ class PlanCloud
 {
 public:
 	PlanCloud();
+	void display();
+	void info();
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud()
 	{
@@ -34,6 +36,8 @@ public:
 	{
 		return cloud_->points.size();
 	}
+
+
 
 private:
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_;

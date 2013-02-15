@@ -15,6 +15,7 @@ add_executable(CloudTreatment
     src/cell.cpp
     src/filecell.cpp
     src/filtercell.cpp
+    src/xyzswitchcell.cpp
 )
 target_link_libraries(CloudTreatment ${PCL_LIBRARIES})
 

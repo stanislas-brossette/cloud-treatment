@@ -4,14 +4,16 @@ SOURCES += \
     src/cell.cpp \
     src/plancloud.cpp \
     src/filecell.cpp \
-    src/filtercell.cpp
+    src/filtercell.cpp \
+    src/xyzswitchcell.cpp
 
 HEADERS += \
     src/application.h \
     src/cell.h \
     src/plancloud.h \
     src/filecell.h \
-    src/filtercell.h
+    src/filtercell.h \
+    src/xyzswitchcell.h
 
 OTHER_FILES += \
     CMakeLists.txt

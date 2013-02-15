@@ -4,6 +4,7 @@
 #include <boost/make_shared.hpp>
 #include "application.h"
 #include "filecell.h"
+#include "xyzswitchcell.h"
 #include "filtercell.h"
 
 
@@ -17,12 +18,17 @@ void Application::Run()
 
 	FileCell fileCell = FileCell();
 	FilterCell filterCell = FilterCell();
+	XYZSwitchCell xyzSwitchCell = XYZSwitchCell();
 
 	std::string originPath = "/home/stanislas/coding/PCLTests/PointCloudFiles/";
 	std::string fileName = "cloud17(Floor).pcd";
 	fileCell.sync(originPath + fileName, planCloudListPtr);
-	std::cout<<"Original PointCloud has: "
-			<< (planCloudListPtr->at(0).cloud())->points.size () << " data points." << std::endl;
+	planCloudListPtr->at(0).info();
+	planCloudListPtr->at(0).display();
+
+	planCloudListPtr = xyzSwitchCell.compute(planCloudListPtr);
+	planCloudListPtr->at(0).info();
+	planCloudListPtr->at(0).display();
 
 	planCloudListPtr = filterCell.compute(planCloudListPtr);
 
