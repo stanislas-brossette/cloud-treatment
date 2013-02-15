@@ -20,7 +20,7 @@ void Application::Run()
 	FilterCell filterCell = FilterCell();
 	XYZSwitchCell xyzSwitchCell = XYZSwitchCell();
 
-	std::string originPath = "/home/stanislas/coding/PCLTests/PointCloudFiles/";
+	std::string originPath = "../datafiles/";
 	std::string fileName = "cloud17(Floor).pcd";
 	fileCell.sync(originPath + fileName, planCloudListPtr);
 //	planCloudListPtr->at(0).info();
