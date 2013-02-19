@@ -8,7 +8,8 @@ SOURCES += \
     src/xyzswitchcell.cpp \
     src/planextractioncell.cpp \
     src/planprojectioncell.cpp \
-    src/hullconvexcell.cpp
+    src/hullconvexcell.cpp \
+    src/custompclvisualizor.cpp
 
 HEADERS += \
     src/application.h \
@@ -20,7 +21,8 @@ HEADERS += \
     src/planextractioncell.h \
     src/planprojectioncell.h \
     src/typedefs.h \
-    src/hullconvexcell.h
+    src/hullconvexcell.h \
+    src/custompclvisualizor.h
 
 OTHER_FILES += \
     CMakeLists.txt

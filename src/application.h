@@ -17,6 +17,7 @@ public:
 	void display_all_clouds(planCloudsPtr_t);
 	void display_all_clouds_together(planCloudsPtr_t);
 	void display_all_coefficients(planCloudsPtr_t);
+	void display_all_hull_convexes(planCloudsPtr_t);
 };
 
 #endif // APPLICATION_H

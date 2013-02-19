@@ -13,7 +13,7 @@ class Cell
 public:
 	Cell();
 
-	///Tha algorithm method
+	///The algorithm method
 	virtual planCloudsPtr_t compute(planCloudsPtr_t) = 0;
 };
 

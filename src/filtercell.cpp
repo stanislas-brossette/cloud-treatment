@@ -28,7 +28,7 @@ FilterCell::FilterCell(float leafX,float  leafY,float leafZ)
 planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
 	for(pointCloudPoints_t::size_type j = 0;
-		j<planCloudListPtr->size(); j++)
+		j<planCloudListPtr->size(); ++j)
 	{
 		cloud_ptr_ = planCloudListPtr->at(j).cloud();
 		toROSMsg (*cloud_ptr_, *cloud2_ptr_);
