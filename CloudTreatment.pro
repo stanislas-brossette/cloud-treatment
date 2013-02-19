@@ -7,7 +7,8 @@ SOURCES += \
     src/filtercell.cpp \
     src/xyzswitchcell.cpp \
     src/planextractioncell.cpp \
-    src/planprojectioncell.cpp
+    src/planprojectioncell.cpp \
+    src/hullconvexcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -18,7 +19,8 @@ HEADERS += \
     src/xyzswitchcell.h \
     src/planextractioncell.h \
     src/planprojectioncell.h \
-    src/typedefs.h
+    src/typedefs.h \
+    src/hullconvexcell.h
 
 OTHER_FILES += \
     CMakeLists.txt

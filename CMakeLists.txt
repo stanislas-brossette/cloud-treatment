@@ -27,6 +27,7 @@ add_executable(cloud-treatment
     src/xyzswitchcell.cpp
     src/planextractioncell.cpp
     src/planprojectioncell.cpp
+    src/hullconvexcell.cpp
     src/typedefs.h
 )
 target_link_libraries(cloud-treatment ${PCL_LIBRARIES})

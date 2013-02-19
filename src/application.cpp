@@ -11,6 +11,7 @@
 # include "filtercell.h"
 # include "planextractioncell.h"
 # include "planprojectioncell.h"
+# include "hullconvexcell.h"
 # include "plancloud.h"
 # include "typedefs.h"
 
@@ -28,6 +29,8 @@ void Application::Run()
 	XYZSwitchCell xyzSwitchCell = XYZSwitchCell();
 	PlanExtractionCell planExtractionCell = PlanExtractionCell();
 	PlanProjectionCell planProjectionCell = PlanProjectionCell();
+	HullConvexCell hullConvexCell = HullConvexCell();
+
 
 
 	std::string originPath = "../datafiles/";
@@ -41,6 +44,8 @@ void Application::Run()
 	planCloudListPtr = planExtractionCell.compute(planCloudListPtr);
 
 	planCloudListPtr = planProjectionCell.compute(planCloudListPtr);
+
+	planCloudListPtr = hullConvexCell.compute(planCloudListPtr);
 
 	display_all_clouds_together(planCloudListPtr);
 	display_all_coefficients(planCloudListPtr);

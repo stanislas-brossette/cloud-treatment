@@ -21,12 +21,12 @@ public:
 	void update_cloud2_from_cloud();
 	void update_cloud_from_cloud2();
 
-	pointCloudPtr_t cloud()
+	pointCloudPtr_t& cloud ()
 	{
 		return cloud_;
 	}
 
-	const pointCloudPtr_t cloud() const
+	const pointCloudPtr_t& cloud () const
 	{
 		return cloud_;
 	}
