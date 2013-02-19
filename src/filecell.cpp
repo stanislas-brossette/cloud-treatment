@@ -13,19 +13,22 @@ FileCell::FileCell()
 {
 }
 
-boost::shared_ptr<std::vector<PlanCloud> > FileCell::compute(boost::shared_ptr<std::vector<PlanCloud> >)
+planCloudsPtr_t FileCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	return planCloudListPtr;
 }
 
-boost::shared_ptr<std::vector<PlanCloud> > FileCell::sync(std::string path, boost::shared_ptr<std::vector<PlanCloud> > planCloudListPtr)
+planCloudsPtr_t FileCell::sync(std::string path, planCloudsPtr_t planCloudListPtr)
 {
 	PlanCloud planCloudTest = PlanCloud();
 	pcl::PCDReader reader;
 	reader.read(path, *(planCloudTest.cloud()));
-	assert(planCloudTest.cloud()->points.size () != 0 && "Problem encountered while reading the pcl file.\n Cloud empty.");
+	assert(planCloudTest.cloud()->points.size () != 0
+			&& "Problem encountered while reading the pcl file.\n Cloud empty.");
 	if(planCloudTest.cloud()->points.size () == 0)
 	{
-		throw std::runtime_error("Problem encountered while reading the pcl file.\n Cloud empty.");
+		throw std::runtime_error("Problem encountered while reading the pcl file.\n"
+								 "Cloud empty.");
 	}
 	planCloudListPtr->push_back(planCloudTest);
 	return planCloudListPtr;

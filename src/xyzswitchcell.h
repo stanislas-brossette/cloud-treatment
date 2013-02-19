@@ -1,21 +1,22 @@
 #ifndef XYXSWITCHCELL_H
-#define XYXSWITCHCELL_H
+# define XYXSWITCHCELL_H
 
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
+# include <vector>
+# include <string>
+# include <boost/shared_ptr.hpp>
 
-#include "cell.h"
+# include "cell.h"
+# include "typedefs.h"
 
-///This class switches the XYZ coordinates in a PointCloud to match with the XYZ that are imposed by AMELIF
+///Switches the XYZ coordinates in a PointCloud to match
+///with the XYZ that are imposed by AMELIF
 class XYZSwitchCell : public Cell
 {
 public:
 	XYZSwitchCell();
-	boost::shared_ptr<std::vector<PlanCloud> > compute(boost::shared_ptr<std::vector<PlanCloud> >);
-
+	planCloudsPtr_t compute(planCloudsPtr_t);
 private:
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr_;
+	pointCloudPtr_t cloud_ptr_;
 };
 
 #endif // XYXSWITCHCELL_H

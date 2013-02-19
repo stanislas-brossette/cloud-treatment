@@ -6,16 +6,17 @@
 #include <boost/shared_ptr.hpp>
 
 #include "plancloud.h"
+#include "typedefs.h"
 
-///This class is a simple application that contains the workflow
+///Simple application that contains the workflow
 class Application
 {
 public:
 	Application();
 	void Run();
-	void display_all_clouds(boost::shared_ptr<std::vector<PlanCloud> >);
-	void display_all_clouds_together(boost::shared_ptr<std::vector<PlanCloud> >);
-	void display_all_coefficients(boost::shared_ptr<std::vector<PlanCloud> >);
+	void display_all_clouds(planCloudsPtr_t);
+	void display_all_clouds_together(planCloudsPtr_t);
+	void display_all_coefficients(planCloudsPtr_t);
 };
 
 #endif // APPLICATION_H

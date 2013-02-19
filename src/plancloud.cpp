@@ -8,9 +8,9 @@
 
 PlanCloud::PlanCloud()
 {
-	cloud_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZ> >();
+	cloud_ = boost::make_shared<pointCloud_t >();
 	coefficients_ = boost::make_shared<pcl::ModelCoefficients >();
-	cloud2_ = boost::make_shared<sensor_msgs::PointCloud2 >();
+	cloud2_ = boost::make_shared<pointCloud2_t >();
 }
 
 void PlanCloud::display_cloud()
@@ -40,6 +40,16 @@ void PlanCloud::display_planar_components()
 			  << coefficients_->values[1] << " "
 			  << coefficients_->values[2] << " "
 			  << coefficients_->values[3] << std::endl
-			  << "Cloud made of " << cloud_->points.size() << " data points."<<std::endl<<std::endl;
+			  << "Cloud made of " << cloud_->points.size()
+			  << " data points."<<std::endl<<std::endl;
 }
 
+void PlanCloud::update_cloud2_from_cloud()
+{
+	toROSMsg (*cloud_, *cloud2_);
+}
+
+void PlanCloud::update_cloud_from_cloud2()
+{
+	pcl::fromROSMsg (*cloud2_, *cloud_);
+}

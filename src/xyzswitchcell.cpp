@@ -6,17 +6,18 @@
 
 XYZSwitchCell::XYZSwitchCell()
 {
-	cloud_ptr_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZ> >();
+	cloud_ptr_ = boost::make_shared<pointCloud_t >();
 }
 
 
-boost::shared_ptr<std::vector<PlanCloud> > XYZSwitchCell::compute(boost::shared_ptr<std::vector<PlanCloud> > planCloudListPtr)
+planCloudsPtr_t XYZSwitchCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	for(int j=0; j<planCloudListPtr->size(); j++)
+	for(planClouds_t::size_type j=0; j<planCloudListPtr->size(); ++j)
 	{
 		float x, y, z;
 		cloud_ptr_ = planCloudListPtr->at(j).cloud();
-		for(int i = 0; i<cloud_ptr_->points.size (); i++)
+		for(planClouds_t::size_type i = 0;
+			i<cloud_ptr_->points.size (); ++i)
 		{
 			if(!isnan(cloud_ptr_->points[i].x))
 			{

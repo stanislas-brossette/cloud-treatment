@@ -9,8 +9,8 @@
 
 FilterCell::FilterCell()
 {
-	cloud_ptr_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZ> >();
-	cloud2_ptr_ = boost::make_shared<sensor_msgs::PointCloud2>();
+	cloud_ptr_ = boost::make_shared<pointCloud_t>();
+	cloud2_ptr_ = boost::make_shared<pointCloud2_t>();
 	leafX_ = 0.01f;
 	leafY_ = 0.01f;
 	leafZ_ = 0.01f;
@@ -18,16 +18,17 @@ FilterCell::FilterCell()
 
 FilterCell::FilterCell(float leafX,float  leafY,float leafZ)
 {
-	cloud_ptr_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZ> >();
-	cloud2_ptr_ = boost::make_shared<sensor_msgs::PointCloud2>();
+	cloud_ptr_ = boost::make_shared<pointCloud_t>();
+	cloud2_ptr_ = boost::make_shared<pointCloud2_t>();
 	leafX_ = leafX;
 	leafY_ = leafY;
 	leafZ_ = leafZ;
 }
 
-boost::shared_ptr<std::vector<PlanCloud> > FilterCell::compute(boost::shared_ptr<std::vector<PlanCloud> > planCloudListPtr)
+planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	for(int j=0; j<planCloudListPtr->size(); j++)
+	for(pointCloudPoints_t::size_type j = 0;
+		j<planCloudListPtr->size(); j++)
 	{
 		cloud_ptr_ = planCloudListPtr->at(j).cloud();
 		toROSMsg (*cloud_ptr_, *cloud2_ptr_);

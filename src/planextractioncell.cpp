@@ -17,37 +17,41 @@ PlanExtractionCell::PlanExtractionCell()
 	seg_.setMaxIterations (100);
 	seg_.setDistanceThreshold (0.05);
 
-	initial_cloud_ptr_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZ> >();
+	initial_cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	plan_cloud_ptr_ = boost::make_shared<PlanCloud > ();
-	new_plan_cloud_list_ptr_ = boost::make_shared<std::vector<PlanCloud> >();
+	new_plan_cloud_list_ptr_ = boost::make_shared<planClouds_t >();
 }
 
-boost::shared_ptr<std::vector<PlanCloud> > PlanExtractionCell::compute(boost::shared_ptr<std::vector<PlanCloud> > planCloudListPtr)
+planCloudsPtr_t PlanExtractionCell::compute (planCloudsPtr_t planCloudListPtr)
 {
-	for(int k=0; k<planCloudListPtr->size(); k++)
+	for(planClouds_t::size_type k=0; k<planCloudListPtr->size(); k++)
 	{
 		initial_cloud_ptr_ = planCloudListPtr->at(k).cloud();
 
-		int i = 0, nr_points = initial_cloud_ptr_->points.size ();
-		while (initial_cloud_ptr_->points.size () > 0.2 * nr_points)
+		planClouds_t::size_type i = 0;
+		planClouds_t::size_type nr_points = initial_cloud_ptr_->points.size ();
+
+		while (initial_cloud_ptr_->points.size () > 0.2
+			   * static_cast<double> (nr_points))
 		{
-		// Segment the largest planar component from the remaining cloud
+			// Segment the largest planar component from the remaining cloud
 			seg_.setInputCloud (initial_cloud_ptr_);
 			seg_.segment (*inliers_, *(plan_cloud_ptr_->coefficients()));
 
 			if (inliers_->indices.size () == 0)
 			{
-				throw std::runtime_error("Could not estimate a planar model for the given dataset.");
+				throw std::runtime_error
+						("Could not estimate a planar model for the given dataset.");
 			}
 
 
-		// Extract the inliers
+			// Extract the inliers
 			extract_.setInputCloud (initial_cloud_ptr_);
 			extract_.setIndices (inliers_);
 			extract_.setNegative (false);
 			extract_.filter (*(plan_cloud_ptr_->cloud()));
 
-		// Create the filtering object
+			// Create the filtering object
 			extract_.setNegative (true);
 			extract_.filter (*initial_cloud_ptr_);
 
