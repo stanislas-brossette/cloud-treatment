@@ -3,9 +3,11 @@
 
 # include <iostream>
 # include <fstream>
+# include <vector>
+#include <eigen3/Eigen/Dense>
 # include <pcl/point_types.h>
 # include <pcl/ModelCoefficients.h>
-# include <sensor_msgs/PointCloud2.h>
+#include <boost/optional.hpp>
 
 # include "typedefs.h"
 
@@ -14,12 +16,11 @@ class PlanCloud
 {
 public:
 	PlanCloud();
-	void display_cloud();
-	void info();
-	void display_planar_components();
 	void reset();
-	void update_cloud2_from_cloud();
-	void update_cloud_from_cloud2();
+	void find_origin();
+	void find_frame();
+	Eigen::Vector3d project_point(pointCloudPoints_t::size_type i);
+	std::ostream& print(std::ostream& o) const throw ();
 
 	pointCloudPtr_t& cloud ()
 	{
@@ -56,10 +57,38 @@ public:
 		return cloud_->points.size();
 	}
 
+	const boost::optional<Eigen::Vector3d> origin() const
+	{
+		return origin_;
+	}
+
+	const boost::optional<std::vector<Eigen::Vector3d> > frame() const
+	{
+		return frame_;
+	}
+
 private:
 	pointCloudPtr_t cloud_;
 	pointCloud2Ptr_t cloud2_;
 	pcl::ModelCoefficients::Ptr coefficients_;
+	boost::optional<Eigen::Vector3d> origin_;
+	boost::optional<std::vector<Eigen::Vector3d> > frame_;
 };
+
+inline std::ostream& operator<< (std::ostream& o, const PlanCloud& pc)
+{
+	return pc.print (o);
+}
+
+inline std::ostream& operator<< (std::ostream& o, const planCloudsPtr_t& pc)
+{
+	for (pointCloudPoints_t::size_type i = 0;
+		 i < pc->size(); i++)
+	{
+		o << pc->at(i);
+	}
+	o << std::endl;
+	return o;
+}
 
 #endif //! PLANCLOUD_H

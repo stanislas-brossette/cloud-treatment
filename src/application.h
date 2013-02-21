@@ -6,6 +6,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "plancloud.h"
+#include "custompclvisualizor.h"
 #include "typedefs.h"
 
 ///Simple application that contains the workflow
@@ -14,10 +15,10 @@ class Application
 public:
 	Application();
 	void Run();
-	void display_all_clouds(planCloudsPtr_t);
-	void display_all_clouds_together(planCloudsPtr_t);
 	void display_all_coefficients(planCloudsPtr_t);
-	void display_all_hull_convexes(planCloudsPtr_t);
+
+private:
+	CustomPCLVisualizor customPCLVisualizor;
 };
 
 #endif // APPLICATION_H

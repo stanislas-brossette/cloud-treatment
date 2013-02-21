@@ -9,7 +9,8 @@ SOURCES += \
     src/planextractioncell.cpp \
     src/planprojectioncell.cpp \
     src/hullconvexcell.cpp \
-    src/custompclvisualizor.cpp
+    src/custompclvisualizor.cpp \
+    src/filewritingcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -22,7 +23,8 @@ HEADERS += \
     src/planprojectioncell.h \
     src/typedefs.h \
     src/hullconvexcell.h \
-    src/custompclvisualizor.h
+    src/custompclvisualizor.h \
+    src/filewritingcell.h
 
 OTHER_FILES += \
     CMakeLists.txt

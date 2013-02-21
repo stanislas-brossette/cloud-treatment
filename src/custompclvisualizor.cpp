@@ -1,9 +1,12 @@
 # include <string>
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 # include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/cloud_viewer.h>
 # include <boost/thread/thread.hpp>
 
 # include "custompclvisualizor.h"
+# include "plancloud.h"
 # include "typedefs.h"
 
 CustomPCLVisualizor::CustomPCLVisualizor()
@@ -41,4 +44,52 @@ void CustomPCLVisualizor::visualize_hull_convex(pointCloudPtr_t pointCloudPtr)
 		viewer->spinOnce (100);
 		boost::this_thread::sleep (boost::posix_time::microseconds (100000));
 	}
+}
+
+void CustomPCLVisualizor::display_cloud(pointCloudPtr_t pointCloudPtr)
+{
+	pcl::visualization::CloudViewer viewer("SimpleCloudViewer");
+	viewer.showCloud(pointCloudPtr);
+	while(!viewer.wasStopped())
+	{
+	}
+}
+
+void CustomPCLVisualizor::display_cloud(PlanCloud planCloud)
+{
+	pcl::visualization::CloudViewer viewer("SimpleCloudViewer");
+	viewer.showCloud(planCloud.cloud());
+	while(!viewer.wasStopped())
+	{
+	}
+}
+
+void CustomPCLVisualizor::display_all_clouds (planCloudsPtr_t planCloudListPtr)
+{
+	for(pointCloudPoints_t::size_type i = 0; i < planCloudListPtr->size(); i++)
+	{
+		display_cloud(planCloudListPtr->at(i).cloud());
+	}
+}
+
+void CustomPCLVisualizor::display_all_clouds_together (planCloudsPtr_t planCloudListPtr)
+{
+	pointCloudPtr_t allPlansCloud = boost::make_shared<pointCloud_t >();
+
+	for (pointCloudPoints_t::size_type i = 0;
+		 i < planCloudListPtr->size(); i++)
+	{
+		*allPlansCloud += *(planCloudListPtr->at(i).cloud());
+	}
+	display_cloud(allPlansCloud);
+}
+
+void CustomPCLVisualizor::display_all_hull_convexes (planCloudsPtr_t planCloudListPtr)
+{
+	for (pointCloudPoints_t::size_type i = 0;
+		 i < planCloudListPtr->size(); i++)
+	{
+		visualize_hull_convex(planCloudListPtr->at(i).cloud());
+	}
+
 }
