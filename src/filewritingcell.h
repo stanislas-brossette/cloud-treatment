@@ -9,18 +9,38 @@
 #include "cell.h"
 #include "filewritingcell.h"
 
+/// \brief Class that writes a file that represents the cloud in a way
+/// that Amelif can read
+///
+/// So far this class is meant to write a file that represents a 2D
+/// polygon, which can be obtained from a cloud that has been through
+/// the HullConvexCell algorithm.
+/// \see HullConvexCell
+/// In the future this class could be improved to write different types
+/// of files
+
 class FileWritingCell : public Cell
 {
 public:
 	FileWritingCell();
-	///The compute function is useless here (because signatures don't match)
+	virtual ~FileWritingCell ()
+	{
+	}
+	/// The compute function is useless here
+	/// (because signatures don't match)
 	planCloudsPtr_t compute(planCloudsPtr_t);
 
-	///This method implements the writing of a .surf file that represents the contours
-	///of the plans that have been found in the pointcloud in a way that Amelif can understand
+	/// This method implements the writing of a .surf file that represents
+	/// the polygons that are contained in a list of pointCloud in a way
+	/// that Amelif can understand, a ".surf" file.
+	///
+	/// \pre all the planClouds of the list must have been through the
+	/// PlanExtractionCell algorithm
 	void write_files(std::string folderPath, planCloudsPtr_t planCloudListPtr, std::string bodyName = "point_cloud_body");
 
 private:
+	/// Method that gets called by \see write_files , it writes the part
+	/// of the file that represents a single planCloud.
 	std::string write_surf_string(planCloudPtr_t planCloudPtr, std::string name);
 };
 

@@ -5,7 +5,7 @@
 
 class PlanCloud;
 
-///List of usefull typedef
+/// List of usefull typedef
 
 typedef pcl::PointCloud<pcl::PointXYZ> pointCloud_t;
 typedef pointCloud_t::VectorType pointCloudPoints_t;

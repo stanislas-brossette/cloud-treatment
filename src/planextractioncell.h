@@ -12,14 +12,22 @@
 
 # include "cell.h"
 # include "typedefs.h"
-///Implements a way to find the main plans in a scene and to extract their "attached" clouds
+/// Implements a way to find the main plans in a scene and to extract
+/// their "attached" clouds
 class PlanExtractionCell : public Cell
 {
 public:
 	PlanExtractionCell();
+	virtual ~PlanExtractionCell ()
+	{
+	}
 
+	/// Finds the main plans and extracts their attached clouds while
+	/// setting their modelCoefficient attribute
 	planCloudsPtr_t compute(planCloudsPtr_t);
 
+	/// \name fine tuning of the algorithm
+	/// \{
 	void set_plan_rate (double plan_rate )
 	{
 		plan_rate_ = plan_rate;
@@ -32,6 +40,7 @@ public:
 	{
 		seg_.setDistanceThreshold (value);
 	}
+	/// \}
 
 private:
 	/// plan_rate_ is the percentage of point that from which we'll stop

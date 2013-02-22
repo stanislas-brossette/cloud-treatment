@@ -3,7 +3,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
-#include <pcl/visualization/cloud_viewer.h>
 
 # include "application.h"
 # include "filecell.h"
@@ -54,18 +53,10 @@ void Application::Run()
 //	customPCLVisualizor.display_all_clouds_together(planCloudListPtr);
 
 	planCloudListPtr = hullConvexCell.compute(planCloudListPtr);
-//	customPCLVisualizor.display_all_clouds_together(planCloudListPtr);
-//	customPCLVisualizor.display_all_hull_convexes(planCloudListPtr);
+	customPCLVisualizor.display_all_clouds_together(planCloudListPtr);
+	customPCLVisualizor.display_all_hull_convexes(planCloudListPtr);
 	std::cout<<planCloudListPtr;
 	fileWritingCell.write_files("../surffiles/", planCloudListPtr);
 	std::cout<<planCloudListPtr;
 }
 
-void Application::display_all_coefficients (planCloudsPtr_t planCloudListPtr)
-{
-	for (pointCloudPoints_t::size_type i = 0;
-		 i < planCloudListPtr->size(); i++)
-	{
-		std::cout<<planCloudListPtr->at(i)<<std::endl;
-	}
-}

@@ -11,15 +11,33 @@
 
 # include "typedefs.h"
 
-///Generic container class for point clouds + their carrying plan
+/// \brief Generic container class for point clouds and their features
 class PlanCloud
 {
 public:
 	PlanCloud();
+	virtual ~PlanCloud ()
+	{
+	}
+
+	/// Resets the pointCloud attribute.
 	void reset();
+
+	/// Finds the origin of the cloud by calculating the average point
 	void find_origin();
+
+	/// Calculates the frame of the cloud:
+	/// Tangent, Bitangent and Normal vectors.
+	/// \pre Can only be used for clouds that have been through the
+	/// PlanExtractionCell algorithm
 	void find_frame();
+
+	/// Calculates the coordinates of a point compared to the origin and
+	/// the frame of the cloud
+	/// \pre find_origin() and find_frame() must have been called beforehead
 	Eigen::Vector3d project_point(pointCloudPoints_t::size_type i);
+
+	/// Prints the objects properties
 	std::ostream& print(std::ostream& o) const throw ();
 
 	pointCloudPtr_t& cloud ()

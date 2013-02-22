@@ -9,13 +9,22 @@
 #include "custompclvisualizor.h"
 #include "typedefs.h"
 
-///Simple application that contains the workflow
+/// \brief Simple application that contains the workflow
+///
+/// The list of operation that will be applied to the pointclouds is
+/// implemented in the objects that this class instanciates
+
 class Application
 {
 public:
 	Application();
+	virtual ~Application ()
+	{
+	}
+
+	/// \brief this function instanciates all the algorithm object and
+	/// then runs them on the pointClouds
 	void Run();
-	void display_all_coefficients(planCloudsPtr_t);
 
 private:
 	CustomPCLVisualizor customPCLVisualizor;
