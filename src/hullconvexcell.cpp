@@ -19,6 +19,7 @@ planCloudsPtr_t HullConvexCell::compute(planCloudsPtr_t planCloudListPtr)
 		chull.reconstruct (*point_cloud_ptr_);
 		planCloudListPtr->at(k).cloud() = point_cloud_ptr_;
 	}
+
 	return planCloudListPtr;
 }
 

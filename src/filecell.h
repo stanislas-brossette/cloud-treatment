@@ -30,6 +30,7 @@ public:
 	/// That list is the object that we are going to pass from object
 	/// to object to make it go through all the algorithm we want.
 	planCloudsPtr_t sync(std::string path, planCloudsPtr_t planCloudListPtr);
+	pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sync_color(std::string path);
 };
 
 #endif // FILECELL_H

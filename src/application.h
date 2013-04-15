@@ -18,6 +18,7 @@ class Application
 {
 public:
 	Application();
+	Application(std::string);
 	virtual ~Application ()
 	{
 	}
@@ -28,6 +29,7 @@ public:
 
 private:
 	CustomPCLVisualizor customPCLVisualizor;
+	std::string pcd_file_name;
 };
 
 #endif // APPLICATION_H

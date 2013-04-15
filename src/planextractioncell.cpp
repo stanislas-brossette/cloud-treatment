@@ -8,14 +8,14 @@
 
 PlanExtractionCell::PlanExtractionCell()
 {
-	plan_rate_ = 0.2;
+	plan_rate_ = 0.1;
 
 	inliers_ = boost::make_shared<pcl::PointIndices>();
 	seg_.setOptimizeCoefficients (true);
 	seg_.setModelType (pcl::SACMODEL_PLANE);
 	seg_.setMethodType (pcl::SAC_RANSAC);
 	seg_.setMaxIterations (100);
-	seg_.setDistanceThreshold (0.05);
+	seg_.setDistanceThreshold (0.03);
 
 	initial_cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	plan_cloud_ptr_ = boost::make_shared<PlanCloud > ();
@@ -31,8 +31,7 @@ planCloudsPtr_t PlanExtractionCell::compute (planCloudsPtr_t planCloudListPtr)
 		planClouds_t::size_type i = 0;
 		planClouds_t::size_type nr_points = initial_cloud_ptr_->points.size ();
 
-		while (initial_cloud_ptr_->points.size () > 0.2
-			   * static_cast<double> (nr_points))
+		while (initial_cloud_ptr_->points.size () > plan_rate_ * static_cast<double> (nr_points))
 		{
 			// Segment the largest planar component from the remaining cloud
 			seg_.setInputCloud (initial_cloud_ptr_);

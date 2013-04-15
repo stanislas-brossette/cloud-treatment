@@ -7,12 +7,28 @@
 #include <sensor_msgs/PointCloud2.h>
 
 #include "plancloud.h"
+#include "typedefs.h"
 
 PlanCloud::PlanCloud()
+	: cloud_ (boost::make_shared<pointCloud_t >()),
+	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >())
 {
-	cloud_ = boost::make_shared<pointCloud_t >();
-	coefficients_ = boost::make_shared<pcl::ModelCoefficients >();
-	cloud2_ = boost::make_shared<pointCloud2_t >();
+	// cloud_ =  ;
+	// coefficients_ = ;
+	//cloud2_ = boost::make_shared<pointCloud2_t >();
+}
+
+PlanCloud::PlanCloud(const PlanCloud& planCloud)
+	: cloud_ (boost::make_shared<pointCloud_t >()),
+	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >()),
+	  origin_(planCloud.origin_),
+	  T_(planCloud.T_),
+	  B_(planCloud.B_),
+	  N_(planCloud.N_),
+	  frame_(planCloud.frame_)
+{
+	*cloud_ = *(planCloud.cloud_);
+	*coefficients_ = *(planCloud.coefficients_);
 }
 
 void PlanCloud::reset()
@@ -40,9 +56,45 @@ std::ostream& PlanCloud::print(std::ostream& o) const throw ()
 	if(frame_)
 	{
 		o << "Frame = \n "
-		<< "\tT = [" << frame_->at(0).transpose() << " ]\n"
-		<< "\tB = [" << frame_->at(1).transpose() << " ]\n"
-		<< "\tN = [" << frame_->at(2).transpose() << " ]\n";
+		  << "\tT = [" << T_.transpose() << " ]\n"
+		  << "\tB = [" << B_.transpose() << " ]\n"
+		  << "\tN = [" << N_.transpose() << " ]\n";
+	}
+	return o;
+}
+
+std::ostream& PlanCloud::print(Verbose v, std::ostream& o) const throw ()
+{
+	o <<"PointCloud's size: "
+	 << this->cloud_->points.size () << std::endl;
+	if(coefficients_->values.size() != 0)
+	{
+		o << "Model coefficients: " << coefficients_->values[0] << " "
+		  << coefficients_->values[1] << " "
+		  << coefficients_->values[2] << " "
+		  << coefficients_->values[3] << std::endl;
+	}
+
+	if(origin_)
+	{
+		o << "Origin = \n\t[" << (*origin_).transpose() << "]" << std::endl;
+	}
+
+	if(frame_)
+	{
+		o << "Frame = \n "
+		  << "\tT = [" << T_.transpose() << " ]\n"
+		  << "\tB = [" << B_.transpose() << " ]\n"
+		  << "\tN = [" << N_.transpose() << " ]\n";
+	}
+
+	if(v.level()>0)
+	{
+		o << "Point List (in frame and origin referential): "<<std::endl;
+		for (pointCloudPoints_t::size_type i = 0; i < cloud_->points.size(); ++i)
+		{
+			o << cloud_->points[i] << std::endl;
+		}
 	}
 	return o;
 }
@@ -64,41 +116,88 @@ void PlanCloud::find_origin()
 
 void PlanCloud::find_frame()
 {
-	frame_ = std::vector<Eigen::Vector3d>(3, Eigen::Vector3d());
-
+	frame_ = Eigen::Matrix3d();
 	float a = coefficients_->values[0];
 	float b = coefficients_->values[1];
 	float c = coefficients_->values[2];
-
-	//frame_[2] is the normal vector to the planCloud
-	frame_->at(2) = Eigen::Vector3d(a, b, c);
-
+	N_ << a, b, c;
 	if(a!=0 || b!=0)
 	{
-		frame_->at(1) = Eigen::Vector3d(-b, a, 0.0);
-		frame_->at(0) = Eigen::Vector3d(a*c, b*c, -b*b-a*a);
+		B_ << -b, a, 0.0;
+		T_ << a*c, b*c, -b*b-a*a;
 	}
 	else
 	{
-		frame_->at(2) = Eigen::Vector3d(0.0, 0.0, 1.0);
-		frame_->at(1) = Eigen::Vector3d(0.0, 1.0, 0.0);
-		frame_->at(0) = Eigen::Vector3d(1.0, 0.0, 0.0);
+		N_ << 0.0, 0.0, 1.0;
+		B_ << 0.0, 1.0, 0.0;
+		T_ << 1.0, 0.0, 0.0;
 	}
+	T_.normalize();
+	B_.normalize();
+	N_.normalize();
 
-	for (int i = 0; i<3; i++)
+	//Here we ensure that N.origin<0 so that all the normals point toward the camera
+	if(N_.dot(*origin_)>0)
 	{
-		frame_->at(i).normalize();
+		T_ = -T_;
+		N_ = -N_;
+	}
+	*frame_ << T_, B_, N_;
+}
+
+void PlanCloud::project_points_on_frame()
+{
+	for (pointCloudSize_t i = 0; i < cloud_->points.size(); ++i)
+	{
+		Eigen::Vector3d pointI = project_point(i);
+		cloud_->points[i].x = static_cast<float>(pointI.x());
+		cloud_->points[i].y = static_cast<float>(pointI.y());
+		cloud_->points[i].z = static_cast<float>(pointI.z());
 	}
 }
 
-Eigen::Vector3d PlanCloud::project_point(pointCloudPoints_t::size_type i)
+void PlanCloud::set_trigo_order()
+{
+	if(cloud_->points.size() < 3)
+		throw std::runtime_error("This is not a correct hull convex");
+
+	Eigen::Vector3d edge1;
+	Eigen::Vector3d edge2;
+	edge1 << cloud_->points[1].x-cloud_->points[0].x, cloud_->points[1].y-cloud_->points[0].y, cloud_->points[1].z-cloud_->points[0].z;
+	edge2 << cloud_->points[2].x-cloud_->points[1].x, cloud_->points[2].y-cloud_->points[1].y, cloud_->points[2].z-cloud_->points[1].z;
+
+	//	std::cout<<"edge1 = "<<edge1.transpose() << std::endl;
+	//	std::cout<<"edge2 = "<<edge2.transpose() << std::endl;
+	//	std::cout<<"N_ = "<<N_.transpose() << std::endl;
+
+	if ((edge1.cross(edge2)).dot(N_)<0)
+	{
+		std::cout<<"inverting the points"<<std::endl;
+		pointCloudPtr_t cloudInverted = boost::make_shared<pointCloud_t >();
+		pointCloudPoints_t::size_type cloudSize = cloud_->points.size();
+		cloudInverted->reserve(cloudSize);
+		for (pointCloudPoints_t::size_type i = 0; i < cloudSize; ++i)
+		{
+			cloudInverted->push_back(cloud_->points[cloudSize-i-1]);
+		}
+		cloud_ = cloudInverted;
+	}
+	else if ( (edge1.cross(edge2)).dot(N_)==0)
+	{
+		std::cout << "points are aligned, we have a problem in PlanCloud::set_trigo_order()" << std::endl;
+	}
+	else
+	{
+	}
+}
+
+Eigen::Vector3d PlanCloud::project_point(pointCloudPoints_t::size_type i) const
 {
 	Eigen::Vector3d projectedPoint = Eigen::Vector3d();
 	Eigen::Vector3d point = Eigen::Vector3d(cloud()->points[i].x, cloud()->points[i].y, cloud()->points[i].z);
-	projectedPoint.x() = (point - *origin_).dot(frame_->at(0));
-	projectedPoint.y() = (point - *origin_).dot(frame_->at(1));
-	projectedPoint.z() = (point - *origin_).dot(frame_->at(2));
-
+	projectedPoint.x() = (point - *origin_).dot(T_);
+	projectedPoint.y() = (point - *origin_).dot(B_);
+	projectedPoint.z() = (point - *origin_).dot(N_);
 	return projectedPoint;
 }
 

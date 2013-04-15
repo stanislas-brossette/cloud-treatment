@@ -5,9 +5,22 @@
 
 
 
-int main(int /*argc*/, char** /*argv*/)
+int main(int argc, char** argv)
 {
 	Application app;
+	std::string path;
+	if (argc < 2)
+	{
+		path = "TableClimbing";
+		std::cout<<"Without input argument, the default file will be used (" << path << ".pcd)"<<std::endl;
+	}
+	else
+	{
+		path = argv[1];
+	}
+
+	app = Application(path);
+
 	try
 	{
 		app.Run();

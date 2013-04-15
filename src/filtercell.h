@@ -29,11 +29,17 @@ public:
 	/// contains whilst avoiding the lost of information
 	planCloudsPtr_t compute(planCloudsPtr_t);
 
+	/// Optional filter that eliminates the points that are too far from the camera
+	/// Those points are not precise enough to be used
+	planCloudsPtr_t computePassThrough(planCloudsPtr_t, float maxDistance);
+	planCloudsPtr_t computePassThrough(planCloudsPtr_t, std::string axis, float min, float max);
+
+
 private:
 	/// Shared pointer that contains the pointCloud object
 	pointCloudPtr_t cloud_ptr_;
 	/// Shared pointer that contains the pointCloud2 object
-	pointCloud2Ptr_t cloud2_ptr_;
+	//pointCloud2Ptr_t cloud2_ptr_;
 	/// Sizes of the voxel-grid
 	float leafX_, leafY_, leafZ_;
 };

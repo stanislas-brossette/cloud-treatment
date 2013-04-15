@@ -36,7 +36,10 @@ public:
 	///
 	/// \pre all the planClouds of the list must have been through the
 	/// PlanExtractionCell algorithm
-	void write_files(std::string folderPath, planCloudsPtr_t planCloudListPtr, std::string bodyName = "point_cloud_body");
+	planCloudsPtr_t write_files(std::string folderPath, planCloudsPtr_t planCloudListPtr, std::string bodyName = "point_cloud_body");
+
+
+	void write_cloud_files(std::string folderPath, std::string filename, planCloudsPtr_t planCloudListPtr);
 
 private:
 	/// Method that gets called by \see write_files , it writes the part

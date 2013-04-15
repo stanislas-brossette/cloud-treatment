@@ -12,7 +12,8 @@ set(HEADERS )
 setup_project()
 
 # Look for PCL.
-find_package(PCL 1.3 REQUIRED)
+find_package(PCL 1.3 REQUIRED 
+	COMPONENTS common io surface filters segmentation visualization)
 search_for_eigen()
 
 include_directories(SYSTEM ${PCL_INCLUDE_DIRS})
@@ -30,9 +31,13 @@ add_executable(cloud-treatment
     src/planextractioncell.cpp
     src/planprojectioncell.cpp
     src/filewritingcell.cpp
+    src/orientationcell.cpp
     src/hullconvexcell.cpp
     src/typedefs.h
     src/custompclvisualizor.cpp
+    src/visualizer.cpp
+    src/regiongrowingsegmentationcell.cpp
+    src/verbose.h
 )
 target_link_libraries(cloud-treatment ${PCL_LIBRARIES})
 

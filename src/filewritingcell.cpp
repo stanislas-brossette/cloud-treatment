@@ -1,5 +1,8 @@
+#include <pcl/io/pcd_io.h>
 #include "boost/make_shared.hpp"
 #include "filewritingcell.h"
+#include <sstream>
+# include <iomanip>
 
 template <typename T> std::string tostr(const T& t) { std::ostringstream os; os<<t; return os.str(); }
 
@@ -12,16 +15,19 @@ planCloudsPtr_t FileWritingCell::compute(planCloudsPtr_t planCloudListPtr)
 	return planCloudListPtr;
 }
 
-void FileWritingCell::write_files(std::string folderPath, planCloudsPtr_t planCloudListPtr, std::string bodyName)
+planCloudsPtr_t FileWritingCell::write_files(std::string folderPath, planCloudsPtr_t planCloudListPtr, std::string bodyName)
 {
 	folderPath += "";
 	std::string fileContent = "{\n\t\"Body\":\"";
 	fileContent += bodyName + "\",\n\t\"Surfaces\":\n\t[\n";
 
-	for (pointCloudPoints_t::size_type i=0; i<planCloudListPtr->size(); ++i)
+	for (pointCloudSize_t i=0; i<planCloudListPtr->size(); ++i)
 	{
-		planCloudListPtr->at(i).find_origin();
-		planCloudListPtr->at(i).find_frame();
+		if (!planCloudListPtr->at(i).origin())
+			planCloudListPtr->at(i).find_origin();
+		if (!planCloudListPtr->at(i).frame())
+			planCloudListPtr->at(i).find_frame();
+
 		std::string surfName = "";
 		surfName += "Surf" + tostr(i);
 		planCloudPtr_t planCloudPtr = boost::make_shared<PlanCloud>(planCloudListPtr->at(i));
@@ -45,44 +51,54 @@ void FileWritingCell::write_files(std::string folderPath, planCloudsPtr_t planCl
 	}
 	out << fileContent;
 	out.close();
+	return planCloudListPtr;
 	//	std::cout << std::endl << std::endl << fileContent << std::endl << std::endl;
 }
 
 std::string FileWritingCell::write_surf_string(planCloudPtr_t planCloudPtr, std::string name)
 {
-	std::string surfString = "";
+	std::stringstream surfStringStream;
+	surfStringStream << std::setprecision(30);
+	surfStringStream << "\t\t{\n\t\t\t\"Name\":\"" << name << "\","<<std::endl;
+	surfStringStream << "\t\t\t\"Origin\":[" << planCloudPtr->origin()->x() << ", "
+						<< planCloudPtr->origin()->y() << ", "
+						<< planCloudPtr->origin()->z() << "],"<<std::endl;
+	surfStringStream << "\t\t\t\"Frame\":[[" << planCloudPtr->T().x()
+						<< ", " << planCloudPtr->B().x() << ", "
+						<< planCloudPtr->N().x() << "],"<<std::endl;
+	surfStringStream << "\t\t\t\t[" << planCloudPtr->T().y()
+			<< ", " << planCloudPtr->B().y() << ", "
+			<< planCloudPtr->N().y() << "],"<<std::endl;
+	surfStringStream << "\t\t\t\t[" << planCloudPtr->T().z() << ", "
+			<< planCloudPtr->B().z() << ", "
+			<< planCloudPtr->N().z() << "]],"<<std::endl;
 
-	surfString += "\t\t{\n\t\t\t\"Name\":\"" + name + "\",\n";
-	surfString += "\t\t\t\"Origin\":[" + tostr(planCloudPtr->origin()->x()) + ", "
-			+ tostr(planCloudPtr->origin()->y()) + ", "
-			+ tostr(planCloudPtr->origin()->z()) + "],\n";
-	surfString += "\t\t\t\"Frame\":[[" + tostr(planCloudPtr->frame()->at(0).x())
-			+ ", " + tostr(planCloudPtr->frame()->at(1).x()) + ", "
-			+ tostr(planCloudPtr->frame()->at(2).x()) + "],\n";
-	surfString += "\t\t\t\t[" + tostr(planCloudPtr->frame()->at(0).y())
-			+ ", " + tostr(planCloudPtr->frame()->at(1).y()) + ", "
-			+ tostr(planCloudPtr->frame()->at(2).y()) + "],\n";
-	surfString += "\t\t\t\t[" + tostr(planCloudPtr->frame()->at(0).z()) + ", "
-			+ tostr(planCloudPtr->frame()->at(1).z()) + ", "
-			+ tostr(planCloudPtr->frame()->at(2).z()) + "]],\n";
+	surfStringStream << "\t\t\t\"Points\":\n\t\t\t["<<std::endl;
 
-	surfString += "\t\t\t\"Points\":\n\t\t\t[\n";
-
-
-	Eigen::Vector3d projectedPoint;
 	for(pointCloudPoints_t::size_type i = 0; i<planCloudPtr->cloud()->points.size(); ++i)
 	{
-		projectedPoint = planCloudPtr->project_point(i);
-		surfString += "\t\t\t\t{\"x\":" + tostr(projectedPoint.x())
-				+ ", \"y\":" + tostr(projectedPoint.y())/*
-						+ ", \"z\":" + tostr(projectedPoint.z())*/ + "}";
+		surfStringStream << "\t\t\t\t{\"x\":" << planCloudPtr->cloud()->points[i].x
+				<< ", \"y\":" << planCloudPtr->cloud()->points[i].y << "}";
 		if ( i != planCloudPtr->cloud()->points.size() - 1)
-			surfString += ",\n";
+			surfStringStream << ","<<std::endl;
 		else
-			surfString += "\n\t\t\t],\n\t\t\t\"Material\":\"plastic\"\n\t\t}";
+			surfStringStream << "\n\t\t\t],"<<std::endl<<"\t\t\t\"Material\":\"plastic\""<<std::endl<<"\t\t}";
 	}
 
-	return surfString;
+	return surfStringStream.str();
 }
 
-
+void FileWritingCell::write_cloud_files(std::string folderPath, std::string filename, planCloudsPtr_t planCloudListPtr)
+{
+	std::cout<<"planCloudListPtr->size() = "<<planCloudListPtr->size()<<std::endl;
+	for (pointCloudPoints_t::size_type i=0; i<planCloudListPtr->size(); ++i)
+	{
+		std::string completePath = folderPath;
+		completePath += filename;
+		completePath += tostr(i);
+		completePath += ".pcd";
+		pcl::io::savePCDFileASCII (completePath, *(planCloudListPtr->at(i).cloud()));
+		std::cout<<"pcd file made of "<< planCloudListPtr->at(i).cloud()->size()
+				<< "data points saved as " << completePath << std::endl;
+	}
+}
