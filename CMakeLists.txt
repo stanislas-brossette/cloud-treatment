@@ -19,9 +19,7 @@ search_for_eigen()
 include_directories(SYSTEM ${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-
-add_executable(cloud-treatment 
-    src/main.cpp
+add_library(cloud_treatment SHARED
     src/application.cpp
     src/plancloud.cpp
     src/cell.cpp
@@ -39,7 +37,20 @@ add_executable(cloud-treatment
     src/regiongrowingsegmentationcell.cpp
     src/verbose.h
 )
-target_link_libraries(cloud-treatment ${PCL_LIBRARIES})
+
+target_link_libraries(cloud_treatment ${PCL_LIBRARIES})
+
+add_executable(cloud_treatment_test
+    src/cloudtreatment.cpp
+)
+add_dependencies(cloud_treatment_test  cloud_treatment)
+target_link_libraries(cloud_treatment_test cloud_treatment)
+
+add_executable(model_calibration
+    src/modelcalibration.cpp
+)
+add_dependencies(model_calibration  cloud_treatment)
+target_link_libraries(model_calibration cloud_treatment)
 
 setup_project_finalize()
 
