@@ -38,6 +38,8 @@ public:
 		return cells_;
 	}
 
+	void createFromYaml(const std::string& yamlFilename);
+
 private:
 	CustomPCLVisualizor customPCLVisualizor;
 	std::string pcd_file_name;

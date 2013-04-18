@@ -10,15 +10,19 @@ set(PROJECT_URL https://github.com/stanislas-brossette/cloud-treatment)
 set(HEADERS )
 
 setup_project()
-
+#ADD_REQUIRED_DEPENDENCY("yaml-cpp")
 # Look for PCL.
-find_package(PCL 1.3 REQUIRED 
-	COMPONENTS common io surface filters segmentation visualization)
+#find_package(PCL 1.3 REQUIRED
+#	COMPONENTS common io surface filters segmentation visualization)
+ADD_REQUIRED_DEPENDENCY("pcl_io-1.6 >= 1.6")
+ADD_REQUIRED_DEPENDENCY("pcl_common-1.6 >= 1.6")
+ADD_REQUIRED_DEPENDENCY("pcl_visualization-1.6 >= 1.6")
+
 search_for_eigen()
 
-include_directories(SYSTEM ${PCL_INCLUDE_DIRS})
-link_directories(${PCL_LIBRARY_DIRS})
-add_definitions(${PCL_DEFINITIONS})
+#include_directories(SYSTEM ${PCL_INCLUDE_DIRS})
+#link_directories(${PCL_LIBRARY_DIRS})
+#add_definitions(${PCL_DEFINITIONS})
 add_library(cloud_treatment SHARED
     src/application.cpp
     src/plancloud.cpp
@@ -39,7 +43,11 @@ add_library(cloud_treatment SHARED
     src/verbose.h
 )
 
-target_link_libraries(cloud_treatment ${PCL_LIBRARIES})
+#target_link_libraries(cloud_treatment ${PCL_LIBRARIES})
+
+PKG_CONFIG_USE_DEPENDENCY(cloud_treatment pcl_io_1_6)
+PKG_CONFIG_USE_DEPENDENCY(cloud_treatment pcl_visualization_1_6)
+PKG_CONFIG_USE_DEPENDENCY(cloud_treatment pcl_common_1_6)
 
 add_executable(cloud_treatment_test src/cloudtreatment.cpp)
 add_dependencies(cloud_treatment_test  cloud_treatment)
@@ -48,6 +56,7 @@ target_link_libraries(cloud_treatment_test cloud_treatment)
 add_executable(model_calibration src/modelcalibration.cpp)
 add_dependencies(model_calibration  cloud_treatment)
 target_link_libraries(model_calibration cloud_treatment)
+#PKG_CONFIG_USE_DEPENDENCY(model_calibration yaml-cpp)
 
 setup_project_finalize()
 
