@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/search/search.h>
@@ -15,6 +16,15 @@
 
 RegionGrowingSegmentationCell::RegionGrowingSegmentationCell()
 {
+	cell_name() = "RegionGrowingSegmentationCell";
+
+	parameters()["number_of_neighbours_normal_estimation_"] = 50;
+	parameters()["min_cluster_size_"] = 500;
+	parameters()["max_cluster_size_"] = 70000;
+	parameters()["number_of_neighbours_region_growing_"] = 30;
+	parameters()["smoothness_threshold_"] = 6;
+	parameters()["curvature_threshold_"] = 1;
+
 	point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();
 	inliers_ = boost::make_shared<pcl::PointIndices>();
 	new_plan_cloud_list_ptr_ = boost::make_shared<planClouds_t >();
@@ -23,6 +33,14 @@ RegionGrowingSegmentationCell::RegionGrowingSegmentationCell()
 
 planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+
+	number_of_neighbours_normal_estimation_ = static_cast<int>(parameters()["number_of_neighbours_normal_estimation_"]);
+	min_cluster_size_ = static_cast<int>(parameters()["min_cluster_size_"]);
+	max_cluster_size_ = static_cast<int>(parameters()["max_cluster_size_"]);
+	number_of_neighbours_region_growing_ = static_cast<int>(parameters()["number_of_neighbours_region_growing_"]);
+	smoothness_threshold_ = static_cast<float>(parameters()["smoothness_threshold_"]);
+	curvature_threshold_ = static_cast<float>(parameters()["curvature_threshold_"]);
+
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{
 		point_cloud_ptr_ = planCloudListPtr->at(j).cloud();
@@ -31,43 +49,25 @@ planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloud
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator;
 		normal_estimator.setSearchMethod (tree);
 		normal_estimator.setInputCloud (point_cloud_ptr_);
-		normal_estimator.setKSearch (50);
+		normal_estimator.setKSearch (number_of_neighbours_normal_estimation_);
 		normal_estimator.compute (*normals);
 
-//		pcl::IndicesPtr indices (new std::vector <int>);
-//		pcl::PassThrough<pcl::PointXYZ> pass;
-//		pass.setInputCloud (cloud);
-//		pass.setFilterFieldName ("z");
-//		pass.setFilterLimits (0.0, 1.0);
-//		pass.filter (*indices);
-
 		pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;
-		reg.setMinClusterSize (500);
-		reg.setMaxClusterSize (70000);
+		reg.setMinClusterSize (min_cluster_size_);
+		reg.setMaxClusterSize (max_cluster_size_);
 		reg.setSearchMethod (tree);
-		reg.setNumberOfNeighbours (30);
+		reg.setNumberOfNeighbours (number_of_neighbours_region_growing_);
 		reg.setInputCloud (point_cloud_ptr_);
 		//reg.setIndices (indices);
 		reg.setInputNormals (normals);
-		reg.setSmoothnessThreshold (static_cast<float>(6.0 / 180.0 * M_PI));
-		reg.setCurvatureThreshold (1.0);
+		reg.setSmoothnessThreshold (static_cast<float>(smoothness_threshold_ / 180.0 * M_PI));
+		reg.setCurvatureThreshold (curvature_threshold_);
 
 		std::vector <pcl::PointIndices> clusters;
 		reg.extract (clusters);
 
-		std::cout << "Number of clusters is equal to " << clusters.size () << std::endl;
-		std::cout << "First cluster has " << clusters[0].indices.size () << " points." << endl;
-		std::cout << "These are the indices of the points of the initial" <<
-					 std::endl << "cloud that belong to the first cluster:" << std::endl;
-		unsigned int counter = 0;
-		while (counter < 5 || counter > clusters[0].indices.size())
-		{
-			std::cout << clusters[0].indices[counter] << std::endl;
-			counter++;
-		}
-
-		pcl::PointCloud <pcl::PointXYZRGB>::Ptr colored_cloud = reg.getColoredCloud ();
-		pcl::visualization::CloudViewer viewer ("Cluster viewer");
+//		pcl::PointCloud <pcl::PointXYZRGB>::Ptr colored_cloud = reg.getColoredCloud ();
+//		pcl::visualization::CloudViewer viewer ("Cluster viewer");
 //		viewer.showCloud(colored_cloud);
 //		while (!viewer.wasStopped ())
 //		{
@@ -81,11 +81,10 @@ planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloud
 			extract_.setIndices (inliers_);
 			extract_.setNegative (false);
 			extract_.filter (*(plan_cloud_ptr_->cloud()));
-			std::cout << "treating cluster "<< j << " made of " << plan_cloud_ptr_->cloud()->size() << "points" << std::endl;
+//			std::cout << "treating cluster "<< j << " made of " << plan_cloud_ptr_->cloud()->size() << "points" << std::endl;
 			new_plan_cloud_list_ptr_->push_back(*plan_cloud_ptr_);
 			plan_cloud_ptr_ = boost::make_shared<PlanCloud > ();
 		}
-
 	}
 	return new_plan_cloud_list_ptr_;
 }

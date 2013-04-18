@@ -1,16 +1,18 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <boost/shared_ptr.hpp>
-#include <pcl/io/pcd_io.h>
 #include <stdexcept>
 #include <cassert>
+
+#include <boost/shared_ptr.hpp>
+#include <pcl/io/pcd_io.h>
 
 #include "filecell.h"
 
 
 FileCell::FileCell()
 {
+	cell_name() = "FileCell";
 }
 
 planCloudsPtr_t FileCell::compute(planCloudsPtr_t planCloudListPtr)

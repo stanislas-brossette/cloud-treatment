@@ -35,20 +35,17 @@ add_library(cloud_treatment SHARED
     src/custompclvisualizor.cpp
     src/visualizer.cpp
     src/regiongrowingsegmentationcell.cpp
+    src/passthroughfiltercell.cpp
     src/verbose.h
 )
 
 target_link_libraries(cloud_treatment ${PCL_LIBRARIES})
 
-add_executable(cloud_treatment_test
-    src/cloudtreatment.cpp
-)
+add_executable(cloud_treatment_test src/cloudtreatment.cpp)
 add_dependencies(cloud_treatment_test  cloud_treatment)
 target_link_libraries(cloud_treatment_test cloud_treatment)
 
-add_executable(model_calibration
-    src/modelcalibration.cpp
-)
+add_executable(model_calibration src/modelcalibration.cpp)
 add_dependencies(model_calibration  cloud_treatment)
 target_link_libraries(model_calibration cloud_treatment)
 

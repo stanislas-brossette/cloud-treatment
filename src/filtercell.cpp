@@ -11,22 +11,19 @@
 
 FilterCell::FilterCell()
 {
+	cell_name() = "FilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
-	leafX_ = 0.01f;
-	leafY_ = 0.01f;
-	leafZ_ = 0.01f;
-}
-
-FilterCell::FilterCell(float leafX,float  leafY,float leafZ)
-{
-	cloud_ptr_ = boost::make_shared<pointCloud_t>();
-	leafX_ = leafX;
-	leafY_ = leafY;
-	leafZ_ = leafZ;
+	parameters()["leafX_"] = 0.01;
+	parameters()["leafY_"] = 0.01;
+	parameters()["leafZ_"] = 0.01;
 }
 
 planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	leafX_ = static_cast<float>(parameters()["leafX_"]);
+	leafY_ = static_cast<float>(parameters()["leafY_"]);
+	leafZ_ = static_cast<float>(parameters()["leafZ_"]);
+
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)
 	{
@@ -37,38 +34,6 @@ planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 		sor.setLeafSize (leafX_, leafY_, leafZ_);
 		sor.filter (*cloud_filtered);
 		*cloud_ptr_  = *cloud_filtered;
-	}
-	return planCloudListPtr;
-}
-
-planCloudsPtr_t FilterCell::computePassThrough(planCloudsPtr_t planCloudListPtr, float maxDistance)
-{
-	for(pointCloudPoints_t::size_type j = 0;
-		j<planCloudListPtr->size(); ++j)
-	{
-		cloud_ptr_ = planCloudListPtr->at(j).cloud();
-		pcl::PassThrough<pcl::PointXYZ> pass;
-		pass.setInputCloud (cloud_ptr_);
-		pass.setFilterFieldName ("z");
-		pass.setFilterLimits (0.0, maxDistance);
-		//pass.setFilterLimitsNegative (true);
-		pass.filter (*cloud_ptr_);
-	}
-	return planCloudListPtr;
-}
-
-planCloudsPtr_t FilterCell::computePassThrough(planCloudsPtr_t planCloudListPtr, std::string axis, float min, float max)
-{
-	for(pointCloudPoints_t::size_type j = 0;
-		j<planCloudListPtr->size(); ++j)
-	{
-		cloud_ptr_ = planCloudListPtr->at(j).cloud();
-		pcl::PassThrough<pcl::PointXYZ> pass;
-		pass.setInputCloud (cloud_ptr_);
-		pass.setFilterFieldName (axis);
-		pass.setFilterLimits (min, max);
-		//pass.setFilterLimitsNegative (true);
-		pass.filter (*cloud_ptr_);
 	}
 	return planCloudListPtr;
 }

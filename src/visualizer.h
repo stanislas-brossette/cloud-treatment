@@ -1,11 +1,11 @@
 #ifndef VISUALIZER_H
 #define VISUALIZER_H
 
-#include "typedefs.h"
-#include "plancloud.h"
 #include <boost/shared_ptr.hpp>
 #include <pcl/visualization/pcl_visualizer.h>
 
+#include "typedefs.h"
+#include "plancloud.h"
 
 /// \brief Visualization class
 ///

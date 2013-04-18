@@ -1,13 +1,16 @@
-#include <pcl/io/pcd_io.h>
-#include "boost/make_shared.hpp"
-#include "filewritingcell.h"
 #include <sstream>
 # include <iomanip>
+
+#include <pcl/io/pcd_io.h>
+#include <boost/make_shared.hpp>
+
+#include "filewritingcell.h"
 
 template <typename T> std::string tostr(const T& t) { std::ostringstream os; os<<t; return os.str(); }
 
 FileWritingCell::FileWritingCell()
 {
+	cell_name() = "FileWritingCell";
 }
 
 planCloudsPtr_t FileWritingCell::compute(planCloudsPtr_t planCloudListPtr)

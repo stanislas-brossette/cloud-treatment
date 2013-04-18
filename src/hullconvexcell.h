@@ -1,7 +1,7 @@
 #ifndef HULLCONVEXCELL_H
 #define HULLCONVEXCELL_H
 
-#include <pcl/surface/convex_hull.h>
+# include <pcl/surface/convex_hull.h>
 
 # include "typedefs.h"
 # include "cell.h"

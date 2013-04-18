@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
+
 #include <eigen3/Eigen/Dense>
 #include <boost/optional.hpp>
-
 #include <boost/make_shared.hpp>
 #include <sensor_msgs/PointCloud2.h>
 

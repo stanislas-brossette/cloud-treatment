@@ -5,6 +5,7 @@
 
 OrientationCell::OrientationCell()
 {
+	cell_name() = "OrientationCell";
 }
 
 planCloudsPtr_t OrientationCell::compute(planCloudsPtr_t planCloudListPtr)

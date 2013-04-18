@@ -1,12 +1,12 @@
 #ifndef FILTERCELL_H
 #define FILTERCELL_H
 
-#include "cell.h"
-
 #include <vector>
 #include <string>
+
 #include <boost/shared_ptr.hpp>
-#include <sensor_msgs/PointCloud2.h>
+
+#include "cell.h"
 
 /// \brief Implements a voxel grid filter that reduces the number of points
 /// in the treated cloud

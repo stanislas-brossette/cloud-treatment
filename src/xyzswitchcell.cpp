@@ -6,6 +6,7 @@
 
 XYZSwitchCell::XYZSwitchCell()
 {
+	cell_name() = "XYZSwitchCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t >();
 }
 

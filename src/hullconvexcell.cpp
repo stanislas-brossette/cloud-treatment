@@ -6,6 +6,7 @@
 
 HullConvexCell::HullConvexCell()
 {
+	cell_name() = "HullConvexCell";
 	point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();
 }
 

@@ -1,4 +1,3 @@
-
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 
@@ -7,6 +6,7 @@
 
 PlanProjectionCell::PlanProjectionCell()
 {
+	cell_name() = "PlanProjectionCell";
 	proj.setModelType (pcl::SACMODEL_PLANE);
 }
 

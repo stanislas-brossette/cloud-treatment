@@ -2,4 +2,5 @@
 
 Cell::Cell()
 {
+	cell_name() = "Cell";
 }

@@ -2,6 +2,9 @@
 # define CELL_H
 
 # include <vector>
+# include <string>
+# include <map>
+
 # include <boost/shared_ptr.hpp>
 
 # include "typedefs.h"
@@ -46,6 +49,25 @@ public:
 	/// \return Point cloud list after being processed, allowing
 	///         you to chain calls.
 	virtual planCloudsPtr_t compute (planCloudsPtr_t planCloudList) = 0;
+
+	std::map <std::string, double>& parameters()
+	{
+		return parameters_;
+	}
+
+	const std::map <std::string, double>& parameters() const
+	{
+		return parameters_;
+	}
+
+	std::string& cell_name()
+	{
+		return cell_name_;
+	}
+
+private:
+	std::string cell_name_;
+	std::map <std::string, double> parameters_;
 };
 
 #endif // CELL_H
