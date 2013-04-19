@@ -10,7 +10,7 @@ set(PROJECT_URL https://github.com/stanislas-brossette/cloud-treatment)
 set(HEADERS )
 
 setup_project()
-
+ADD_REQUIRED_DEPENDENCY("yaml-cpp")
 # Look for PCL.
 find_package(PCL 1.3 REQUIRED 
 	COMPONENTS common io surface filters segmentation visualization)
@@ -40,6 +40,7 @@ add_library(cloud_treatment SHARED
 )
 
 target_link_libraries(cloud_treatment ${PCL_LIBRARIES})
+PKG_CONFIG_USE_DEPENDENCY(cloud_treatment yaml_cpp)
 
 add_executable(cloud_treatment_test src/cloudtreatment.cpp)
 add_dependencies(cloud_treatment_test  cloud_treatment)
