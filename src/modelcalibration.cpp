@@ -36,14 +36,16 @@ int main(int argc, char** argv)
 
 	app = Application(path);
 
-	app.cells().push_back(boost::make_shared<PassThroughFilterCell>());
-	app.cells().push_back(boost::make_shared<FilterCell>());
-	app.cells().push_back(boost::make_shared<RegionGrowingSegmentationCell>());
-//	app.cells().push_back(boost::make_shared<XYZSwitchCell>());
-	app.cells().push_back(boost::make_shared<PlanExtractionCell>());
-	app.cells().push_back(boost::make_shared<PlanProjectionCell>());
-	app.cells().push_back(boost::make_shared<HullConvexCell>());
-//	app.cells().push_back(boost::make_shared<OrientationCell>());
+//	app.cells().push_back(boost::make_shared<PassThroughFilterCell>());
+//	app.cells().push_back(boost::make_shared<FilterCell>());
+//	app.cells().push_back(boost::make_shared<RegionGrowingSegmentationCell>());
+////	app.cells().push_back(boost::make_shared<XYZSwitchCell>());
+//	app.cells().push_back(boost::make_shared<PlanExtractionCell>());
+//	app.cells().push_back(boost::make_shared<PlanProjectionCell>());
+//	app.cells().push_back(boost::make_shared<HullConvexCell>());
+////	app.cells().push_back(boost::make_shared<OrientationCell>());
+
+	app.createFromYaml("test.yaml");
 
 	try
 	{
