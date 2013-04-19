@@ -12,7 +12,7 @@ set(HEADERS )
 setup_project()
 ADD_REQUIRED_DEPENDENCY("yaml-cpp")
 # Look for PCL.
-find_package(PCL 1.3 REQUIRED 
+find_package(PCL 1.7 REQUIRED 
 	COMPONENTS common io surface filters segmentation visualization)
 search_for_eigen()
 
