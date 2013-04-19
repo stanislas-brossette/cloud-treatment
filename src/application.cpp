@@ -1,9 +1,11 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <yaml-cpp/yaml.h>
 
 #include "application.h"
 #include "filecell.h"
@@ -48,3 +50,15 @@ void Application::Run()
 //	std::cout<<Verbose(1)<<planCloudListPtr;
 
 }
+
+void Application::createFromYaml(const std::string& yamlFilename)
+{
+	std::cout << yamlFilename << std::endl;
+	std::ifstream fin("test.yaml");
+	YAML::Parser parser(fin);
+	YAML::Node doc;
+	std::string scalar;
+	doc >> scalar;
+	std::cout << "That scalar was: " << scalar << std::endl;
+}
+
