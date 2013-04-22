@@ -9,9 +9,9 @@
 PlanExtractionCell::PlanExtractionCell()
 {
 	cell_name() = "PlanExtractionCell";
-	parameters()["plan_rate_"] = 0.1;
-	parameters()["max_iteration_"] = 100;
-	parameters()["distance_threshold_"] = 0.03;
+	parameters()["plan_rate"] = 0.1;
+	parameters()["max_iteration"] = 100;
+	parameters()["distance_threshold"] = 0.03;
 
 	inliers_ = boost::make_shared<pcl::PointIndices>();
 	seg_.setOptimizeCoefficients (true);
@@ -25,9 +25,9 @@ PlanExtractionCell::PlanExtractionCell()
 
 planCloudsPtr_t PlanExtractionCell::compute (planCloudsPtr_t planCloudListPtr)
 {
-	plan_rate_ = parameters()["plan_rate_"];
-	distance_threshold_ = parameters()["distance_threshold_"];
-	max_iteration_ = static_cast<int>(parameters()["max_iteration_"]);
+	plan_rate_ = parameters()["plan_rate"];
+	distance_threshold_ = parameters()["distance_threshold"];
+	max_iteration_ = static_cast<int>(parameters()["max_iteration"]);
 
 	seg_.setMaxIterations (max_iteration_);
 	seg_.setDistanceThreshold (distance_threshold_);

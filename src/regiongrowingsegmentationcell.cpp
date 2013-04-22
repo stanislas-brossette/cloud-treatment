@@ -18,12 +18,12 @@ RegionGrowingSegmentationCell::RegionGrowingSegmentationCell()
 {
 	cell_name() = "RegionGrowingSegmentationCell";
 
-	parameters()["number_of_neighbours_normal_estimation_"] = 50;
-	parameters()["min_cluster_size_"] = 500;
-	parameters()["max_cluster_size_"] = 70000;
-	parameters()["number_of_neighbours_region_growing_"] = 30;
-	parameters()["smoothness_threshold_"] = 6;
-	parameters()["curvature_threshold_"] = 1;
+	parameters()["number_of_neighbours_normal_estimation"] = 50;
+	parameters()["min_cluster_size"] = 500;
+	parameters()["max_cluster_size"] = 70000;
+	parameters()["number_of_neighbours_region_growing"] = 30;
+	parameters()["smoothness_threshold"] = 6;
+	parameters()["curvature_threshold"] = 1;
 
 	point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();
 	inliers_ = boost::make_shared<pcl::PointIndices>();
@@ -34,12 +34,12 @@ RegionGrowingSegmentationCell::RegionGrowingSegmentationCell()
 planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
 
-	number_of_neighbours_normal_estimation_ = static_cast<int>(parameters()["number_of_neighbours_normal_estimation_"]);
-	min_cluster_size_ = static_cast<int>(parameters()["min_cluster_size_"]);
-	max_cluster_size_ = static_cast<int>(parameters()["max_cluster_size_"]);
-	number_of_neighbours_region_growing_ = static_cast<int>(parameters()["number_of_neighbours_region_growing_"]);
-	smoothness_threshold_ = static_cast<float>(parameters()["smoothness_threshold_"]);
-	curvature_threshold_ = static_cast<float>(parameters()["curvature_threshold_"]);
+	number_of_neighbours_normal_estimation_ = static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
+	min_cluster_size_ = static_cast<int>(parameters()["min_cluster_size"]);
+	max_cluster_size_ = static_cast<int>(parameters()["max_cluster_size"]);
+	number_of_neighbours_region_growing_ = static_cast<int>(parameters()["number_of_neighbours_region_growing"]);
+	smoothness_threshold_ = static_cast<float>(parameters()["smoothness_threshold"]);
+	curvature_threshold_ = static_cast<float>(parameters()["curvature_threshold"]);
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{

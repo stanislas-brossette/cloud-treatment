@@ -2,15 +2,14 @@ version: 1.0
 pipeline:
   - type: PassThroughFilterCell
     parameters:
-      - min_: 0
-      - max_: 2.7
+      min: 0
+      max: 2.7
   - type: FilterCell
     parameters:
-      - leafX_: 0.01
+      leafX: 0.01
   - type: RegionGrowingSegmentationCell
     parameters:
-      - min_cluster_size_: 500
+      min_cluster_size: 500
   - type: PlanExtractionCell
   - type: PlanProjectionCell
   - type: HullConvexCell
-

@@ -13,16 +13,16 @@ FilterCell::FilterCell()
 {
 	cell_name() = "FilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
-	parameters()["leafX_"] = 0.01;
-	parameters()["leafY_"] = 0.01;
-	parameters()["leafZ_"] = 0.01;
+	parameters()["leafX"] = 0.01;
+	parameters()["leafY"] = 0.01;
+	parameters()["leafZ"] = 0.01;
 }
 
 planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	leafX_ = static_cast<float>(parameters()["leafX_"]);
-	leafY_ = static_cast<float>(parameters()["leafY_"]);
-	leafZ_ = static_cast<float>(parameters()["leafZ_"]);
+	leafX_ = static_cast<float>(parameters()["leafX"]);
+	leafY_ = static_cast<float>(parameters()["leafY"]);
+	leafZ_ = static_cast<float>(parameters()["leafZ"]);
 
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)

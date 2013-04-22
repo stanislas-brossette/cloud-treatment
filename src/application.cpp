@@ -80,16 +80,26 @@ void Application::createFromYaml(const std::string& yamlFilename)
 	{
 		std::string cellType;
 		(*it)["type"] >> cellType;
-		std::cout << cellType << "\n";
 		boost::shared_ptr< Cell > cell = factory_.create(cellType);
+
+		if(it->FindValue("parameters") != 0)
+		{
+			const YAML::Node& parameters = (*it)["parameters"];
+			for(YAML::Iterator paramIt = parameters.begin();
+				paramIt != parameters.end(); ++paramIt)
+			{
+				std::string key;
+				double value;
+				paramIt.first() >> key;
+				paramIt.second() >> value;
+				if(cell->parameters().find(key) != cell->parameters().end())
+					cell->parameters()[key] = value;
+				else
+					throw(std::runtime_error("wrong parameter key in yaml"));
+			}
+		}
+
 		cells_.push_back(cell);
 	}
-
-//	const YAML::Node& pipeline = doc["pipeline"];
-//	for(unsigned i=0;i<pipeline.size();i++) {
-//		std::string cellType;
-//		pipeline[i]["type"] >> cellType;
-//		std::cout << cellType << "\n";
-//	}
 }
 
