@@ -9,6 +9,7 @@
 #include "custompclvisualizor.h"
 #include "typedefs.h"
 #include "cell.h"
+#include "factory.h"
 
 /// \brief Simple application that contains the workflow
 ///
@@ -41,9 +42,9 @@ public:
 	void createFromYaml(const std::string& yamlFilename);
 
 private:
-	CustomPCLVisualizor customPCLVisualizor;
 	std::string pcd_file_name;
 	std::vector < boost::shared_ptr < Cell > > cells_;
+	Factory factory_;
 };
 
 #endif // APPLICATION_H

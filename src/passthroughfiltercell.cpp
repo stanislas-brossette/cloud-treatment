@@ -11,15 +11,15 @@ PassThroughFilterCell::PassThroughFilterCell()
 	cell_name() = "PassThroughFilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	axis = "z";
-	parameters()["min"] = 0;
-	parameters()["max"] = 2.7;
+	parameters()["min_"] = 0;
+	parameters()["max_"] = 2.7;
 }
 
 
 planCloudsPtr_t PassThroughFilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	min = static_cast<float>(parameters()["min"]);
-	max = static_cast<float>(parameters()["max"]);
+	min_ = static_cast<float>(parameters()["min_"]);
+	max_ = static_cast<float>(parameters()["max_"]);
 
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)
@@ -28,7 +28,7 @@ planCloudsPtr_t PassThroughFilterCell::compute(planCloudsPtr_t planCloudListPtr)
 		pcl::PassThrough<pcl::PointXYZ> pass;
 		pass.setInputCloud (cloud_ptr_);
 		pass.setFilterFieldName (axis);
-		pass.setFilterLimits (min, max);
+		pass.setFilterLimits (min_, max_);
 		//pass.setFilterLimitsNegative (true);
 		pass.filter (*cloud_ptr_);
 	}

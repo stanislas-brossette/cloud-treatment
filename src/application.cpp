@@ -8,19 +8,25 @@
 #include <yaml-cpp/yaml.h>
 
 #include "application.h"
+#include "factory.h"
 #include "filecell.h"
 #include "plancloud.h"
 #include "typedefs.h"
 #include "visualizer.h"
 
 
-Application::Application()
+Application::Application():
+	pcd_file_name(""),
+	cells_(),
+	factory_()
 {
 }
 
-Application::Application(std::string path)
+Application::Application(std::string path):
+	pcd_file_name(path),
+	cells_(),
+	factory_()
 {
-	pcd_file_name = path;
 }
 
 void Application::Run()
@@ -53,12 +59,37 @@ void Application::Run()
 
 void Application::createFromYaml(const std::string& yamlFilename)
 {
-	std::cout << yamlFilename << std::endl;
-	std::ifstream fin("test.yaml");
-	YAML::Parser parser(fin);
+	std::ifstream fin(yamlFilename.c_str());
+	if (!fin.good ())
+		throw std::runtime_error ("bad stream");
+	YAML::Parser parser (fin);
+
 	YAML::Node doc;
-	std::string scalar;
-	doc >> scalar;
-	std::cout << "That scalar was: " << scalar << std::endl;
+
+	if (!parser.GetNextDocument (doc))
+		throw std::runtime_error ("empty document");
+
+	std::string version;
+	doc["version"] >> version;
+	std::cout << "version = " << version << std::endl;
+
+
+
+	for (YAML::Iterator it = doc["pipeline"].begin ();
+			 it != doc["pipeline"].end (); ++it)
+	{
+		std::string cellType;
+		(*it)["type"] >> cellType;
+		std::cout << cellType << "\n";
+		boost::shared_ptr< Cell > cell = factory_.create(cellType);
+		cells_.push_back(cell);
+	}
+
+//	const YAML::Node& pipeline = doc["pipeline"];
+//	for(unsigned i=0;i<pipeline.size();i++) {
+//		std::string cellType;
+//		pipeline[i]["type"] >> cellType;
+//		std::cout << cellType << "\n";
+//	}
 }
 

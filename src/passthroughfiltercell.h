@@ -23,8 +23,8 @@ public:
 private:
 	pointCloudPtr_t cloud_ptr_;
 	std::string axis;
-	float min;
-	float max;
+	float min_;
+	float max_;
 };
 
 #endif // PASSTHROUGHFILTERCELL_H

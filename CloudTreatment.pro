@@ -34,7 +34,10 @@ HEADERS += \
     src/typedefs.h \
     src/verbose.h \
     src/visualizer.h \
-    src/xyzswitchcell.h
+    src/xyzswitchcell.h \
+    src/factory.h
 
 OTHER_FILES += \
-    CMakeLists.txt
+    CMakeLists.txt \
+    share/yaml/modelcalibration.yaml \
+    share/yaml/cloudtreatment.yaml
