@@ -2,18 +2,21 @@
 #include <stdexcept>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "application.h"
 
+#include "dirs.hh"
 
 namespace po = boost::program_options;
 
 int main(int argc, char** argv)
 {
-
 	std::string pointCloudFile;
 	std::string pipelineFile;
 
@@ -21,8 +24,10 @@ int main(int argc, char** argv)
 	po::options_description desc("Allowed options");
 	desc.add_options()
 		("help", "produce help message")
-		("point_cloud,C", po::value< std::string >(), "input point-cloud file")
-		("pipeline,P", po::value< std::string >(), "input pipeline file")
+		("point-cloud,c", po::value<std::string>(&pointCloudFile),
+		 "input point-cloud file")
+		("pipeline,p", po::value<std::string>(&pipelineFile),
+		 "input pipeline file")
 	;
 
 	po::variables_map vm;
@@ -31,41 +36,66 @@ int main(int argc, char** argv)
 
 	if (vm.count("help")) {
 		std::cout << desc << "\n";
-		return 1;
+		return 0;
 	}
 
-	if (vm.count("point_cloud"))
+	if (!vm.count("point-cloud"))
 	{
-		pointCloudFile = vm["point_cloud"].as< std::string >();
-		std::cout << "Point cloud input file was set to "
-			 << vm["point_cloud"].as< std::string >() << ".\n";
+	  std::cout << "point cloud file is required" << std::endl;
+	  return 1;
 	}
+
+	if (!vm.count("pipeline"))
+	{
+	  std::cout << "pipeline file is required" << std::endl;
+	  return 1;
+	}
+
+	namespace fs = boost::filesystem;
+
+	fs::path pointCloudPath (pointCloudFile);
+	fs::path pointCloudPathInstall (POINT_CLOUD_PATH);
+	pointCloudPathInstall /= pointCloudFile;
+	fs::path pointCloudPathBuild (POINT_CLOUD_BUILD_PATH);
+	pointCloudPathBuild /= pointCloudFile;
+
+	if (fs::is_regular_file (pointCloudPath))
+	  {}
+	else if (fs::is_regular_file (pointCloudPathInstall))
+	  pointCloudPath = pointCloudPathInstall;
+	else if (fs::is_regular_file (pointCloudPathBuild))
+	  pointCloudPath = pointCloudPathBuild;
 	else
-	{
-		pointCloudFile = "../datafiles/TableClimbing.pcd";
-		std::cout << "Point cloud input file was set its to default value: "
-				<< pointCloudFile << "\n";
-	}
+	  {
+	    std::cout
+	      << (boost::format ("point cloud file \"%1%\" does not exist")
+		  % pointCloudFile).str ()
+	      << std::endl;
+	    return 1;
+	  }
 
-	if (vm.count("pipeline"))
-	{
-		pipelineFile = vm["pipeline"].as< std::string >();
-		std::cout << "Pipeline input file was set to "
-			 << vm["pipeline"].as< std::string >() << ".\n";
-	}
+	Application app (pointCloudPath.native ());
+
+	fs::path pipelinePath (pipelineFile);
+	fs::path pipelinePathInstall (PIPELINE_PATH);
+	pipelinePathInstall /= pipelineFile;
+	fs::path pipelinePathBuild (PIPELINE_BUILD_PATH);
+	pipelinePathBuild /= pipelineFile;
+
+	if (fs::is_regular_file (pipelinePath))
+	  app.createFromYaml (pipelinePath.native ());
+	else if (fs::is_regular_file (pipelinePathInstall))
+	  app.createFromYaml (pipelinePathInstall.native ());
+	else if (fs::is_regular_file (pipelinePathBuild))
+	  app.createFromYaml (pipelinePathBuild.native ());
 	else
-	{
-		pipelineFile = "../share/yaml/cloudtreatment.yaml";
-		std::cout << "Pipeline input file was set to its default value: "
-				<< pipelineFile << "\n";
-	}
-
-
-	Application app;
-
-	app = Application(pointCloudFile);
-
-	app.createFromYaml(pipelineFile);
+	  {
+	    std::cout
+	      << (boost::format ("pipeline file \"%1%\" does not exist")
+		  % pipelineFile).str ()
+	      << std::endl;
+	    return 1;
+	  }
 
 	try
 	{

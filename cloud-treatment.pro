@@ -41,4 +41,6 @@ HEADERS += \
 OTHER_FILES += \
     CMakeLists.txt \
     share/yaml/modelcalibration.yaml \
-    share/yaml/cloudtreatment.yaml
+    share/yaml/cloudtreatment.yaml \
+    src/dirs.hh.in \
+    src/CMakeLists.txt

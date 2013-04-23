@@ -1,0 +1,14 @@
+#ifndef CLOUD_TREATMENT_DIRS_HH
+# define CLOUD_TREATMENT_DIRS_HH
+
+static const char* PIPELINE_PATH =
+  "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/pipeline";
+static const char* PIPELINE_BUILD_PATH =
+  "@CMAKE_CURRENT_SOURCE_DIR@/share/cloud-treatment/pipeline";
+
+static const char* POINT_CLOUD_PATH =
+  "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/point-cloud";
+static const char* POINT_CLOUD_BUILD_PATH =
+  "@CMAKE_CURRENT_SOURCE_DIR@/share/cloud-treatment/point-cloud";
+
+#endif //! CLOUD_TREATMENT_DIRS_HH
