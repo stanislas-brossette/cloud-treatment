@@ -22,7 +22,6 @@ planCloudsPtr_t FileCell::compute(planCloudsPtr_t planCloudListPtr)
 
 planCloudsPtr_t FileCell::sync(std::string path, planCloudsPtr_t planCloudListPtr)
 {
-	path = "../datafiles/" + path + ".pcd";
 	PlanCloud planCloudTest = PlanCloud();
 	pcl::PCDReader reader;
 	reader.read(path, *(planCloudTest.cloud()));

@@ -3,14 +3,25 @@ pipeline:
   - type: PassThroughFilterCell
     parameters:
       min: 0
-      max: 2.7
+      max: 4
   - type: FilterCell
     parameters:
       leafX: 0.01
+      leafY: 0.01
+      leafZ: 0.01
   - type: RegionGrowingSegmentationCell
     parameters:
       min_cluster_size: 500
+      max_cluster_size: 70000
+      number_of_neighbours_normal_estimation: 50
+      number_of_neighbours_region_growing: 30
+      smoothness_threshold: 6
+      curvature_threshold: 1
   - type: PlanExtractionCell
+    parameters:
+      plan_rate: 0.1
+      max_iteration: 100
+      distance_threshold: 0.03
   - type: PlanProjectionCell
   - type: HullConvexCell
 

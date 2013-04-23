@@ -38,16 +38,13 @@ void Application::Run()
 	Visualizer visualizer = Visualizer();
 
 	fileCell.sync(pcd_file_name, planCloudListPtr);
+	visualizer.add_xyz_clouds(planCloudListPtr);
 
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
 		std::cout << cells_[i]->cell_name() << std::endl;
 		planCloudListPtr = cells_[i]->compute(planCloudListPtr);
 		std::cout << planCloudListPtr << std::endl;
-		if(i ==0)
-		{
-			visualizer.add_xyz_clouds(planCloudListPtr);
-		}
 	}
 
 	visualizer.add_convex_clouds(planCloudListPtr);

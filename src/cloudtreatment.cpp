@@ -5,19 +5,6 @@
 #include <boost/make_shared.hpp>
 
 #include "application.h"
-#include "filecell.h"
-#include "xyzswitchcell.h"
-#include "filtercell.h"
-#include "regiongrowingsegmentationcell.h"
-#include "planextractioncell.h"
-#include "planprojectioncell.h"
-#include "hullconvexcell.h"
-#include "filewritingcell.h"
-#include "orientationcell.h"
-#include "plancloud.h"
-#include "typedefs.h"
-#include "passthroughfiltercell.h"
-#include "visualizer.h"
 
 
 int main(int argc, char** argv)
