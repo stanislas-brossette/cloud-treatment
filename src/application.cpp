@@ -18,40 +18,35 @@
 Application::Application():
 	pcd_file_name(""),
 	cells_(),
-	factory_()
+	factory_(*this),
+	visualizer_()
 {
 }
 
 Application::Application(std::string path):
 	pcd_file_name(path),
 	cells_(),
-	factory_()
+	factory_(*this),
+	visualizer_()
 {
 }
 
-void Application::Run()
+void Application::run()
 {
 	planCloudsPtr_t planCloudListPtr = boost::make_shared < planClouds_t > ();
 
 	FileCell fileCell = FileCell();
 
-	Visualizer visualizer = Visualizer();
-
 	fileCell.sync(pcd_file_name, planCloudListPtr);
-	visualizer.add_xyz_clouds(planCloudListPtr);
-
+//	std::cout << planCloudListPtr << std::endl;
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
-		std::cout << cells_[i]->cell_name() << std::endl;
 		planCloudListPtr = cells_[i]->compute(planCloudListPtr);
-		std::cout << planCloudListPtr << std::endl;
+//		std::cout << planCloudListPtr << std::endl;
 	}
 
-	visualizer.add_convex_clouds(planCloudListPtr);
-	visualizer.display_all();
-
+	visualizer_.display_all();
 //	std::cout<<Verbose(1)<<planCloudListPtr;
-
 }
 
 void Application::createFromYaml(const std::string& yamlFilename)

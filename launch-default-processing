@@ -1,0 +1,2 @@
+#!/bin/sh
+cloud-processing -c crapahut.pcd -p cloudtreatment.yaml 

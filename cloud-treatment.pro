@@ -1,7 +1,5 @@
 SOURCES += \
     src/main.cpp \
-    src/modelcalibration.cpp \
-    src/cloudtreatment.cpp \
     src/application.cpp \
     src/cell.cpp \
     src/custompclvisualizor.cpp \
@@ -16,7 +14,9 @@ SOURCES += \
     src/planprojectioncell.cpp \
     src/regiongrowingsegmentationcell.cpp \
     src/visualizer.cpp \
-    src/xyzswitchcell.cpp
+    src/xyzswitchcell.cpp \
+    src/displayxyzcloudcell.cpp \
+    src/displayconvexcloudcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -36,11 +36,16 @@ HEADERS += \
     src/verbose.h \
     src/visualizer.h \
     src/xyzswitchcell.h \
-    src/factory.h
+    src/factory.h \
+    src/displayxyzcloudcell.h \
+    src/displayconvexcloudcell.h
 
 OTHER_FILES += \
     CMakeLists.txt \
     share/yaml/modelcalibration.yaml \
     share/yaml/cloudtreatment.yaml \
     src/dirs.hh.in \
-    src/CMakeLists.txt
+    src/CMakeLists.txt \
+    share/cloud-treatment/pipeline/cloudtreatment.yaml \
+    share/cloud-treatment/pipeline/modelcalibration.yaml \
+    share/cloud-treatment/pipeline/pipelinetest.yaml

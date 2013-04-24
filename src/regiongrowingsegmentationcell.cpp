@@ -37,7 +37,7 @@ planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloud
 	number_of_neighbours_normal_estimation_ = static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
 	min_cluster_size_ = static_cast<int>(parameters()["min_cluster_size"]);
 	max_cluster_size_ = static_cast<int>(parameters()["max_cluster_size"]);
-	number_of_neighbours_region_growing_ = static_cast<int>(parameters()["number_of_neighbours_region_growing"]);
+	number_of_neighbours_region_growing_ = static_cast<unsigned int>(parameters()["number_of_neighbours_region_growing"]);
 	smoothness_threshold_ = static_cast<float>(parameters()["smoothness_threshold"]);
 	curvature_threshold_ = static_cast<float>(parameters()["curvature_threshold"]);
 

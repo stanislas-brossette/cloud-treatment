@@ -9,6 +9,8 @@ add_library(cloud-treatment SHARED
     application.cpp
     plancloud.cpp
     cell.cpp
+    displayxyzcloudcell.cpp
+    displayconvexcloudcell.cpp
     filecell.cpp
     filtercell.cpp
     xyzswitchcell.cpp
@@ -34,13 +36,6 @@ target_link_libraries(cloud-treatment ${PCL_LIBRARIES})
 PKG_CONFIG_USE_DEPENDENCY(cloud-treatment yaml-cpp)
 install(TARGETS cloud-treatment
   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
-
-# mode calibration binary
-add_executable(model-calibration modelcalibration.cpp)
-add_dependencies(model-calibration cloud-treatment)
-target_link_libraries(model-calibration cloud-treatment)
-install(TARGETS model-calibration
-  DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
 
 # main executable
 add_executable(cloud-processing main.cpp)

@@ -1,0 +1,17 @@
+version: 1.0
+pipeline:
+  - type: PassThroughFilterCell
+    parameters:
+      min: 0
+      max: 2
+  - type: FilterCell
+    parameters:
+      leafX: 0.01
+  - type: DisplayXYZCloudCell
+  - type: RegionGrowingSegmentationCell
+    parameters:
+      min_cluster_size: 500
+  - type: PlanExtractionCell
+  - type: PlanProjectionCell
+  - type: HullConvexCell
+  - type: DisplayConvexCloudCell

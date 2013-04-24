@@ -6,10 +6,10 @@
 #include <boost/shared_ptr.hpp>
 
 #include "plancloud.h"
-#include "custompclvisualizor.h"
 #include "typedefs.h"
 #include "cell.h"
 #include "factory.h"
+#include "visualizer.h"
 
 /// \brief Simple application that contains the workflow
 ///
@@ -27,7 +27,7 @@ public:
 
 	/// \brief this function instanciates all the algorithm object and
 	/// then runs them on the pointClouds
-	void Run();
+	void run();
 
 	std::vector < boost::shared_ptr < Cell > >& cells()
 	{
@@ -39,12 +39,24 @@ public:
 		return cells_;
 	}
 
+	Visualizer& visualizer()
+	{
+		return visualizer_;
+	}
+
+	const Visualizer& visualizer() const
+	{
+		return visualizer_;
+	}
+
+
 	void createFromYaml(const std::string& yamlFilename);
 
 private:
 	std::string pcd_file_name;
 	std::vector < boost::shared_ptr < Cell > > cells_;
 	Factory factory_;
+	Visualizer visualizer_;
 };
 
 #endif // APPLICATION_H

@@ -31,7 +31,7 @@ private:
 	int number_of_neighbours_normal_estimation_;
 	int min_cluster_size_;
 	int max_cluster_size_;
-	int number_of_neighbours_region_growing_;
+	unsigned int number_of_neighbours_region_growing_;
 	float smoothness_threshold_;
 	float curvature_threshold_;
 };

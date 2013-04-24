@@ -3,11 +3,16 @@
 
 #include <map>
 
+#include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/ref.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/functional/factory.hpp>
 
+#include "application.h"
 #include "cell.h"
+#include "displayxyzcloudcell.h"
+#include "displayconvexcloudcell.h"
 #include "filecell.h"
 #include "filewritingcell.h"
 #include "filtercell.h"
@@ -20,12 +25,20 @@
 #include "xyzswitchcell.h"
 
 typedef boost::function < boost::shared_ptr < Cell > () > factory_t;
+class Application;
 
 class Factory
 {
 public:
-	Factory()
+	Factory(Application& application_ref)
+		: application_ref_(application_ref)
 	{
+		factories_["DisplayXYZCloudCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayXYZCloudCell > > (),
+				 boost::ref(application_ref));
+		factories_["DisplayConvexCloudCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
+				 boost::ref(application_ref));
 		factories_["FileCell"] = boost::factory < boost::shared_ptr < FileCell > > ();
 		factories_["FileWritingCell"] = boost::factory < boost::shared_ptr < FileWritingCell > > ();
 		factories_["FilterCell"] = boost::factory < boost::shared_ptr < FilterCell > > ();
@@ -45,6 +58,7 @@ public:
 
 private:
 	std::map <std::string, factory_t > factories_;
+	Application& application_ref_;
 };
 
 #endif // FACTORY_H

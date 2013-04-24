@@ -25,8 +25,8 @@ planCloudsPtr_t FileCell::sync(std::string path, planCloudsPtr_t planCloudListPt
 	PlanCloud planCloudTest = PlanCloud();
 	pcl::PCDReader reader;
 	reader.read(path, *(planCloudTest.cloud()));
-	std::cout << "Read file " << path << std::endl;
-	std::cout << "This cloud has " << planCloudTest.cloud()->points.size () << " points." << std::endl;
+//	std::cout << "Read file " << path << std::endl;
+//	std::cout << "This cloud has " << planCloudTest.cloud()->points.size () << " points." << std::endl;
 	assert(planCloudTest.cloud()->points.size () != 0
 			&& "Problem encountered while reading the pcl file./n Cloud empty.");
 	if(planCloudTest.cloud()->points.size () == 0)

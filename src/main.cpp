@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 
 	try
 	{
-		app.Run();
+		app.run();
 	}
 	catch(std::exception &e)
 	{
