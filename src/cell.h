@@ -27,6 +27,7 @@ public:
 	/// \{
 
 	explicit Cell ();
+	explicit Cell (std::string name);
 
 	virtual ~Cell ()
 	{
@@ -66,8 +67,10 @@ public:
 	}
 
 private:
-	std::string cell_name_;
 	std::map <std::string, double> parameters_;
+
+protected:
+	std::string cell_name_;
 };
 
 #endif // CELL_H

@@ -16,7 +16,9 @@ SOURCES += \
     src/visualizer.cpp \
     src/xyzswitchcell.cpp \
     src/displayxyzcloudcell.cpp \
-    src/displayconvexcloudcell.cpp
+    src/displayconvexcloudcell.cpp \
+    src/dominantplanesegmentationcell.cpp \
+    src/euclidianclustersextractioncell.cpp
 
 HEADERS += \
     src/application.h \
@@ -38,7 +40,9 @@ HEADERS += \
     src/xyzswitchcell.h \
     src/factory.h \
     src/displayxyzcloudcell.h \
-    src/displayconvexcloudcell.h
+    src/displayconvexcloudcell.h \
+    src/dominantplanesegmentationcell.h \
+    src/euclidianclustersextractioncell.h
 
 OTHER_FILES += \
     CMakeLists.txt \
@@ -48,4 +52,5 @@ OTHER_FILES += \
     src/CMakeLists.txt \
     share/cloud-treatment/pipeline/cloudtreatment.yaml \
     share/cloud-treatment/pipeline/modelcalibration.yaml \
-    share/cloud-treatment/pipeline/pipelinetest.yaml
+    share/cloud-treatment/pipeline/pipelinetest.yaml \
+    share/cloud-treatment/pipeline/calibrationtest.yaml

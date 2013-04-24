@@ -14,10 +14,9 @@
 
 #include "regiongrowingsegmentationcell.h"
 
-RegionGrowingSegmentationCell::RegionGrowingSegmentationCell()
+RegionGrowingSegmentationCell::RegionGrowingSegmentationCell():
+	Cell("RegionGrowingSegmentationCell")
 {
-	cell_name() = "RegionGrowingSegmentationCell";
-
 	parameters()["number_of_neighbours_normal_estimation"] = 50;
 	parameters()["min_cluster_size"] = 500;
 	parameters()["max_cluster_size"] = 70000;

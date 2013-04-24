@@ -10,9 +10,9 @@
 #include "filecell.h"
 
 
-FileCell::FileCell()
+FileCell::FileCell():
+	Cell("FileCell")
 {
-	cell_name() = "FileCell";
 }
 
 planCloudsPtr_t FileCell::compute(planCloudsPtr_t planCloudListPtr)

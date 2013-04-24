@@ -13,6 +13,8 @@
 #include "cell.h"
 #include "displayxyzcloudcell.h"
 #include "displayconvexcloudcell.h"
+#include "dominantplanesegmentationcell.h"
+#include "euclidianclustersextractioncell.h"
 #include "filecell.h"
 #include "filewritingcell.h"
 #include "filtercell.h"
@@ -39,16 +41,30 @@ public:
 		factories_["DisplayConvexCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
 				 boost::ref(application_ref));
-		factories_["FileCell"] = boost::factory < boost::shared_ptr < FileCell > > ();
-		factories_["FileWritingCell"] = boost::factory < boost::shared_ptr < FileWritingCell > > ();
-		factories_["FilterCell"] = boost::factory < boost::shared_ptr < FilterCell > > ();
-		factories_["HullConvexCell"] = boost::factory < boost::shared_ptr < HullConvexCell > > ();
-		factories_["OrientationCell"] = boost::factory < boost::shared_ptr < OrientationCell > > ();
-		factories_["PassThroughFilterCell"] = boost::factory < boost::shared_ptr < PassThroughFilterCell > > ();
-		factories_["PlanExtractionCell"] = boost::factory < boost::shared_ptr < PlanExtractionCell > > ();
-		factories_["PlanProjectionCell"] = boost::factory < boost::shared_ptr < PlanProjectionCell > > ();
-		factories_["RegionGrowingSegmentationCell"] = boost::factory < boost::shared_ptr < RegionGrowingSegmentationCell > > ();
-		factories_["XYZSwitchCell"] = boost::factory < boost::shared_ptr < XYZSwitchCell > > ();
+		factories_["DominantPlaneSegmentationCell"] =
+				boost::factory < boost::shared_ptr < DominantPlaneSegmentationCell > > ();
+		factories_["EuclidianClustersExtractionCell"] =
+				boost::factory < boost::shared_ptr < EuclidianClustersExtractionCell > > ();
+		factories_["FileCell"] =
+				boost::factory < boost::shared_ptr < FileCell > > ();
+		factories_["FileWritingCell"] =
+				boost::factory < boost::shared_ptr < FileWritingCell > > ();
+		factories_["FilterCell"] =
+				boost::factory < boost::shared_ptr < FilterCell > > ();
+		factories_["HullConvexCell"] =
+				boost::factory < boost::shared_ptr < HullConvexCell > > ();
+		factories_["OrientationCell"] =
+				boost::factory < boost::shared_ptr < OrientationCell > > ();
+		factories_["PassThroughFilterCell"] =
+				boost::factory < boost::shared_ptr < PassThroughFilterCell > > ();
+		factories_["PlanExtractionCell"] =
+				boost::factory < boost::shared_ptr < PlanExtractionCell > > ();
+		factories_["PlanProjectionCell"] =
+				boost::factory < boost::shared_ptr < PlanProjectionCell > > ();
+		factories_["RegionGrowingSegmentationCell"] =
+				boost::factory < boost::shared_ptr < RegionGrowingSegmentationCell > > ();
+		factories_["XYZSwitchCell"] =
+				boost::factory < boost::shared_ptr < XYZSwitchCell > > ();
 	}
 
 	boost::shared_ptr < Cell > create(const std::string& type)

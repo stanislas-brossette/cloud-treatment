@@ -1,6 +1,11 @@
 #include "cell.h"
 
-Cell::Cell()
+Cell::Cell():
+	cell_name_("Cell")
 {
-	cell_name() = "Cell";
+}
+
+Cell::Cell(std::string name):
+	cell_name_(name)
+{
 }

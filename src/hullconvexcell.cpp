@@ -4,9 +4,9 @@
 # include "typedefs.h"
 # include "hullconvexcell.h"
 
-HullConvexCell::HullConvexCell()
+HullConvexCell::HullConvexCell():
+	Cell("HullConvexCell")
 {
-	cell_name() = "HullConvexCell";
 	point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();
 }
 

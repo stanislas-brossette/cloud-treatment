@@ -9,9 +9,9 @@
 #include "filtercell.h"
 #include "plancloud.h"
 
-FilterCell::FilterCell()
+FilterCell::FilterCell():
+	Cell("FilterCell")
 {
-	cell_name() = "FilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	parameters()["leafX"] = 0.01;
 	parameters()["leafY"] = 0.01;

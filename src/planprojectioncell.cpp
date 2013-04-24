@@ -4,9 +4,9 @@
 #include "planprojectioncell.h"
 #include "plancloud.h"
 
-PlanProjectionCell::PlanProjectionCell()
+PlanProjectionCell::PlanProjectionCell():
+	Cell("PlanProjectionCell")
 {
-	cell_name() = "PlanProjectionCell";
 	proj.setModelType (pcl::SACMODEL_PLANE);
 }
 

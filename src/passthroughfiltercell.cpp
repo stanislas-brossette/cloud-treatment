@@ -6,9 +6,9 @@
 #include "passthroughfiltercell.h"
 #include "plancloud.h"
 
-PassThroughFilterCell::PassThroughFilterCell()
+PassThroughFilterCell::PassThroughFilterCell():
+	Cell("PassThroughFilterCell")
 {
-	cell_name() = "PassThroughFilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	axis = "z";
 	parameters()["min"] = 0;

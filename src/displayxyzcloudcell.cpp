@@ -2,10 +2,10 @@
 #include "displayxyzcloudcell.h"
 #include "plancloud.h"
 
-DisplayXYZCloudCell::DisplayXYZCloudCell(Application& application_ref)
-	:application_ref_(application_ref)
+DisplayXYZCloudCell::DisplayXYZCloudCell(Application& application_ref):
+	Cell("DisplayXYZCloudCell"),
+	application_ref_(application_ref)
 {
-	cell_name() = "DisplayXYZCloudCell";
 }
 
 planCloudsPtr_t DisplayXYZCloudCell::compute(planCloudsPtr_t planCloudListPtr)

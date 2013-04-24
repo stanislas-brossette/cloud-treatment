@@ -9,8 +9,10 @@ add_library(cloud-treatment SHARED
     application.cpp
     plancloud.cpp
     cell.cpp
+    dominantplanesegmentationcell.cpp
     displayxyzcloudcell.cpp
     displayconvexcloudcell.cpp
+    euclidianclustersextractioncell.cpp
     filecell.cpp
     filtercell.cpp
     xyzswitchcell.cpp

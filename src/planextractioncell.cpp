@@ -6,9 +6,9 @@
 #include "planextractioncell.h"
 #include "plancloud.h"
 
-PlanExtractionCell::PlanExtractionCell()
+PlanExtractionCell::PlanExtractionCell():
+	Cell("PlanExtractionCell")
 {
-	cell_name() = "PlanExtractionCell";
 	parameters()["plan_rate"] = 0.1;
 	parameters()["max_iteration"] = 100;
 	parameters()["distance_threshold"] = 0.03;

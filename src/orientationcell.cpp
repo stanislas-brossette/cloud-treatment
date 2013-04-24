@@ -3,9 +3,9 @@
 # include "typedefs.h"
 # include "orientationcell.h"
 
-OrientationCell::OrientationCell()
+OrientationCell::OrientationCell():
+	Cell("OrientationCell")
 {
-	cell_name() = "OrientationCell";
 }
 
 planCloudsPtr_t OrientationCell::compute(planCloudsPtr_t planCloudListPtr)
