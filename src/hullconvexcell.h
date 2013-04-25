@@ -3,8 +3,8 @@
 
 # include <pcl/surface/convex_hull.h>
 
-# include "typedefs.h"
 # include "cell.h"
+# include "typedefs.h"
 
 /// \brief Implements a method to compute the Hull Convexes of the clouds
 class HullConvexCell : public Cell

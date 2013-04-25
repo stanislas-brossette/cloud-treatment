@@ -1,14 +1,15 @@
 #ifndef FILEWRITINGCELL_H
 #define FILEWRITINGCELL_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 
-#include "typedefs.h"
 #include "cell.h"
 #include "filewritingcell.h"
+#include "typedefs.h"
+
 
 /// \brief Class that writes a file that represents the cloud in a way
 /// that Amelif can read

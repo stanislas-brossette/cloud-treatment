@@ -1,8 +1,8 @@
 #include <boost/make_shared.hpp>
 #include <pcl/visualization/cloud_viewer.h>
 
-# include "typedefs.h"
 # include "hullconvexcell.h"
+# include "typedefs.h"
 
 HullConvexCell::HullConvexCell():
 	Cell("HullConvexCell")

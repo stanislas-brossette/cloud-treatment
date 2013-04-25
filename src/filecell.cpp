@@ -1,14 +1,13 @@
-#include <vector>
-#include <string>
+#include <cassert>
 #include <iostream>
 #include <stdexcept>
-#include <cassert>
+#include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 #include <pcl/io/pcd_io.h>
 
 #include "filecell.h"
-
 
 FileCell::FileCell():
 	Cell("FileCell")

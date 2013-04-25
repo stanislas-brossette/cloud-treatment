@@ -1,8 +1,8 @@
 #include <boost/make_shared.hpp>
 
+#include <pcl/filters/extract_indices.h>
 #include <pcl/ModelCoefficients.h>
 #include <pcl/segmentation/sac_segmentation.h>
-#include <pcl/filters/extract_indices.h>
 
 #include "dominantplanesegmentationcell.h"
 #include "plancloud.h"

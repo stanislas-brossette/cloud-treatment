@@ -1,14 +1,14 @@
 #ifndef CELL_H
 # define CELL_H
 
-# include <vector>
-# include <string>
 # include <map>
+# include <string>
+# include <vector>
 
 # include <boost/shared_ptr.hpp>
 
-# include "typedefs.h"
 # include "plancloud.h"
+# include "typedefs.h"
 
 /// \brief Abstract class representing an unitary operation on point clouds.
 ///

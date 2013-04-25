@@ -1,8 +1,8 @@
 #ifndef CUSTOMPCLVISUALIZOR_H
 #define CUSTOMPCLVISUALIZOR_H
 
-#include "typedefs.h"
 #include "plancloud.h"
+#include "typedefs.h"
 
 /// \brief Visualization class
 ///

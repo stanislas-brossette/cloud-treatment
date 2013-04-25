@@ -1,10 +1,9 @@
-
-#include <vector>
-#include <string>
 #include <fstream>
+#include <string>
+#include <vector>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
 #include <yaml-cpp/yaml.h>
 
 #include "application.h"
@@ -13,7 +12,6 @@
 #include "plancloud.h"
 #include "typedefs.h"
 #include "visualizer.h"
-
 
 Application::Application():
 	pcd_file_name(""),
@@ -42,7 +40,6 @@ void Application::run()
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
 		planCloudListPtr = cells_[i]->compute(planCloudListPtr);
-//		std::cout << planCloudListPtr << std::endl;
 	}
 
 	visualizer_.display_all();

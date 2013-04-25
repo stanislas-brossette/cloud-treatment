@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include <sensor_msgs/PointCloud2.h>
 #include <boost/make_shared.hpp>
-#include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
 #include <pcl/visualization/cloud_viewer.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include "filtercell.h"
 #include "plancloud.h"

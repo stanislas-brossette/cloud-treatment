@@ -1,14 +1,15 @@
 #ifndef FILECELL_H
 #define FILECELL_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 
-#include "typedefs.h"
-#include "filecell.h"
 #include "cell.h"
+#include "filecell.h"
+#include "typedefs.h"
+
 
 /// \brief Implements the reading of a .pcl file and the creation of a
 /// PointCloud object from it

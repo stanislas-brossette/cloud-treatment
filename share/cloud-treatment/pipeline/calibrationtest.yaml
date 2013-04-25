@@ -1,14 +1,15 @@
 version: 1.0
 pipeline:
-  - type: PassThroughFilterCell
-    parameters:
-      min: 0
-      max: 4
   - type: FilterCell
     parameters:
       leafX: 0.01
       leafY: 0.01
       leafZ: 0.01
+  - type: DisplayXYZCloudCell
+  - type: PassThroughFilterCell
+    parameters:
+      min: 0
+      max: 4
   - type: DominantPlaneSegmentationCell
     parameters:
       max_iteration: 100
@@ -16,4 +17,5 @@ pipeline:
   - type: EuclidianClustersExtractionCell
     parameters:
       min_cluster_size: 1000
+  - type: ModelCalibrationCell
   - type: DisplayXYZCloudCell

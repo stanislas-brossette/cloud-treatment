@@ -1,7 +1,7 @@
 # include <math.h>
 
-# include "typedefs.h"
 # include "orientationcell.h"
+# include "typedefs.h"
 
 OrientationCell::OrientationCell():
 	Cell("OrientationCell")

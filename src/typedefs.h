@@ -1,8 +1,8 @@
 #ifndef TYPEDEFS_H
 # define TYPEDEFS_H
 
-# include <pcl/point_types.h>
 # include <pcl/point_cloud.h>
+# include <pcl/point_types.h>
 
 class PlanCloud;
 

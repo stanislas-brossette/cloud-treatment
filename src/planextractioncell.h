@@ -1,15 +1,15 @@
 #ifndef PLANEXTRACTIONCELL_H
 # define PLANEXTRACTIONCELL_H
 
-# include <vector>
 # include <string>
+# include <vector>
 
 # include <boost/shared_ptr.hpp>
+# include <pcl/filters/extract_indices.h>
+# include <pcl/PointIndices.h>
 # include <pcl/sample_consensus/method_types.h>
 # include <pcl/sample_consensus/model_types.h>
 # include <pcl/segmentation/sac_segmentation.h>
-# include <pcl/PointIndices.h>
-# include <pcl/filters/extract_indices.h>
 
 # include "cell.h"
 # include "typedefs.h"

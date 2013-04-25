@@ -7,26 +7,27 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # cloud treatment main library
 add_library(cloud-treatment SHARED
     application.cpp
-    plancloud.cpp
     cell.cpp
-    dominantplanesegmentationcell.cpp
-    displayxyzcloudcell.cpp
+    custompclvisualizor.cpp
     displayconvexcloudcell.cpp
+    displayxyzcloudcell.cpp
+    dominantplanesegmentationcell.cpp
     euclidianclustersextractioncell.cpp
     filecell.cpp
+    filewritingcell.cpp
     filtercell.cpp
-    xyzswitchcell.cpp
+    hullconvexcell.cpp
+    modelcalibrationcell.cpp
+    orientationcell.cpp
+    passthroughfiltercell.cpp
+    plancloud.cpp
     planextractioncell.cpp
     planprojectioncell.cpp
-    filewritingcell.cpp
-    orientationcell.cpp
-    hullconvexcell.cpp
-    typedefs.h
-    custompclvisualizor.cpp
-    visualizer.cpp
     regiongrowingsegmentationcell.cpp
-    passthroughfiltercell.cpp
+    typedefs.h
     verbose.h
+    visualizer.cpp
+    xyzswitchcell.cpp
 )
 
 set_target_properties(cloud-treatment PROPERTIES

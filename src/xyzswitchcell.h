@@ -1,8 +1,8 @@
 #ifndef XYXSWITCHCELL_H
 # define XYXSWITCHCELL_H
 
-# include <vector>
 # include <string>
+# include <vector>
 
 # include <boost/shared_ptr.hpp>
 

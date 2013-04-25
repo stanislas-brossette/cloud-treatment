@@ -1,8 +1,8 @@
 #ifndef PASSTHROUGHFILTERCELL_H
 #define PASSTHROUGHFILTERCELL_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 

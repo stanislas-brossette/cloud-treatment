@@ -4,27 +4,30 @@
 #include <map>
 
 #include <boost/bind.hpp>
+#include <boost/functional/factory.hpp>
 #include <boost/function.hpp>
 #include <boost/ref.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/functional/factory.hpp>
+
 
 #include "application.h"
 #include "cell.h"
-#include "displayxyzcloudcell.h"
 #include "displayconvexcloudcell.h"
+#include "displayxyzcloudcell.h"
 #include "dominantplanesegmentationcell.h"
 #include "euclidianclustersextractioncell.h"
 #include "filecell.h"
 #include "filewritingcell.h"
 #include "filtercell.h"
 #include "hullconvexcell.h"
+#include "modelcalibrationcell.h"
 #include "orientationcell.h"
 #include "passthroughfiltercell.h"
 #include "planextractioncell.h"
 #include "planprojectioncell.h"
 #include "regiongrowingsegmentationcell.h"
 #include "xyzswitchcell.h"
+
 
 typedef boost::function < boost::shared_ptr < Cell > () > factory_t;
 class Application;
@@ -53,6 +56,8 @@ public:
 				boost::factory < boost::shared_ptr < FilterCell > > ();
 		factories_["HullConvexCell"] =
 				boost::factory < boost::shared_ptr < HullConvexCell > > ();
+		factories_["ModelCalibrationCell"] =
+				boost::factory < boost::shared_ptr < ModelCalibrationCell > > ();
 		factories_["OrientationCell"] =
 				boost::factory < boost::shared_ptr < OrientationCell > > ();
 		factories_["PassThroughFilterCell"] =

@@ -4,8 +4,8 @@
 #include <boost/shared_ptr.hpp>
 #include <pcl/visualization/pcl_visualizer.h>
 
-#include "typedefs.h"
 #include "plancloud.h"
+#include "typedefs.h"
 
 /// \brief Visualization class
 ///

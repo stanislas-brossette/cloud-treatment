@@ -3,8 +3,8 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/visualization/cloud_viewer.h>
 
-#include "planextractioncell.h"
 #include "plancloud.h"
+#include "planextractioncell.h"
 
 PlanExtractionCell::PlanExtractionCell():
 	Cell("PlanExtractionCell")

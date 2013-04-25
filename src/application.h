@@ -5,11 +5,12 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "plancloud.h"
-#include "typedefs.h"
 #include "cell.h"
 #include "factory.h"
+#include "plancloud.h"
+#include "typedefs.h"
 #include "visualizer.h"
+
 
 /// \brief Simple application that contains the workflow
 ///

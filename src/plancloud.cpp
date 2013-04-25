@@ -1,10 +1,9 @@
 #include <iostream>
 #include <vector>
 
-#include <eigen3/Eigen/Dense>
-#include <boost/optional.hpp>
 #include <boost/make_shared.hpp>
-#include <sensor_msgs/PointCloud2.h>
+#include <boost/optional.hpp>
+#include <eigen3/Eigen/Dense>
 
 #include "plancloud.h"
 #include "typedefs.h"
@@ -13,9 +12,6 @@ PlanCloud::PlanCloud()
 	: cloud_ (boost::make_shared<pointCloud_t >()),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >())
 {
-	// cloud_ =  ;
-	// coefficients_ = ;
-	//cloud2_ = boost::make_shared<pointCloud2_t >();
 }
 
 PlanCloud::PlanCloud(const PlanCloud& planCloud)

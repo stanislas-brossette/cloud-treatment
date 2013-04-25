@@ -2,12 +2,12 @@
 #define REGIONGROWINGSEGMENTATIONCELL_H
 
 # include <boost/shared_ptr.hpp>
-# include <pcl/PointIndices.h>
 # include <pcl/filters/extract_indices.h>
+# include <pcl/PointIndices.h>
 
-#include "typedefs.h"
-#include "regiongrowingsegmentationcell.h"
 #include "cell.h"
+#include "regiongrowingsegmentationcell.h"
+#include "typedefs.h"
 
 /// \brief Implements the reading of a .pcl file and the creation of a
 /// PointCloud object from it

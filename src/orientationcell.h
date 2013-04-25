@@ -1,8 +1,8 @@
 #ifndef ORIENTATIONCELL_H
 #define ORIENTATIONCELL_H
 
-# include "typedefs.h"
 # include "cell.h"
+# include "typedefs.h"
 
 /// \brief Implements a method to re-orientate the clouds
 class OrientationCell : public Cell

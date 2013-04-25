@@ -1,10 +1,10 @@
 # include <string>
 
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
-# include <pcl/visualization/pcl_visualizer.h>
-#include <pcl/visualization/cloud_viewer.h>
+# include <boost/make_shared.hpp>
+# include <boost/shared_ptr.hpp>
 # include <boost/thread/thread.hpp>
+# include <pcl/visualization/cloud_viewer.h>
+# include <pcl/visualization/pcl_visualizer.h>
 
 # include "custompclvisualizor.h"
 # include "plancloud.h"

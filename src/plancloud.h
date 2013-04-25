@@ -1,14 +1,14 @@
 #ifndef PLANCLOUD_H
 # define PLANCLOUD_H
 
-# include <iostream>
 # include <fstream>
+# include <iostream>
 # include <vector>
 
-#include <eigen3/Eigen/Dense>
-# include <pcl/point_types.h>
-# include <pcl/ModelCoefficients.h>
 # include <boost/optional.hpp>
+#include <eigen3/Eigen/Dense>
+# include <pcl/ModelCoefficients.h>
+# include <pcl/point_types.h>
 
 # include "typedefs.h"
 # include "verbose.h"

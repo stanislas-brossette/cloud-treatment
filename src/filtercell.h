@@ -1,8 +1,8 @@
 #ifndef FILTERCELL_H
 #define FILTERCELL_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 
@@ -16,9 +16,6 @@ public:
 	/// \name Constructors
 	/// \{
 	FilterCell();
-	/// Constructor overload that allows to choose the size of the
-	/// voxel-grid's leafs.
-	FilterCell(float leafX,float  leafY,float leafZ);
 	/// \}
 
 	virtual ~FilterCell ()

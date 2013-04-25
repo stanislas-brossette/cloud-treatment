@@ -18,7 +18,8 @@ SOURCES += \
     src/displayxyzcloudcell.cpp \
     src/displayconvexcloudcell.cpp \
     src/dominantplanesegmentationcell.cpp \
-    src/euclidianclustersextractioncell.cpp
+    src/euclidianclustersextractioncell.cpp \
+    src/modelcalibrationcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -42,7 +43,8 @@ HEADERS += \
     src/displayxyzcloudcell.h \
     src/displayconvexcloudcell.h \
     src/dominantplanesegmentationcell.h \
-    src/euclidianclustersextractioncell.h
+    src/euclidianclustersextractioncell.h \
+    src/modelcalibrationcell.h
 
 OTHER_FILES += \
     CMakeLists.txt \

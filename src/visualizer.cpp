@@ -1,14 +1,14 @@
 #include <string>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
-#include <pcl/visualization/pcl_visualizer.h>
-#include <pcl/visualization/cloud_viewer.h>
+#include <boost/shared_ptr.hpp>
 #include <boost/thread/thread.hpp>
+#include <pcl/visualization/cloud_viewer.h>
+#include <pcl/visualization/pcl_visualizer.h>
 
-#include "visualizer.h"
 #include "plancloud.h"
 #include "typedefs.h"
+#include "visualizer.h"
 
 Visualizer::Visualizer()
 {

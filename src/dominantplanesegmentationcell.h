@@ -1,8 +1,8 @@
 #ifndef DOMINANTPLANESEGMENTATIONCELL_H
 #define DOMINANTPLANESEGMENTATIONCELL_H
 
-# include <pcl/segmentation/sac_segmentation.h>
 # include <pcl/filters/extract_indices.h>
+# include <pcl/segmentation/sac_segmentation.h>
 
 # include "cell.h"
 # include "typedefs.h"

@@ -3,8 +3,8 @@
 
 # include <pcl/filters/project_inliers.h>
 
-# include "typedefs.h"
 # include "cell.h"
+# include "typedefs.h"
 
 /// Implements the projection of the point clouds on their carrying plans
 class PlanProjectionCell : public Cell

@@ -1,10 +1,10 @@
-#include <sstream>
 # include <iomanip>
+# include <sstream>
 
-#include <pcl/io/pcd_io.h>
-#include <boost/make_shared.hpp>
+# include <boost/make_shared.hpp>
+# include <pcl/io/pcd_io.h>
 
-#include "filewritingcell.h"
+# include "filewritingcell.h"
 
 template <typename T> std::string tostr(const T& t) { std::ostringstream os; os<<t; return os.str(); }
 
