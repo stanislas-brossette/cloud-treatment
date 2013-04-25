@@ -21,7 +21,7 @@ ADD_REQUIRED_DEPENDENCY("yaml-cpp")
 
 # Look for PCL.
 find_package(PCL 1.7 REQUIRED 
-	COMPONENTS common io surface filters segmentation visualization)
+	COMPONENTS apps common io surface filters segmentation visualization)
 search_for_boost()
 search_for_eigen()
 

@@ -1,14 +1,19 @@
 #ifndef CLOUD_TREATMENT_DIRS_HH
 # define CLOUD_TREATMENT_DIRS_HH
 
-static const char* PIPELINE_PATH =
+const char* PIPELINE_PATH =
   "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/pipeline";
-static const char* PIPELINE_BUILD_PATH =
+const char* PIPELINE_BUILD_PATH =
   "@CMAKE_SOURCE_DIR@/share/cloud-treatment/pipeline";
 
-static const char* POINT_CLOUD_PATH =
+const char* POINT_CLOUD_PATH =
   "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/point-cloud";
-static const char* POINT_CLOUD_BUILD_PATH =
+const char* POINT_CLOUD_BUILD_PATH =
   "@CMAKE_SOURCE_DIR@/share/cloud-treatment/point-cloud";
+
+const char* CAD_MODEL_PATH =
+  "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/cad-model";
+const char* CAD_MODEL_BUILD_PATH =
+  "@CMAKE_SOURCE_DIR@/share/cloud-treatment/cad-model";
 
 #endif //! CLOUD_TREATMENT_DIRS_HH

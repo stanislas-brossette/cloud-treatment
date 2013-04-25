@@ -8,7 +8,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_library(cloud-treatment SHARED
     application.cpp
     cell.cpp
-    custompclvisualizor.cpp
+#    custompclvisualizor.cpp
     displayconvexcloudcell.cpp
     displayxyzcloudcell.cpp
     dominantplanesegmentationcell.cpp

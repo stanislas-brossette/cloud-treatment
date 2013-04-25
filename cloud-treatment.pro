@@ -2,7 +2,6 @@ SOURCES += \
     src/main.cpp \
     src/application.cpp \
     src/cell.cpp \
-    src/custompclvisualizor.cpp \
     src/filecell.cpp \
     src/filewritingcell.cpp \
     src/filtercell.cpp \
@@ -24,7 +23,6 @@ SOURCES += \
 HEADERS += \
     src/application.h \
     src/cell.h \
-    src/custompclvisualizor.h \
     src/filecell.h \
     src/filewritingcell.h \
     src/filtercell.h \

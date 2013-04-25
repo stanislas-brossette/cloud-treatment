@@ -34,7 +34,6 @@ planCloudsPtr_t DominantPlaneSegmentationCell::compute
 	for(std::size_t j = 0;j<planCloudListPtr->size(); ++j)
 	{
 		// Segmentation of the dominant plane
-		std::cout << "j = " << j << std::endl;
 		initial_cloud_ptr_ = planCloudListPtr->at(j).cloud();
 
 		seg_.setInputCloud (initial_cloud_ptr_);
