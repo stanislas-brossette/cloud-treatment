@@ -1,0 +1,49 @@
+.TH CLOUD-TREATMENT 1
+
+.SH NAME
+
+cloud-processing
+
+.SH SYNOPSIS
+
+.B cloud-processing [OPTIONS] -c POINT_CLOUD_FILE -p PIPELINE_FILE
+
+.SH DESCRIPTION
+
+Create a pipeline of cloud-treatment cells and process a point cloud file through it
+
+.SH OPTIONS
+
+.TP 5
+\-h, \-\-help
+Print help message and exit.
+.TP 5
+\-c, \-\-point-cloud
+Input point-cloud file.
+.TP 5
+\-p, \-\-pipeline
+Input pipeline file.
+
+
+.SH EXAMPLES
+
+The software comes with a set of data allowing to run tests easily.
+
+Simple example of convex surfaces generation:
+
+ cloud-processing -c table-climbing.pcd -p table-climbing.yaml
+
+Another simple example of convex surfaces generation:
+
+ cloud-processing -c crapahut.pcd -p crapahut.yaml
+
+.SH SEE ALSO
+
+.TP
+.B Home Page
+https://github.com/stanislas-brossette/cloud-treatment
+
+.SH AUTHOR
+Stanislas Brossette
+
+FIXME

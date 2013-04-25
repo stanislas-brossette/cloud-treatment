@@ -53,4 +53,6 @@ OTHER_FILES += \
     share/cloud-treatment/pipeline/cloudtreatment.yaml \
     share/cloud-treatment/pipeline/modelcalibration.yaml \
     share/cloud-treatment/pipeline/pipelinetest.yaml \
-    share/cloud-treatment/pipeline/calibrationtest.yaml
+    share/cloud-treatment/pipeline/calibrationtest.yaml \
+    share/cloud-treatment/pipeline/table-climbing.yaml \
+    share/cloud-treatment/pipeline/crapahut.yaml

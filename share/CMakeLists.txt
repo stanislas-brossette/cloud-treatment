@@ -1,5 +1,7 @@
 # Install pipeline files.
  install(FILES
+  cloud-treatment/pipeline/table-climbing.yaml
+  cloud-treatment/pipeline/crapahut.yaml
   cloud-treatment/pipeline/cloudtreatment.yaml
   cloud-treatment/pipeline/modelcalibration.yaml
   DESTINATION
@@ -7,9 +9,7 @@
 
 # Install point cloud example files.
  install(FILES
-  cloud-treatment/point-cloud/Abder1.pcd
-  cloud-treatment/point-cloud/Abder2.pcd
-  cloud-treatment/point-cloud/Abder3.pcd
+  cloud-treatment/point-cloud/table-climbing.pcd
   cloud-treatment/point-cloud/crapahut.pcd
   #FIXME: to be continued!
   DESTINATION

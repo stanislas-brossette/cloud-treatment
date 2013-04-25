@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
 	desc.add_options()
-		("help", "produce help message")
+		("help,h", "produce help message")
 		("point-cloud,c", po::value<std::string>(&pointCloudFile),
 		 "input point-cloud file")
 		("pipeline,p", po::value<std::string>(&pipelineFile),

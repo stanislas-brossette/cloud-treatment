@@ -88,10 +88,6 @@ void Visualizer::display_all()
 			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(cloud_groups_[i][j].cloud(), Color.r, Color.g, Color.b);
 			viewer->addPointCloud<pcl::PointXYZ> (cloud_groups_[i][j].cloud(), single_color,  cloudName);
 			viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, cloudName);
-			if (i == 0 && j == 0)
-			{
-				viewer->resetCameraViewpoint("cloud0_0");
-			}
 		}
 	}
 
@@ -102,10 +98,6 @@ void Visualizer::display_all()
 		pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGBA> rgb(color_clouds_[i]);
 		viewer->addPointCloud<pcl::PointXYZRGBA> (color_clouds_[i], rgb, cloudName);
 		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, cloudName);
-		if (i == 0)
-		{
-			viewer->resetCameraViewpoint("cloudColor0");
-		}
 	}
 
 	// displaying convex clouds
