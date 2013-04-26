@@ -10,12 +10,14 @@
 
 PlanCloud::PlanCloud()
 	: cloud_ (boost::make_shared<pointCloud_t >()),
+	  normals_ (boost::make_shared<pcl::PointCloud <pcl::Normal> >()),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >())
 {
 }
 
 PlanCloud::PlanCloud(const PlanCloud& planCloud)
 	: cloud_ (boost::make_shared<pointCloud_t >()),
+	  normals_(planCloud.normals_),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >()),
 	  origin_(planCloud.origin_),
 	  T_(planCloud.T_),

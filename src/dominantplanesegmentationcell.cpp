@@ -50,9 +50,9 @@ planCloudsPtr_t DominantPlaneSegmentationCell::compute
 		extract_.filter (*(plan_cloud_ptr_->cloud()));
 		new_plan_cloud_list_ptr_->push_back(*plan_cloud_ptr_);
 
-		extract_.setNegative (false);
-		extract_.filter (*(plan_cloud_ptr_->cloud()));
-		new_plan_cloud_list_ptr_->push_back(*plan_cloud_ptr_);
+//		extract_.setNegative (false);
+//		extract_.filter (*(plan_cloud_ptr_->cloud()));
+//		new_plan_cloud_list_ptr_->push_back(*plan_cloud_ptr_);
 	}
 	return new_plan_cloud_list_ptr_;
 }

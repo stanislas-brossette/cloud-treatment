@@ -37,6 +37,10 @@ Another simple example of convex surfaces generation:
 
  cloud-processing -c crapahut.pcd -p crapahut.yaml
 
+Current devel file
+
+ cloud-processing -c Scene_Chair_2.pcd -p calibrationtest.yaml
+
 .SH SEE ALSO
 
 .TP
@@ -44,5 +48,6 @@ Another simple example of convex surfaces generation:
 https://github.com/stanislas-brossette/cloud-treatment
 
 .SH AUTHOR
+Stanislas Brossette
 
 FIXME

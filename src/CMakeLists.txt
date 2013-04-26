@@ -8,8 +8,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_library(cloud-treatment SHARED
     application.cpp
     cell.cpp
-#    custompclvisualizor.cpp
     displayconvexcloudcell.cpp
+    displaynormalcloudcell.cpp
     displayxyzcloudcell.cpp
     dominantplanesegmentationcell.cpp
     euclidianclustersextractioncell.cpp
@@ -18,6 +18,7 @@ add_library(cloud-treatment SHARED
     filtercell.cpp
     hullconvexcell.cpp
     modelcalibrationcell.cpp
+    normalestimationcell.cpp
     orientationcell.cpp
     passthroughfiltercell.cpp
     plancloud.cpp

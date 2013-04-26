@@ -38,6 +38,7 @@ public:
 	void add_xyz_clouds(planCloudsPtr_t);
 	void add_xyzrgba_clouds(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr);
 	void add_convex_clouds(planCloudsPtr_t planCloudList);
+	void add_normals_clouds(planCloudsPtr_t planCloudList);
 	void display_all();
 
 	std::vector<color> colors;
@@ -46,6 +47,7 @@ public:
 private:
 	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
 	std::vector<planClouds_t> cloud_groups_;
+	std::vector<planClouds_t> normals_groups_;
 	std::vector<boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> > > color_clouds_;
 	std::vector<planClouds_t> convex_clouds_;
 };

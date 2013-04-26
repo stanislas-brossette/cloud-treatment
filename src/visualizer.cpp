@@ -3,6 +3,8 @@
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/thread.hpp>
+#include <pcl/features/normal_3d.h>
+#include <pcl/point_cloud.h>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
@@ -29,11 +31,11 @@ Visualizer::Visualizer()
 
 void Visualizer::add_xyz_clouds(planCloudsPtr_t planCloudList)
 {
-	planClouds_t newPlanCloudList;
-	for (unsigned int i = 0; i<planCloudList->size(); ++i)
-	{
-		newPlanCloudList.push_back(planCloudList->at(i));
-	}
+//	planClouds_t newPlanCloudList;
+//	for (unsigned int i = 0; i<planCloudList->size(); ++i)
+//	{
+//		newPlanCloudList.push_back(planCloudList->at(i));
+//	}
 	cloud_groups_.push_back(*planCloudList);
 }
 
@@ -47,12 +49,12 @@ void Visualizer::add_xyzrgba_clouds(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr RGBC
 
 void Visualizer::add_convex_clouds(planCloudsPtr_t planCloudList)
 {
-	planClouds_t newPlanCloudList;
-	for (unsigned int i = 0; i<planCloudList->size(); ++i)
-	{
-		newPlanCloudList.push_back(planCloudList->at(i));
-	}
 	convex_clouds_.push_back(*planCloudList);
+}
+
+void Visualizer::add_normals_clouds(planCloudsPtr_t planCloudList)
+{
+	normals_groups_.push_back(*planCloudList);
 }
 
 void Visualizer::display_all()
@@ -66,7 +68,7 @@ void Visualizer::display_all()
 	{
 		for(unsigned int j = 0; j<cloud_groups_[i].size(); j++)
 		{
-			std::string cloudName = "cloud" + boost::lexical_cast<std::string>(i) + "_"+ boost::lexical_cast<std::string>(j);
+			std::string cloudName = "cloud_" + boost::lexical_cast<std::string>(i) + "_"+ boost::lexical_cast<std::string>(j);
 //			int r = rand() % 100 + 100;
 //			int g = rand() % 100 + 100;
 //			int b = rand() % 100 + 100;
@@ -105,7 +107,7 @@ void Visualizer::display_all()
 	{
 		for(unsigned int l = 0; l<convex_clouds_[k].size(); l++)
 		{
-			std::string name = "convex" + boost::lexical_cast<std::string>(l);
+			std::string name = "convex_" + boost::lexical_cast<std::string>(k) + "_" + boost::lexical_cast<std::string>(l);
 			pcl::PointXYZ textPoint;
 			if(!convex_clouds_[k][l].origin())
 			{
@@ -122,6 +124,35 @@ void Visualizer::display_all()
 				id = "Line" + boost::lexical_cast<std::string>(i)+ boost::lexical_cast<std::string>(j)+ boost::lexical_cast<std::string>(k)+ boost::lexical_cast<std::string>(l);
 				viewer->addLine<pcl::PointXYZ> (convex_clouds_[k][l].cloud()->points[j], convex_clouds_[k][l].cloud()->points[i], 255, 0, 0, id);
 				j = i;
+			}
+		}
+	}
+
+	for(unsigned int i = 0; i<normals_groups_.size(); ++i)
+	{
+		for(unsigned int j = 0; j<normals_groups_[i].size(); j++)
+		{
+			if(normals_groups_[i][j].normals()->points.size() > 0)
+			{
+				std::string cloudName = "normals_" +
+						boost::lexical_cast<std::string>(i) + "_" +
+						boost::lexical_cast<std::string>(j);
+				normals_groups_[i][j].cloud()->width =
+						static_cast<unsigned int>(
+							normals_groups_[i][j].cloud()->points.size());
+				normals_groups_[i][j].cloud()->height = 1;
+				normals_groups_[i][j].normals()->width =
+						static_cast<unsigned int>(
+							normals_groups_[i][j].normals()->points.size());
+				normals_groups_[i][j].normals()->height = 1;
+				viewer->addPointCloudNormals< pcl::PointXYZ, pcl::Normal >
+						(normals_groups_[i][j].cloud(),
+						 normals_groups_[i][j].normals(), 10, 0.05f, cloudName);
+				viewer->setPointCloudRenderingProperties
+						(pcl::visualization::PCL_VISUALIZER_COLOR,
+						 1.0, 0.0, 0.0,
+						 "normals_" + boost::lexical_cast<std::string>(i) +
+						 "_" + boost::lexical_cast<std::string>(j));
 			}
 		}
 	}

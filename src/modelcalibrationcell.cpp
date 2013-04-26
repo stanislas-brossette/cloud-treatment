@@ -5,12 +5,15 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <eigen3/Eigen/Dense>
 
 #include <pcl/apps/render_views_tesselated_sphere.h>
+#include <pcl/features/normal_3d.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/search/kdtree.h>
 
 #include <vtkPLYReader.h>
 #include <vtkSmartPointer.h>
@@ -23,21 +26,34 @@
 #include "dirs.hh"
 
 ModelCalibrationCell::ModelCalibrationCell():
-	Cell("ModelCalibrationCell")
+	Cell("ModelCalibrationCell"),
+	point_cloud_ptr_(boost::make_shared<pointCloud_t > ())
 {
-	std::string cadModelFile = "bunny.ply";
-
-	generateViewsFromCADModelFile(cadModelFile);
+	parameters()["number_of_neighbours_normal_estimation"] = 10;
+	std::string cadModelFile = "chair.ply";
+//	generateViewsFromCADModelFile(cadModelFile);
 	std::cout << std::endl << "Generated " << views_.size() << " views of " << cadModelFile << std::endl;
-//	for(std::size_t i = 0; i < views_.size(); ++i)
-//	{
-//		std::cout << "views_ " << i << ": " << views_[i]->points.size() << " points;" << std::endl;
-//	}
+
 }
 
 planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	std::cout << cell_name_ << "::compute called" << std::endl;
+	number_of_neighbours_normal_estimation_ =
+			static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
+
+	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
+	{
+		point_cloud_ptr_ = planCloudListPtr->at(j).cloud();
+		pcl::search::Search<pcl::PointXYZ>::Ptr tree =
+				boost::shared_ptr<pcl::search::Search<pcl::PointXYZ> >
+				(new pcl::search::KdTree<pcl::PointXYZ>);
+		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator;
+		normal_estimator.setSearchMethod (tree);
+		normal_estimator.setInputCloud (point_cloud_ptr_);
+		normal_estimator.setKSearch (number_of_neighbours_normal_estimation_);
+		normal_estimator.compute (*(planCloudListPtr->at(j).normals()));
+	}
+
 	return planCloudListPtr;
 }
 
@@ -88,4 +104,5 @@ boost::filesystem::path ModelCalibrationCell::findCADModelFile(std::string cadMo
 
 	return cadModelPath;
 }
+
 

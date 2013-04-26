@@ -6,7 +6,10 @@
 # include <vector>
 
 # include <boost/optional.hpp>
-#include <eigen3/Eigen/Dense>
+
+# include <eigen3/Eigen/Dense>
+
+# include <pcl/features/normal_3d.h>
 # include <pcl/ModelCoefficients.h>
 # include <pcl/point_types.h>
 
@@ -63,6 +66,16 @@ public:
 		return cloud_;
 	}
 
+	pcl::PointCloud <pcl::Normal>::Ptr& normals ()
+	{
+		return normals_;
+	}
+
+	const pcl::PointCloud <pcl::Normal>::Ptr& normals () const
+	{
+		return normals_;
+	}
+
 	pcl::ModelCoefficients::Ptr coefficients()
 	{
 		return coefficients_;
@@ -72,16 +85,6 @@ public:
 	{
 		return coefficients_;
 	}
-
-	// pointCloud2Ptr_t cloud2()
-	// {
-	// 	return cloud2_;
-	// }
-
-	// const pointCloud2Ptr_t cloud2() const
-	// {
-	// 	return cloud2_;
-	// }
 
 	pointCloudPoints_t::size_type size()
 	{
@@ -126,7 +129,9 @@ public:
 private:
 	/// The point cloud itself
 	pointCloudPtr_t cloud_;
-  //pointCloud2Ptr_t cloud2_;
+
+	/// The normals of the point cloud
+	pcl::PointCloud <pcl::Normal>::Ptr normals_;
 
 	/// Coefficients of the plan carrying the cloud, values are computed by PlanExtractionCell
 	pcl::ModelCoefficients::Ptr coefficients_;

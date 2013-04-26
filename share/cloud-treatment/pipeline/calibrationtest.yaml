@@ -17,5 +17,6 @@ pipeline:
   - type: EuclidianClustersExtractionCell
     parameters:
       min_cluster_size: 1000
-  - type: ModelCalibrationCell
   - type: DisplayXYZCloudCell
+  - type: NormalEstimationCell
+  - type: DisplayNormalCloudCell

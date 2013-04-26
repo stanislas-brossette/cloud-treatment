@@ -13,6 +13,7 @@
 #include "application.h"
 #include "cell.h"
 #include "displayconvexcloudcell.h"
+#include "displaynormalcloudcell.h"
 #include "displayxyzcloudcell.h"
 #include "dominantplanesegmentationcell.h"
 #include "euclidianclustersextractioncell.h"
@@ -21,6 +22,7 @@
 #include "filtercell.h"
 #include "hullconvexcell.h"
 #include "modelcalibrationcell.h"
+#include "normalestimationcell.h"
 #include "orientationcell.h"
 #include "passthroughfiltercell.h"
 #include "planextractioncell.h"
@@ -38,11 +40,14 @@ public:
 	Factory(Application& application_ref)
 		: application_ref_(application_ref)
 	{
-		factories_["DisplayXYZCloudCell"] = boost::bind
-				(boost::factory < boost::shared_ptr < DisplayXYZCloudCell > > (),
-				 boost::ref(application_ref));
 		factories_["DisplayConvexCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
+				 boost::ref(application_ref));
+		factories_["DisplayNormalCloudCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayNormalCloudCell > > (),
+				 boost::ref(application_ref));
+		factories_["DisplayXYZCloudCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayXYZCloudCell > > (),
 				 boost::ref(application_ref));
 		factories_["DominantPlaneSegmentationCell"] =
 				boost::factory < boost::shared_ptr < DominantPlaneSegmentationCell > > ();
@@ -58,6 +63,8 @@ public:
 				boost::factory < boost::shared_ptr < HullConvexCell > > ();
 		factories_["ModelCalibrationCell"] =
 				boost::factory < boost::shared_ptr < ModelCalibrationCell > > ();
+		factories_["NormalEstimationCell"] =
+				boost::factory < boost::shared_ptr < NormalEstimationCell > > ();
 		factories_["OrientationCell"] =
 				boost::factory < boost::shared_ptr < OrientationCell > > ();
 		factories_["PassThroughFilterCell"] =
