@@ -30,10 +30,12 @@
 ModelCalibrationCell::ModelCalibrationCell():
 	Cell("ModelCalibrationCell"),
 	views_(),
-	uniform_sampling()
+	uniform_sampling_(),
+	descr_est_()
 {
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
 	parameters()["keypoint_search_radius_scene"] = 0.1f;
+	parameters()["descriptor_search_radius_scene"] = 0.1f;
 	std::string cadModelFile = "chair.ply";
 
 //	generateViewsFromCADModelFile(cadModelFile);
@@ -48,18 +50,22 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 			static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
 	keypoint_search_radius_scene_ =
 			static_cast<float>(parameters()["keypoint_search_radius_scene"]);
+	descriptor_search_radius_scene_ =
+			static_cast<float>(parameters()["descriptor_search_radius_scene"]);
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{
 		//
 		// Compute normals of the scene
 		//
-		planCloudListPtr->at(j).normals() = computeNormals(planCloudListPtr->at(j).cloud());
+		planCloudListPtr->at(j).normals() = computeNormals(
+					planCloudListPtr->at(j).cloud());
 
 		//
 		// Downsample Cloud to Extract keypoints
 		//
-		planCloudListPtr->at(j).keyPoints() = computeKeypoints(planCloudListPtr->at(j).cloud(), keypoint_search_radius_scene_);
+		planCloudListPtr->at(j).keyPoints() = computeKeypoints(
+					planCloudListPtr->at(j).cloud(), keypoint_search_radius_scene_);
 
 		std::cout << "Scene total points: " << planCloudListPtr->at(j).cloud()->size ()
 				  << "; Selected Keypoints: " << planCloudListPtr->at(j).keyPoints()->size () << std::endl;
@@ -68,7 +74,17 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 		// Compute Descriptor for keypoints
 		//
 
+		planCloudListPtr->at(j).descriptors() = computeDescriptors(
+					planCloudListPtr->at(j).cloud(),
+					planCloudListPtr->at(j).normals(),
+					planCloudListPtr->at(j).keyPoints(),
+					descriptor_search_radius_scene_);
 
+
+		std::cout << "Scene total points: " << planCloudListPtr->at(j).cloud()->size ()
+				  << "; Selected Keypoints: " << planCloudListPtr->at(j).keyPoints()->size ()
+				  << "; Descriptors: " << planCloudListPtr->at(j).descriptors()->size ()
+				  << std::endl;
 
 		//
 		// Find Model-Scene Correspondences with KdTree
@@ -96,16 +112,31 @@ normalCloudPtr_t ModelCalibrationCell::computeNormals(
 }
 
 pointCloudPtr_t ModelCalibrationCell::computeKeypoints(
-		const pointCloudPtr_t& pointCloudPtr, float searchRadius)
+		const pointCloudPtr_t& pointCloudPtr, const float& search_radius)
 {
 	pcl::PointCloud<int> sampledIndices;
-	pointCloudPtr_t keypointCloud = boost::make_shared<pointCloud_t> ();
+	pointCloudPtr_t keypointCloudPtr = boost::make_shared<pointCloud_t> ();
 
-	uniform_sampling.setInputCloud (pointCloudPtr);
-	uniform_sampling.setRadiusSearch (searchRadius);
-	uniform_sampling.compute (sampledIndices);
-	pcl::copyPointCloud (*pointCloudPtr, sampledIndices.points, *keypointCloud);
-	return keypointCloud;
+	uniform_sampling_.setInputCloud (pointCloudPtr);
+	uniform_sampling_.setRadiusSearch (search_radius);
+	uniform_sampling_.compute (sampledIndices);
+	pcl::copyPointCloud (*pointCloudPtr, sampledIndices.points, *keypointCloudPtr);
+	return keypointCloudPtr;
+}
+
+descriptorCloudPtr_t ModelCalibrationCell::computeDescriptors(
+		const pointCloudPtr_t& pointCloudPtr,
+		const normalCloudPtr_t& normalCloudPtr,
+		const pointCloudPtr_t& keypointCloudPtr,
+		const float& search_radius)
+{
+	descriptorCloudPtr_t descriptorCloudPtr = boost::make_shared<descriptorCloud_t> ();
+	descr_est_.setRadiusSearch (search_radius);
+	descr_est_.setInputCloud (keypointCloudPtr);
+	descr_est_.setInputNormals (normalCloudPtr);
+	descr_est_.setSearchSurface (pointCloudPtr);
+	descr_est_.compute (*descriptorCloudPtr);
+	return descriptorCloudPtr;
 }
 
 void ModelCalibrationCell::generateViewsFromCADModelFile(std::string cadModelFile)

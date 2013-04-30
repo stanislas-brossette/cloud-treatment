@@ -81,6 +81,16 @@ public:
 		return normals_;
 	}
 
+	const descriptorCloudPtr_t& descriptors() const
+	{
+		return descriptors_;
+	}
+
+	descriptorCloudPtr_t& descriptors ()
+	{
+		return descriptors_;
+	}
+
 	const normalCloudPtr_t& normals () const
 	{
 		return normals_;
@@ -145,6 +155,9 @@ private:
 
 	/// The normals of the point cloud
 	normalCloudPtr_t normals_;
+
+	/// The descriptors of the cloud
+	descriptorCloudPtr_t descriptors_;
 
 	/// Coefficients of the plan carrying the cloud, values are computed by PlanExtractionCell
 	pcl::ModelCoefficients::Ptr coefficients_;

@@ -21,5 +21,6 @@ pipeline:
   - type: ModelCalibrationCell
     parameters:
       keypoint_search_radius_scene: 0.05
+      descriptor_search_radius_scene: 0.01
   - type: DisplayNormalCloudCell
   - type: DisplayKeypointCloudCell

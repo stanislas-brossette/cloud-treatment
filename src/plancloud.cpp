@@ -12,6 +12,7 @@ PlanCloud::PlanCloud()
 	: cloud_ (boost::make_shared<pointCloud_t >()),
 	  keyPoints_ (boost::make_shared<pointCloud_t >()),
 	  normals_ (boost::make_shared<normalCloud_t >()),
+	  descriptors_ (boost::make_shared<descriptorCloud_t >()),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >())
 {
 }
@@ -20,6 +21,7 @@ PlanCloud::PlanCloud(const PlanCloud& planCloud)
 	: cloud_ (boost::make_shared<pointCloud_t >()),
 	  keyPoints_ (boost::make_shared<pointCloud_t >()),
 	  normals_(planCloud.normals_),
+	  descriptors_ (planCloud.descriptors_),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >()),
 	  origin_(planCloud.origin_),
 	  T_(planCloud.T_),

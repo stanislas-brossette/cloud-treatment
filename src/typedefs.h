@@ -21,4 +21,10 @@ typedef boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> > pointCloudPtr_t;
 typedef pcl::PointCloud <pcl::Normal> normalCloud_t;
 typedef boost::shared_ptr<pcl::PointCloud <pcl::Normal> > normalCloudPtr_t;
 
+
+typedef pcl::SHOT352 DescriptorType;
+
+typedef pcl::PointCloud <DescriptorType> descriptorCloud_t;
+typedef boost::shared_ptr<pcl::PointCloud <DescriptorType> > descriptorCloudPtr_t;
+
 # endif

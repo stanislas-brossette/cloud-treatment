@@ -4,6 +4,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <pcl/keypoints/uniform_sampling.h>
+#include <pcl/features/shot_omp.h>
 
 #include "cell.h"
 #include "typedefs.h"
@@ -27,13 +28,20 @@ private:
 	boost::filesystem::path findCADModelFile(std::string cadModelFile);
 	normalCloudPtr_t computeNormals(const pointCloudPtr_t& pointCloudPtr);
 	pointCloudPtr_t computeKeypoints(const pointCloudPtr_t& pointCloudPtr,
-									 float searchRadius);
+									 const float& search_radius);
+	descriptorCloudPtr_t computeDescriptors(
+			const pointCloudPtr_t& pointCloudPtr,
+			const normalCloudPtr_t& normalCloudPtr,
+			const pointCloudPtr_t& keypointCloudPtr,
+			const float& search_radius);
 
 	std::vector< pointCloudPtr_t > views_;
-	pcl::UniformSampling<pcl::PointXYZ> uniform_sampling;
+	pcl::UniformSampling<pcl::PointXYZ> uniform_sampling_;
+	pcl::SHOTEstimationOMP<pcl::PointXYZ, pcl::Normal, DescriptorType> descr_est_;
 
 	int number_of_neighbours_normal_estimation_;
 	float keypoint_search_radius_scene_;
+	float descriptor_search_radius_scene_;
 };
 
 #endif // MODELCALIBRATIONCELL_H
