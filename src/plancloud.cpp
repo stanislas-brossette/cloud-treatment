@@ -10,13 +10,15 @@
 
 PlanCloud::PlanCloud()
 	: cloud_ (boost::make_shared<pointCloud_t >()),
-	  normals_ (boost::make_shared<pcl::PointCloud <pcl::Normal> >()),
+	  keyPoints_ (boost::make_shared<pointCloud_t >()),
+	  normals_ (boost::make_shared<normalCloud_t >()),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >())
 {
 }
 
 PlanCloud::PlanCloud(const PlanCloud& planCloud)
 	: cloud_ (boost::make_shared<pointCloud_t >()),
+	  keyPoints_ (boost::make_shared<pointCloud_t >()),
 	  normals_(planCloud.normals_),
 	  coefficients_ (boost::make_shared<pcl::ModelCoefficients >()),
 	  origin_(planCloud.origin_),
@@ -26,6 +28,7 @@ PlanCloud::PlanCloud(const PlanCloud& planCloud)
 	  frame_(planCloud.frame_)
 {
 	*cloud_ = *(planCloud.cloud_);
+	*keyPoints_ = *(planCloud.keyPoints_);
 	*coefficients_ = *(planCloud.coefficients_);
 }
 

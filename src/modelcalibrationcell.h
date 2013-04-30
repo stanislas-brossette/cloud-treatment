@@ -19,10 +19,14 @@ public:
 
 private:
 
+	// Generates pointclouds as if they were taken from cameras all around the
+	// CAD model
 	void generateViewsFromCADModelFile (std::string cadModelFile);
 	boost::filesystem::path findCADModelFile(std::string cadModelFile);
+	normalCloudPtr_t computeNormals(const pointCloudPtr_t& pointCloudPtr);
+	pointCloudPtr_t computeKeypoints(const pointCloudPtr_t& pointCloudPtr,
+									 float searchRadius);
 
-	pointCloudPtr_t point_cloud_ptr_;
 	std::vector< pointCloudPtr_t > views_;
 
 	int number_of_neighbours_normal_estimation_;

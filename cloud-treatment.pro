@@ -20,7 +20,8 @@ SOURCES += \
     src/euclidianclustersextractioncell.cpp \
     src/modelcalibrationcell.cpp \
     src/displaynormalcloudcell.cpp \
-    src/normalestimationcell.cpp
+    src/normalestimationcell.cpp \
+    src/displaykeypointcloudcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -46,7 +47,8 @@ HEADERS += \
     src/euclidianclustersextractioncell.h \
     src/modelcalibrationcell.h \
     src/displaynormalcloudcell.h \
-    src/normalestimationcell.h
+    src/normalestimationcell.h \
+    src/displaykeypointcloudcell.h
 
 OTHER_FILES += \
     CMakeLists.txt \

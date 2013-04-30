@@ -52,6 +52,11 @@ void Visualizer::add_convex_clouds(planCloudsPtr_t planCloudList)
 	convex_clouds_.push_back(*planCloudList);
 }
 
+void Visualizer::add_keypoint_clouds(planCloudsPtr_t planCloudList)
+{
+	keypoint_groups_.push_back(*planCloudList);
+}
+
 void Visualizer::add_normals_clouds(planCloudsPtr_t planCloudList)
 {
 	normals_groups_.push_back(*planCloudList);
@@ -93,6 +98,19 @@ void Visualizer::display_all()
 		}
 	}
 
+	// displaying keypoint clouds
+	for(unsigned int i = 0; i<keypoint_groups_.size(); ++i)
+	{
+		for(unsigned int j = 0; j<keypoint_groups_[i].size(); j++)
+		{
+			std::string cloudName = "keypoints_" + boost::lexical_cast<std::string>(i) + "_"+ boost::lexical_cast<std::string>(j);
+			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(keypoint_groups_[i][j].keyPoints(), 0, 0, 255);
+			viewer->addPointCloud<pcl::PointXYZ> (keypoint_groups_[i][j].keyPoints(), single_color,  cloudName);
+			viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, cloudName);
+		}
+	}
+
+
 	// displaying color clouds
 	for(unsigned int i = 0; i<color_clouds_.size(); ++i)
 	{
@@ -107,7 +125,7 @@ void Visualizer::display_all()
 	{
 		for(unsigned int l = 0; l<convex_clouds_[k].size(); l++)
 		{
-			std::string name = "convex_" + boost::lexical_cast<std::string>(k) + "_" + boost::lexical_cast<std::string>(l);
+//			std::string cloudName = "convex_" + boost::lexical_cast<std::string>(k) + "_" + boost::lexical_cast<std::string>(l);
 			pcl::PointXYZ textPoint;
 			if(!convex_clouds_[k][l].origin())
 			{

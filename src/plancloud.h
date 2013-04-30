@@ -66,12 +66,22 @@ public:
 		return cloud_;
 	}
 
-	pcl::PointCloud <pcl::Normal>::Ptr& normals ()
+	pointCloudPtr_t& keyPoints ()
+	{
+		return keyPoints_;
+	}
+
+	const pointCloudPtr_t& keyPoints () const
+	{
+		return keyPoints_;
+	}
+
+	normalCloudPtr_t& normals ()
 	{
 		return normals_;
 	}
 
-	const pcl::PointCloud <pcl::Normal>::Ptr& normals () const
+	const normalCloudPtr_t& normals () const
 	{
 		return normals_;
 	}
@@ -130,8 +140,11 @@ private:
 	/// The point cloud itself
 	pointCloudPtr_t cloud_;
 
+	/// The keypoints of the cloud
+	pointCloudPtr_t keyPoints_;
+
 	/// The normals of the point cloud
-	pcl::PointCloud <pcl::Normal>::Ptr normals_;
+	normalCloudPtr_t normals_;
 
 	/// Coefficients of the plan carrying the cloud, values are computed by PlanExtractionCell
 	pcl::ModelCoefficients::Ptr coefficients_;

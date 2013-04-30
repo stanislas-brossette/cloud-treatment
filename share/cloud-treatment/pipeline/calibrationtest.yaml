@@ -18,5 +18,6 @@ pipeline:
     parameters:
       min_cluster_size: 1000
   - type: DisplayXYZCloudCell
-  - type: NormalEstimationCell
+  - type: ModelCalibrationCell
   - type: DisplayNormalCloudCell
+  - type: DisplayKeypointCloudCell

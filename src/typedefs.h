@@ -18,7 +18,7 @@ typedef boost::shared_ptr<PlanCloud > planCloudPtr_t;
 typedef boost::shared_ptr<planClouds_t> planCloudsPtr_t;
 typedef boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> > pointCloudPtr_t;
 
-//typedef sensor_msgs::PointCloud2 pointCloud2_t;
-//typedef sensor_msgs::PointCloud2::Ptr pointCloud2Ptr_t;
+typedef pcl::PointCloud <pcl::Normal> normalCloud_t;
+typedef boost::shared_ptr<pcl::PointCloud <pcl::Normal> > normalCloudPtr_t;
 
 # endif

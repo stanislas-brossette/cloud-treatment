@@ -13,6 +13,7 @@
 #include "application.h"
 #include "cell.h"
 #include "displayconvexcloudcell.h"
+#include "displaykeypointcloudcell.h"
 #include "displaynormalcloudcell.h"
 #include "displayxyzcloudcell.h"
 #include "dominantplanesegmentationcell.h"
@@ -42,6 +43,9 @@ public:
 	{
 		factories_["DisplayConvexCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
+				 boost::ref(application_ref));
+		factories_["DisplayKeypointCloudCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayKeypointCloudCell > > (),
 				 boost::ref(application_ref));
 		factories_["DisplayNormalCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayNormalCloudCell > > (),

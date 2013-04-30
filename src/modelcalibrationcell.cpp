@@ -14,6 +14,8 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/search/kdtree.h>
+#include <pcl/keypoints/uniform_sampling.h>
+#include <pcl/visualization/pcl_visualizer.h>
 
 #include <vtkPLYReader.h>
 #include <vtkSmartPointer.h>
@@ -26,13 +28,14 @@
 #include "dirs.hh"
 
 ModelCalibrationCell::ModelCalibrationCell():
-	Cell("ModelCalibrationCell"),
-	point_cloud_ptr_(boost::make_shared<pointCloud_t > ())
+	Cell("ModelCalibrationCell")
 {
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
 	std::string cadModelFile = "chair.ply";
+
 //	generateViewsFromCADModelFile(cadModelFile);
-	std::cout << std::endl << "Generated " << views_.size() << " views of " << cadModelFile << std::endl;
+//	std::cout << std::endl << "Generated " << views_.size() << " views of " << cadModelFile << std::endl;
+
 
 }
 
@@ -43,18 +46,60 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{
-		point_cloud_ptr_ = planCloudListPtr->at(j).cloud();
-		pcl::search::Search<pcl::PointXYZ>::Ptr tree =
-				boost::shared_ptr<pcl::search::Search<pcl::PointXYZ> >
-				(new pcl::search::KdTree<pcl::PointXYZ>);
-		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator;
-		normal_estimator.setSearchMethod (tree);
-		normal_estimator.setInputCloud (point_cloud_ptr_);
-		normal_estimator.setKSearch (number_of_neighbours_normal_estimation_);
-		normal_estimator.compute (*(planCloudListPtr->at(j).normals()));
+		//
+		// Compute normals of the scene
+		//
+		planCloudListPtr->at(j).normals() = computeNormals(planCloudListPtr->at(j).cloud());
+
+		//
+		// Downsample Cloud to Extract keypoints
+		//
+		planCloudListPtr->at(j).keyPoints() = computeKeypoints(planCloudListPtr->at(j).cloud(), 0.1f);
+
+		std::cout << "Scene total points: " << planCloudListPtr->at(j).cloud()->size ()
+				  << "; Selected Keypoints: " << planCloudListPtr->at(j).keyPoints()->size () << std::endl;
+
+		//
+		// Compute Descriptor for keypoints
+		//
+
+		//
+		// Find Model-Scene Correspondences with KdTree
+		//
+
 	}
 
 	return planCloudListPtr;
+}
+
+normalCloudPtr_t ModelCalibrationCell::computeNormals(
+		const pointCloudPtr_t& point_cloud_ptr_)
+{
+	normalCloudPtr_t normals = boost::make_shared<normalCloud_t> ();
+	pcl::search::Search<pcl::PointXYZ>::Ptr tree =
+			boost::shared_ptr<pcl::search::Search<pcl::PointXYZ> >
+			(new pcl::search::KdTree<pcl::PointXYZ>);
+	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator;
+	normal_estimator.setSearchMethod (tree);
+	normal_estimator.setInputCloud (point_cloud_ptr_);
+	normal_estimator.setKSearch (number_of_neighbours_normal_estimation_);
+	normal_estimator.compute (*normals);
+
+	return normals;
+}
+
+pointCloudPtr_t ModelCalibrationCell::computeKeypoints(
+		const pointCloudPtr_t& pointCloudPtr, float searchRadius)
+{
+	pcl::PointCloud<int> sampledIndices;
+	pointCloudPtr_t keypointCloud = boost::make_shared<pointCloud_t> ();
+
+	pcl::UniformSampling<pcl::PointXYZ> uniform_sampling;
+	uniform_sampling.setInputCloud (pointCloudPtr);
+	uniform_sampling.setRadiusSearch (searchRadius);
+	uniform_sampling.compute (sampledIndices);
+	pcl::copyPointCloud (*pointCloudPtr, sampledIndices.points, *keypointCloud);
+	return keypointCloud;
 }
 
 void ModelCalibrationCell::generateViewsFromCADModelFile(std::string cadModelFile)
