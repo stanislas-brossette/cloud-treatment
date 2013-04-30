@@ -3,6 +3,8 @@
 
 #include <boost/filesystem/path.hpp>
 
+#include <pcl/keypoints/uniform_sampling.h>
+
 #include "cell.h"
 #include "typedefs.h"
 
@@ -28,8 +30,10 @@ private:
 									 float searchRadius);
 
 	std::vector< pointCloudPtr_t > views_;
+	pcl::UniformSampling<pcl::PointXYZ> uniform_sampling;
 
 	int number_of_neighbours_normal_estimation_;
+	float keypoint_search_radius_scene_;
 };
 
 #endif // MODELCALIBRATIONCELL_H

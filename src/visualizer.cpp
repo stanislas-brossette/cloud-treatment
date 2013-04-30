@@ -74,10 +74,6 @@ void Visualizer::display_all()
 		for(unsigned int j = 0; j<cloud_groups_[i].size(); j++)
 		{
 			std::string cloudName = "cloud_" + boost::lexical_cast<std::string>(i) + "_"+ boost::lexical_cast<std::string>(j);
-//			int r = rand() % 100 + 100;
-//			int g = rand() % 100 + 100;
-//			int b = rand() % 100 + 100;
-//			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(cloud_groups_[i][j].cloud(), r, g, b);
 			color Color;
 			if(cloud_groups_[i].size() == 1)
 			{

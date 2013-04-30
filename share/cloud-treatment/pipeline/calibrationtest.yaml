@@ -19,5 +19,7 @@ pipeline:
       min_cluster_size: 1000
   - type: DisplayXYZCloudCell
   - type: ModelCalibrationCell
+    parameters:
+      keypoint_search_radius_scene: 0.05
   - type: DisplayNormalCloudCell
   - type: DisplayKeypointCloudCell
