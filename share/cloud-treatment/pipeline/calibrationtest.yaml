@@ -20,7 +20,13 @@ pipeline:
   - type: DisplayXYZCloudCell
   - type: ModelCalibrationCell
     parameters:
-      keypoint_search_radius_scene: 0.05
-      descriptor_search_radius_scene: 0.01
+      views_resolution: 200
+      keypoint_search_radius_model: 0.1
+      descriptor_search_radius_model: 0.1
+      keypoint_search_radius_scene: 0.1
+      descriptor_search_radius_scene: 0.1
+      correspondence_grouping_size: 0.2
+      correspondence_grouping_threshhold: 5
+  - type: DisplayXYZCloudCell
   - type: DisplayNormalCloudCell
   - type: DisplayKeypointCloudCell
