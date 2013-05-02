@@ -9,12 +9,15 @@
 template <typename T> std::string tostr(const T& t) { std::ostringstream os; os<<t; return os.str(); }
 
 FileWritingCell::FileWritingCell():
-	Cell("FileWritingCell")
+	Cell()
 {
+	parameters()["name"] = "FileWritingCell";
 }
 
 planCloudsPtr_t FileWritingCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	return planCloudListPtr;
 }
 

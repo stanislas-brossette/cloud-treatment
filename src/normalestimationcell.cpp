@@ -3,16 +3,20 @@
 #include "normalestimationcell.h"
 
 NormalEstimationCell::NormalEstimationCell():
-	Cell("NormalEstimationCell"),
+	Cell(),
 	point_cloud_ptr_(boost::make_shared<pointCloud_t > ())
 {
+	parameters()["name"] = "NormalEstimationCell";
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
 }
 
 planCloudsPtr_t NormalEstimationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	number_of_neighbours_normal_estimation_ =
-			static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
+			static_cast<int>(boost::get<double>(
+				parameters()["number_of_neighbours_normal_estimation"]));
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{

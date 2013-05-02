@@ -4,12 +4,14 @@
 # include "typedefs.h"
 
 OrientationCell::OrientationCell():
-	Cell("OrientationCell")
+	Cell()
 {
+	parameters()["name"] = "OrientationCell";
 }
 
 planCloudsPtr_t OrientationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
 
 	for (pointCloudSize_t i = 0 ; i < planCloudListPtr->size(); ++i)
 	{

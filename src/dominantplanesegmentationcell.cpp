@@ -8,8 +8,9 @@
 #include "plancloud.h"
 
 DominantPlaneSegmentationCell::DominantPlaneSegmentationCell():
-	Cell("DominantPlaneSegmentationCell")
+	Cell()
 {
+	parameters()["name"] = "DominantPlaneSegmentationCell";
 	parameters()["max_iteration"] = 100;
 	parameters()["distance_threshold"] = 0.03;
 
@@ -25,8 +26,12 @@ DominantPlaneSegmentationCell::DominantPlaneSegmentationCell():
 planCloudsPtr_t DominantPlaneSegmentationCell::compute
 (planCloudsPtr_t planCloudListPtr)
 {
-	distance_threshold_ = parameters()["distance_threshold"];
-	max_iterations_ = static_cast<int>(parameters()["max_iteration"]);
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
+	distance_threshold_ = boost::get<double>(
+				parameters()["distance_threshold"]);
+	max_iterations_ = static_cast<int>(
+				boost::get<double>(parameters()["max_iteration"]));
 
 	seg_.setDistanceThreshold (distance_threshold_);
 	seg_.setMaxIterations (max_iterations_);
@@ -38,7 +43,8 @@ planCloudsPtr_t DominantPlaneSegmentationCell::compute
 
 		seg_.setInputCloud (initial_cloud_ptr_);
 
-		pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
+		pcl::ModelCoefficients::Ptr coefficients (
+					new pcl::ModelCoefficients ());
 		pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
 		seg_.segment (*inliers, *coefficients);
 

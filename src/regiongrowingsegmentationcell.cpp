@@ -15,8 +15,9 @@
 #include "regiongrowingsegmentationcell.h"
 
 RegionGrowingSegmentationCell::RegionGrowingSegmentationCell():
-	Cell("RegionGrowingSegmentationCell")
+	Cell()
 {
+	parameters()["name"] = "RegionGrowingSegmentationCell";
 	parameters()["number_of_neighbours_normal_estimation"] = 50;
 	parameters()["min_cluster_size"] = 500;
 	parameters()["max_cluster_size"] = 70000;
@@ -32,13 +33,20 @@ RegionGrowingSegmentationCell::RegionGrowingSegmentationCell():
 
 planCloudsPtr_t RegionGrowingSegmentationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
 
-	number_of_neighbours_normal_estimation_ = static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
-	min_cluster_size_ = static_cast<int>(parameters()["min_cluster_size"]);
-	max_cluster_size_ = static_cast<int>(parameters()["max_cluster_size"]);
-	number_of_neighbours_region_growing_ = static_cast<unsigned int>(parameters()["number_of_neighbours_region_growing"]);
-	smoothness_threshold_ = static_cast<float>(parameters()["smoothness_threshold"]);
-	curvature_threshold_ = static_cast<float>(parameters()["curvature_threshold"]);
+	number_of_neighbours_normal_estimation_ = static_cast<int>(boost::get<double>(
+		parameters()["number_of_neighbours_normal_estimation"]));
+	min_cluster_size_ = static_cast<int>(boost::get<double>(
+							parameters()["min_cluster_size"]));
+	max_cluster_size_ = static_cast<int>(boost::get<double>(
+							parameters()["max_cluster_size"]));
+	number_of_neighbours_region_growing_ = static_cast<unsigned int>(
+		boost::get<double>(parameters()["number_of_neighbours_region_growing"]));
+	smoothness_threshold_ = static_cast<float>(boost::get<double>(
+								parameters()["smoothness_threshold"]));
+	curvature_threshold_ = static_cast<float>(boost::get<double>(
+								parameters()["curvature_threshold"]));
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{

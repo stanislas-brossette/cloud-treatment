@@ -7,8 +7,9 @@
 #include "planextractioncell.h"
 
 PlanExtractionCell::PlanExtractionCell():
-	Cell("PlanExtractionCell")
+	Cell()
 {
+	parameters()["name"] = "PlanExtractionCell";
 	parameters()["plan_rate"] = 0.1;
 	parameters()["max_iteration"] = 100;
 	parameters()["distance_threshold"] = 0.03;
@@ -25,9 +26,12 @@ PlanExtractionCell::PlanExtractionCell():
 
 planCloudsPtr_t PlanExtractionCell::compute (planCloudsPtr_t planCloudListPtr)
 {
-	plan_rate_ = parameters()["plan_rate"];
-	distance_threshold_ = parameters()["distance_threshold"];
-	max_iteration_ = static_cast<int>(parameters()["max_iteration"]);
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
+	plan_rate_ = boost::get<double>(parameters()["plan_rate"]);
+	distance_threshold_ = boost::get<double>(parameters()["distance_threshold"]);
+	max_iteration_ = static_cast<int>(boost::get<double>(
+						parameters()["max_iteration"]));
 
 	seg_.setMaxIterations (max_iteration_);
 	seg_.setDistanceThreshold (distance_threshold_);

@@ -6,6 +6,7 @@
 # include <vector>
 
 # include <boost/shared_ptr.hpp>
+#include <boost/variant.hpp>
 
 # include "plancloud.h"
 # include "typedefs.h"
@@ -51,12 +52,12 @@ public:
 	///         you to chain calls.
 	virtual planCloudsPtr_t compute (planCloudsPtr_t planCloudList) = 0;
 
-	std::map <std::string, double>& parameters()
+	std::map <std::string, boost::variant<double, std::string> >& parameters()
 	{
 		return parameters_;
 	}
 
-	const std::map <std::string, double>& parameters() const
+	const std::map <std::string, boost::variant<double, std::string> >& parameters() const
 	{
 		return parameters_;
 	}
@@ -67,7 +68,7 @@ public:
 	}
 
 private:
-	std::map <std::string, double> parameters_;
+	std::map <std::string, boost::variant<double, std::string> > parameters_;
 
 protected:
 	std::string cell_name_;

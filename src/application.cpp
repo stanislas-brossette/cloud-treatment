@@ -4,6 +4,7 @@
 
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/variant.hpp>
 #include <yaml-cpp/yaml.h>
 
 #include "application.h"
@@ -40,6 +41,7 @@ void Application::run()
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
 		planCloudListPtr = cells_[i]->compute(planCloudListPtr);
+		std::cout << cells_[i]->cell_name() << std::endl;
 	}
 
 	visualizer_.display_all();
@@ -78,13 +80,26 @@ void Application::createFromYaml(const std::string& yamlFilename)
 				paramIt != parameters.end(); ++paramIt)
 			{
 				std::string key;
-				double value;
 				paramIt.first() >> key;
-				paramIt.second() >> value;
-				if(cell->parameters().find(key) != cell->parameters().end())
-					cell->parameters()[key] = value;
-				else
-					throw(std::runtime_error("wrong parameter key in yaml"));
+
+				try
+				{
+					double value;
+					paramIt.second() >> value;
+					if(cell->parameters().find(key) != cell->parameters().end())
+						cell->parameters()[key] = value;
+					else
+						throw(std::runtime_error("wrong parameter key in yaml"));
+				}
+				catch(const YAML::InvalidScalar&)
+				{
+					std::string value;
+					paramIt.second() >> value;
+					if(cell->parameters().find(key) != cell->parameters().end())
+						cell->parameters()[key] = value;
+					else
+						throw(std::runtime_error("wrong parameter key in yaml"));
+				}
 			}
 		}
 

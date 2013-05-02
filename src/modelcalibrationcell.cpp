@@ -33,7 +33,7 @@
 #include "dirs.hh"
 
 ModelCalibrationCell::ModelCalibrationCell():
-	Cell("ModelCalibrationCell"),
+	Cell(),
 	views_(),
 	views_normals_(),
 	views_keypoints_(),
@@ -46,6 +46,7 @@ ModelCalibrationCell::ModelCalibrationCell():
 	normal_estimator_()
 
 {
+	parameters()["name"] = "ModelCalibrationCell";
 	parameters()["views_resolution"] = 100;
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
 	parameters()["keypoint_search_radius_scene"] = 0.1f;
@@ -58,22 +59,32 @@ ModelCalibrationCell::ModelCalibrationCell():
 
 planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	views_resolution_ =
-			static_cast<int>(parameters()["views_resolution"]);
+			static_cast<int>(boost::get<double>(
+				parameters()["views_resolution"]));
 	number_of_neighbours_normal_estimation_ =
-			static_cast<int>(parameters()["number_of_neighbours_normal_estimation"]);
+			static_cast<int>(boost::get<double>(
+				parameters()["number_of_neighbours_normal_estimation"]));
 	keypoint_search_radius_scene_ =
-			static_cast<float>(parameters()["keypoint_search_radius_scene"]);
+			static_cast<float>(boost::get<double>(
+				parameters()["keypoint_search_radius_scene"]));
 	descriptor_search_radius_scene_ =
-			static_cast<float>(parameters()["descriptor_search_radius_scene"]);
+			static_cast<float>(boost::get<double>(
+				parameters()["descriptor_search_radius_scene"]));
 	keypoint_search_radius_model_ =
-			static_cast<float>(parameters()["keypoint_search_radius_model"]);
+			static_cast<float>(boost::get<double>(
+				parameters()["keypoint_search_radius_model"]));
 	descriptor_search_radius_model_ =
-			static_cast<float>(parameters()["descriptor_search_radius_model"]);
+			static_cast<float>(boost::get<double>(
+				parameters()["descriptor_search_radius_model"]));
 	correspondence_grouping_size_ =
-			static_cast<float>(parameters()["correspondence_grouping_size"]);
+			static_cast<float>(boost::get<double>(
+				parameters()["correspondence_grouping_size"]));
 	correspondence_grouping_threshhold_ =
-			static_cast<int>(parameters()["correspondence_grouping_threshhold"]);
+			static_cast<int>(boost::get<double>(
+				parameters()["correspondence_grouping_threshhold"]));
 
 	std::string cadModelFile = "chair_remeshed.ply";
 

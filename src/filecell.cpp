@@ -10,12 +10,14 @@
 #include "filecell.h"
 
 FileCell::FileCell():
-	Cell("FileCell")
+	Cell()
 {
+	parameters()["name"] = "FileCell";
 }
 
 planCloudsPtr_t FileCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
 	return planCloudListPtr;
 }
 

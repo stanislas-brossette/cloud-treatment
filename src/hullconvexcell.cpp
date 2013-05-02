@@ -5,13 +5,16 @@
 # include "typedefs.h"
 
 HullConvexCell::HullConvexCell():
-	Cell("HullConvexCell")
+	Cell()
 {
+	parameters()["name"] = "HullConvexCell";
 	point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();
 }
 
 planCloudsPtr_t HullConvexCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	for(planClouds_t::size_type k=0; k<planCloudListPtr->size(); k++)
 	{
 		point_cloud_ptr_ = boost::make_shared<pointCloud_t > ();

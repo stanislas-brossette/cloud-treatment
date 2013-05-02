@@ -22,7 +22,7 @@ public:
 
 private:
 	pointCloudPtr_t cloud_ptr_;
-	std::string axis;
+	std::string axis_;
 	float min_;
 	float max_;
 };

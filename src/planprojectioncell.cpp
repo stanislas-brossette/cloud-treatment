@@ -5,13 +5,16 @@
 #include "planprojectioncell.h"
 
 PlanProjectionCell::PlanProjectionCell():
-	Cell("PlanProjectionCell")
+	Cell()
 {
+	parameters()["name"] = "PlanProjectionCell";
 	proj.setModelType (pcl::SACMODEL_PLANE);
 }
 
 planCloudsPtr_t PlanProjectionCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	for(planClouds_t::size_type k=0; k<planCloudListPtr->size(); k++)
 	{
 		proj.setInputCloud (planCloudListPtr->at(k).cloud());

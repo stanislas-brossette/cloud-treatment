@@ -5,14 +5,17 @@
 #include "plancloud.h"
 
 XYZSwitchCell::XYZSwitchCell():
-	Cell("XYZSwitchCell")
+	Cell()
 {
+	parameters()["name"] = "XYZSwitchCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t >();
 }
 
 
 planCloudsPtr_t XYZSwitchCell::compute(planCloudsPtr_t planCloudListPtr)
 {
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
 	for(planClouds_t::size_type j=0; j<planCloudListPtr->size(); ++j)
 	{
 		float x, y, z;

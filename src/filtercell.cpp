@@ -10,8 +10,9 @@
 #include "plancloud.h"
 
 FilterCell::FilterCell():
-	Cell("FilterCell")
+	Cell()
 {
+	parameters()["name"] = "FilterCell";
 	cloud_ptr_ = boost::make_shared<pointCloud_t>();
 	parameters()["leafX"] = 0.01;
 	parameters()["leafY"] = 0.01;
@@ -20,9 +21,11 @@ FilterCell::FilterCell():
 
 planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 {
-	leafX_ = static_cast<float>(parameters()["leafX"]);
-	leafY_ = static_cast<float>(parameters()["leafY"]);
-	leafZ_ = static_cast<float>(parameters()["leafZ"]);
+	cell_name_ = boost::get<std::string>(parameters()["name"]);
+
+	leafX_ = static_cast<float>(boost::get<double>(parameters()["leafX"]));
+	leafY_ = static_cast<float>(boost::get<double>(parameters()["leafY"]));
+	leafZ_ = static_cast<float>(boost::get<double>(parameters()["leafZ"]));
 
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)
