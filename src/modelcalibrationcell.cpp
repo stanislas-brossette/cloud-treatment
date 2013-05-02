@@ -164,7 +164,7 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 					model_scene_corrs_[k]->push_back (corr);
 				}
 			}
-			std::cout << "Correspondences with view_[" << k << "] found: " << model_scene_corrs_[k]->size () << std::endl;
+//			std::cout << "Correspondences with view_[" << k << "] found: " << model_scene_corrs_[k]->size () << std::endl;
 
 			// For now, we considere that the best view is the one that has the highest
 			// number of correspondences
@@ -243,8 +243,29 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 			std::stringstream ss_cloud;
 			ss_cloud << "instance" << i;
 
+			std::stringstream ss_model;
+			ss_model << "model_instance" << i;
+
 			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> rotated_model_color_handler (rotated_model, 255, 0, 0);
 			viewer->addPointCloud<pcl::PointXYZ> (rotated_model, rotated_model_color_handler, ss_cloud.str ());
+
+			vtkSmartPointer< vtkMatrix4x4 > rototransBestViewToScene =
+					vtkSmartPointer< vtkMatrix4x4 >::New();
+			pcl::visualization::PCLVisualizer::convertToVtkMatrix(
+						rototranslations[i], rototransBestViewToScene);
+
+			vtkSmartPointer< vtkMatrix4x4 > rototransPlyToBestView =
+					vtkSmartPointer< vtkMatrix4x4 >::New();
+			pcl::visualization::PCLVisualizer::convertToVtkMatrix(
+						views_poses_[best_view], rototransPlyToBestView);
+
+			vtkSmartPointer<vtkTransform> transformPly = vtkSmartPointer<vtkTransform>::New();
+			transformPly->SetMatrix(rototransBestViewToScene);
+			transformPly->Concatenate(rototransPlyToBestView);
+
+			viewer->addModelFromPLYFile(
+						(findCADModelFile(cadModelFile)).string(),
+						transformPly, ss_model.str());
 		}
 
 		while (!viewer->wasStopped ())
@@ -316,6 +337,7 @@ void ModelCalibrationCell::generateViewsFromCADModelFile(std::string cadModelFil
 
 	render_views.generateViews ();
 	render_views.getViews(views_);
+	render_views.getPoses(views_poses_);
 }
 
 boost::filesystem::path ModelCalibrationCell::findCADModelFile(std::string cadModelFile)

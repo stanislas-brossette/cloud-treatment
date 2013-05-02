@@ -37,6 +37,7 @@ private:
 			const float& search_radius);
 
 	std::vector< pointCloudPtr_t > views_;
+	std::vector< Eigen::Matrix4f, Eigen::aligned_allocator< Eigen::Matrix4f > > views_poses_;
 	std::vector< normalCloudPtr_t > views_normals_;
 	std::vector< pointCloudPtr_t > views_keypoints_;
 	std::vector< descriptorCloudPtr_t > views_descriptors_;
