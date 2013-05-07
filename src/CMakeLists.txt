@@ -8,6 +8,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_library(cloud-treatment SHARED
     application.cpp
     cell.cpp
+    cadmodeltreatmentcell.cpp
     displayconvexcloudcell.cpp
     displaykeypointcloudcell.cpp
     displaynormalcloudcell.cpp

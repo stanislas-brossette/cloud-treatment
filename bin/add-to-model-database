@@ -1,0 +1,3 @@
+#! /bin/sh
+cloud-processing -c empty-cloud.pcd -p cadmodeltreatment.yaml -s\
+CADModelTreatmentCell.cadModelFile=$@

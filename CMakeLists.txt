@@ -36,5 +36,6 @@ include_directories(${BOOST_INCLUDEDIR})
 add_subdirectory(src)
 add_subdirectory(share)
 add_subdirectory(tests)
+add_subdirectory(bin)
 
 setup_project_finalize()

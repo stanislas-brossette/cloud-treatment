@@ -111,12 +111,21 @@ int main(int argc, char** argv)
 		for(std::size_t i = 0; i<commandLineParameters.size(); ++i)
 		{
 			std::vector <std::string> fields;
-			boost::split(fields, commandLineParameters[i],
-						 boost::is_any_of("_="));
-			if (fields.size() == 3)
-				app.setCellParameter(fields[0], fields[1], fields[2]);
-			else
+			std::vector <std::string> fieldsTmp;
+			boost::split(fieldsTmp, commandLineParameters[i],
+						 boost::is_any_of("="));
+
+			if (fieldsTmp.size() != 2)
 				throw std::runtime_error("WRONG PARAMETER SYNTAX");
+
+			boost::split(fields, fieldsTmp[0],
+						 boost::is_any_of("."));
+			fields.push_back(fieldsTmp[1]);
+
+			if (fields.size() != 3)
+				throw std::runtime_error("WRONG PARAMETER SYNTAX");
+
+			app.setCellParameter(fields[0], fields[1], fields[2]);
 		}
 	}
 

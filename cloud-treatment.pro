@@ -21,7 +21,8 @@ SOURCES += \
     src/modelcalibrationcell.cpp \
     src/displaynormalcloudcell.cpp \
     src/normalestimationcell.cpp \
-    src/displaykeypointcloudcell.cpp
+    src/displaykeypointcloudcell.cpp \
+    src/cadmodeltreatmentcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -48,17 +49,24 @@ HEADERS += \
     src/modelcalibrationcell.h \
     src/displaynormalcloudcell.h \
     src/normalestimationcell.h \
-    src/displaykeypointcloudcell.h
+    src/displaykeypointcloudcell.h \
+    src/cadmodeltreatmentcell.h
 
 OTHER_FILES += \
     CMakeLists.txt \
+    src/CMakeLists.txt \
+    bin/CMakeLists.txt \
+    share/CMakeLists.txt \
     share/yaml/modelcalibration.yaml \
     share/yaml/cloudtreatment.yaml \
     src/dirs.hh.in \
-    src/CMakeLists.txt \
+    bin/cloud-viewer \
     share/cloud-treatment/pipeline/cloudtreatment.yaml \
     share/cloud-treatment/pipeline/modelcalibration.yaml \
     share/cloud-treatment/pipeline/pipelinetest.yaml \
     share/cloud-treatment/pipeline/calibrationtest.yaml \
     share/cloud-treatment/pipeline/table-climbing.yaml \
-    share/cloud-treatment/pipeline/crapahut.yaml
+    share/cloud-treatment/pipeline/crapahut.yaml \
+    share/cloud-treatment/pipeline/cloudviewer.yaml \
+    share/cloud-treatment/pipeline/cadmodeltreatment.yaml \
+    bin/add-to-model-database

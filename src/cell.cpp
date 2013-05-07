@@ -1,8 +1,8 @@
 #include "cell.h"
 
-Cell::Cell():
-	cell_name_("Cell")
+Cell::Cell()
 {
+	parameters()["name"] = "FileCell";
 }
 
 Cell::Cell(std::string name):

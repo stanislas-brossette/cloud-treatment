@@ -1,0 +1,2 @@
+#! /bin/sh
+cloud-processing -c $1 -p cloudviewer.yaml

@@ -11,6 +11,7 @@
 
 
 #include "application.h"
+#include "cadmodeltreatmentcell.h"
 #include "cell.h"
 #include "displayconvexcloudcell.h"
 #include "displaykeypointcloudcell.h"
@@ -41,6 +42,8 @@ public:
 	Factory(Application& application_ref)
 		: application_ref_(application_ref)
 	{
+		factories_["CADModelTreatmentCell"] =
+				boost::factory < boost::shared_ptr < CADModelTreatmentCell > > ();
 		factories_["DisplayConvexCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
 				 boost::ref(application_ref));

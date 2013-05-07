@@ -1,0 +1,8 @@
+version: 1.0
+pipeline:
+  - type: FilterCell
+    parameters:
+      leafX: 0.01
+      leafY: 0.01
+      leafZ: 0.01
+  - type: DisplayXYZCloudCell

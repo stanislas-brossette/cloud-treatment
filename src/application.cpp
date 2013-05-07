@@ -38,14 +38,31 @@ void Application::run()
 	FileCell fileCell = FileCell();
 
 	fileCell.sync(pcd_file_name, planCloudListPtr);
-//	std::cout << planCloudListPtr << std::endl;
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
+		std::cout << cells_[i]->parameters()["name"] << std::endl;
 		planCloudListPtr = cells_[i]->compute(planCloudListPtr);
-		std::cout << cells_[i]->cell_name() << std::endl;
 	}
 
-	visualizer_.display_all();
+	//Triggers the display only if a display cell is found
+	for(std::size_t i = 0; i < cells_.size(); ++i)
+	{
+		if(cells_[i]->parameters().find("name") == cells_[i]->parameters().end())
+		{
+			boost::format fmt ("cell number %1% doesn't have a name!");
+			fmt % i;
+			throw std::runtime_error(fmt.str());
+		}
+		std::string cellName = boost::get<std::string>(cells_[i]->parameters()["name"]);
+		if(cellName == "DisplayConvexCloudCell"
+				|| cellName == "DisplayKeypointCloudCell"
+				|| cellName == "DisplayNormalCloudCell"
+				|| cellName == "DisplayXYZCloudCell")
+		{
+			visualizer_.display_all();
+			break;
+		}
+	}
 //	std::cout<<Verbose(1)<<planCloudListPtr;
 }
 
@@ -115,7 +132,10 @@ void Application::setCellParameter(const std::string& cellName,
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
 		if(cells_[i]->parameters().find("name") == cells_[i]->parameters().end())
-			continue;
+		{
+			boost::format fmt ("cell number %1% doesn't have a name!");
+			fmt % i;
+		}
 		if(boost::get<std::string>(cells_[i]->parameters()["name"]) !=
 				cellName)
 			continue;
