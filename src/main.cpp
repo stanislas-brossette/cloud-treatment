@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 		("pipeline,p", po::value<std::string>(&pipelineFile),
 		 "input pipeline file")
 		("set-param,s", po::value<std::vector<std::string> >(
-			 &commandLineParameters)->multitoken(),
+			 &commandLineParameters),
 		 "set cell parameters (syntax: cell_param=value)");
 	;
 
@@ -114,16 +114,11 @@ int main(int argc, char** argv)
 			boost::split(fields, commandLineParameters[i],
 						 boost::is_any_of("_="));
 			if (fields.size() == 3)
-			{
 				app.setCellParameter(fields[0], fields[1], fields[2]);
-			}
 			else
-			{
 				throw std::runtime_error("WRONG PARAMETER SYNTAX");
-			}
 		}
 	}
-	std::cout << std::endl;
 
 	try
 	{

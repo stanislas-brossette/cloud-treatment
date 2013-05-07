@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 
+#include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/variant.hpp>
@@ -113,27 +114,26 @@ void Application::setCellParameter(const std::string& cellName,
 {
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
-		if(cells_[i]->parameters().find("name") != cells_[i]->parameters().end())
+		if(cells_[i]->parameters().find("name") == cells_[i]->parameters().end())
+			continue;
+		if(boost::get<std::string>(cells_[i]->parameters()["name"]) !=
+				cellName)
+			continue;
+		try
 		{
-			if(boost::get<std::string>(cells_[i]->parameters()["name"]) ==
-					cellName)
-			{
-				try
-				{
-					cells_[i]->parameters()[parameter] =
-							boost::lexical_cast<double>(value);
-				}
-				catch(boost::bad_lexical_cast &)
-				{
-					cells_[i]->parameters()[parameter] = value;
-				}
-				return;
-			}
+			cells_[i]->parameters()[parameter] =
+					boost::lexical_cast<double>(value);
 		}
+		catch(boost::bad_lexical_cast &)
+		{
+			cells_[i]->parameters()[parameter] = value;
+		}
+		return;
 	}
-	std::string errorMessage = "parameter "
-			+ boost::lexical_cast<std::string>(cellName) + "."
-			+ boost::lexical_cast<std::string>(parameter) + " not found!";
-	throw std::runtime_error(errorMessage );
+
+	boost::format fmt ("parameter %1%.%2% not found!");
+	fmt % cellName % parameter;
+
+	throw std::runtime_error(fmt.str());
 }
 
