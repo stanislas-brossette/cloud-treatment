@@ -107,3 +107,33 @@ void Application::createFromYaml(const std::string& yamlFilename)
 	}
 }
 
+void Application::setCellParameter(const std::string& cellName,
+								   const std::string& parameter,
+								   const std::string& value)
+{
+	for(std::size_t i = 0; i < cells_.size(); ++i)
+	{
+		if(cells_[i]->parameters().find("name") != cells_[i]->parameters().end())
+		{
+			if(boost::get<std::string>(cells_[i]->parameters()["name"]) ==
+					cellName)
+			{
+				try
+				{
+					cells_[i]->parameters()[parameter] =
+							boost::lexical_cast<double>(value);
+				}
+				catch(boost::bad_lexical_cast &)
+				{
+					cells_[i]->parameters()[parameter] = value;
+				}
+				return;
+			}
+		}
+	}
+	std::string errorMessage = "parameter "
+			+ boost::lexical_cast<std::string>(cellName) + "."
+			+ boost::lexical_cast<std::string>(parameter) + " not found!";
+	throw std::runtime_error(errorMessage );
+}
+

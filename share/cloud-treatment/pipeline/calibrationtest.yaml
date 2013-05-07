@@ -8,27 +8,27 @@ pipeline:
 #  - type: DisplayXYZCloudCell
   - type: PassThroughFilterCell
     parameters:
-      axis: z
+      axis: x
       min: 0
       max: 4
+  - type: DisplayXYZCloudCell
+#  - type: DominantPlaneSegmentationCell
+#    parameters:
+#      max_iteration: 100
+#      distance_threshold: 0.03
+#  - type: EuclidianClustersExtractionCell
+#    parameters:
+#      min_cluster_size: 1000
 #  - type: DisplayXYZCloudCell
-  - type: DominantPlaneSegmentationCell
-    parameters:
-      max_iteration: 100
-      distance_threshold: 0.03
-  - type: EuclidianClustersExtractionCell
-    parameters:
-      min_cluster_size: 1000
-  - type: DisplayXYZCloudCell
-  - type: ModelCalibrationCell
-    parameters:
-      views_resolution: 200
-      keypoint_search_radius_model: 0.1
-      descriptor_search_radius_model: 0.1
-      keypoint_search_radius_scene: 0.1
-      descriptor_search_radius_scene: 0.1
-      correspondence_grouping_size: 0.2
-      correspondence_grouping_threshhold: 5
-  - type: DisplayXYZCloudCell
-  - type: DisplayNormalCloudCell
-  - type: DisplayKeypointCloudCell
+#  - type: ModelCalibrationCell
+#    parameters:
+#      views_resolution: 200
+#      keypoint_search_radius_model: 0.1
+#      descriptor_search_radius_model: 0.1
+#      keypoint_search_radius_scene: 0.1
+#      descriptor_search_radius_scene: 0.1
+#      correspondence_grouping_size: 0.2
+#      correspondence_grouping_threshhold: 5
+#  - type: DisplayXYZCloudCell
+#  - type: DisplayNormalCloudCell
+#  - type: DisplayKeypointCloudCell

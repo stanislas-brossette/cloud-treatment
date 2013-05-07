@@ -2,12 +2,14 @@
 #include <stdexcept>
 #include <string>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/variant.hpp>
 
 #include "application.h"
 
@@ -19,6 +21,8 @@ int main(int argc, char** argv)
 {
 	std::string pointCloudFile;
 	std::string pipelineFile;
+	std::vector<std::string> commandLineParameters;
+
 
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
@@ -28,6 +32,9 @@ int main(int argc, char** argv)
 		 "input point-cloud file")
 		("pipeline,p", po::value<std::string>(&pipelineFile),
 		 "input pipeline file")
+		("set-param,s", po::value<std::vector<std::string> >(
+			 &commandLineParameters)->multitoken(),
+		 "set cell parameters (syntax: cell_param=value)");
 	;
 
 	po::variables_map vm;
@@ -96,6 +103,27 @@ int main(int argc, char** argv)
 	      << std::endl;
 	    return 1;
 	  }
+
+	// Set parameters from the command line, overwriting the yaml parameters
+	// Syntax: cell_param=value
+	if (vm.count("set-param"))
+	{
+		for(std::size_t i = 0; i<commandLineParameters.size(); ++i)
+		{
+			std::vector <std::string> fields;
+			boost::split(fields, commandLineParameters[i],
+						 boost::is_any_of("_="));
+			if (fields.size() == 3)
+			{
+				app.setCellParameter(fields[0], fields[1], fields[2]);
+			}
+			else
+			{
+				throw std::runtime_error("WRONG PARAMETER SYNTAX");
+			}
+		}
+	}
+	std::cout << std::endl;
 
 	try
 	{

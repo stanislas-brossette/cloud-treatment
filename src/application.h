@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/variant.hpp>
 
 #include "cell.h"
 #include "factory.h"
@@ -50,8 +51,14 @@ public:
 		return visualizer_;
 	}
 
-
+	// Parses a yaml file to setup the pipeline and its parameters
 	void createFromYaml(const std::string& yamlFilename);
+
+	// Set parameters from the command line, overwriting the yaml parameters
+	// Syntax: cell_param=value
+	void setCellParameter(const std::string& cellName,
+						  const std::string& parameter,
+						  const std::string& value);
 
 private:
 	std::string pcd_file_name;
