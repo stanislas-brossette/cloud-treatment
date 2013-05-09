@@ -296,7 +296,7 @@ void CADModelTreatmentCell::addToDataBase()
 		outObject << YAML::Key << "descriptor_search_radius_model";
 		outObject << YAML::Value << descriptor_search_radius_model_;
 		outObject << YAML::EndMap;
-	outObject << YAML::Key << "cadModel";
+	outObject << YAML::Key << "cad_model";
 	outObject << YAML::Value << (findCADModelFile(cadModelFile_)).string();
 	outObject << YAML::Key << "views";
 	outObject << YAML::Value << viewsPath.string();

@@ -23,9 +23,7 @@ public:
 
 private:
 
-	// Generates pointclouds as if they were taken from cameras all around the
-	// CAD model
-	void generateViewsFromCADModelFile (std::string cadModelFile);
+	void loadModelFromDatabase();
 	boost::filesystem::path findCADModelFile(std::string cadModelFile);
 	normalCloudPtr_t computeNormals(const pointCloudPtr_t& pointCloudPtr);
 	pointCloudPtr_t computeKeypoints(const pointCloudPtr_t& pointCloudPtr,
@@ -48,14 +46,19 @@ private:
 	pcl::search::Search<pcl::PointXYZ>::Ptr tree_;
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator_;
 
-	int views_resolution_;
+	std::string database_;
+	std::string model_;
 	int number_of_neighbours_normal_estimation_;
-	float keypoint_search_radius_scene_;
-	float descriptor_search_radius_scene_;
-	float keypoint_search_radius_model_;
-	float descriptor_search_radius_model_;
+	float keypoint_search_radius_;
+	float descriptor_search_radius_;
 	float correspondence_grouping_size_;
 	int correspondence_grouping_threshhold_;
+
+	//parameters of the model
+	int views_resolution_model_;
+	int number_of_neighbours_normal_estimation_model_;
+	float keypoint_search_radius_model_;
+	float descriptor_search_radius_model_;
 };
 
 #endif // MODELCALIBRATIONCELL_H

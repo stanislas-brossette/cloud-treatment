@@ -6,7 +6,7 @@ pipeline:
       databaseName: testingDatabase
       objectName: chair
       cadModelFile: chair.ply
-      views_resolution: 100
-      number_of_neighbours_normal_estimation: 3
-      keypoint_search_radius_model: 0.5
-      descriptor_search_radius_model: 0.5
+      views_resolution: 200
+      number_of_neighbours_normal_estimation: 10
+      keypoint_search_radius_model: 0.1
+      descriptor_search_radius_model: 0.1
