@@ -29,6 +29,7 @@
 CADModelTreatmentCell::CADModelTreatmentCell():
 	Cell(),
 	views_(),
+	views_poses_(),
 	views_normals_(),
 	views_keypoints_(),
 	views_descriptors_(),
@@ -68,10 +69,13 @@ planCloudsPtr_t CADModelTreatmentCell::compute(planCloudsPtr_t planCloudListPtr)
 			static_cast<float>(boost::get<double>(
 				parameters()["descriptor_search_radius_model"]));
 
-	generateViewsFromCADModelFile(cadModelFile_);
+	boost::filesystem::path cadModelPath = findCADModelFile(cadModelFile_);
+
+	generateViewsFromCADModelFile(cadModelPath);
 	std::cout << std::endl << "Generated " << views_.size() <<
 				 " views of " << cadModelFile_ << std::endl;
 
+	views_poses_.resize(views_.size());
 	views_normals_.resize(views_.size());
 	views_keypoints_.resize(views_.size());
 	views_descriptors_.resize(views_.size());
@@ -137,10 +141,8 @@ descriptorCloudPtr_t CADModelTreatmentCell::computeDescriptors(
 	return descriptorCloudPtr;
 }
 
-void CADModelTreatmentCell::generateViewsFromCADModelFile(std::string cadModelFile_)
+void CADModelTreatmentCell::generateViewsFromCADModelFile(boost::filesystem::path cadModelPath)
 {
-	boost::filesystem::path cadModelPath = findCADModelFile(cadModelFile_);
-
 	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New ();
 	reader->SetFileName (cadModelPath.c_str());
 	vtkSmartPointer < vtkPolyDataMapper > mapper = vtkSmartPointer<vtkPolyDataMapper>::New ();
@@ -159,7 +161,8 @@ void CADModelTreatmentCell::generateViewsFromCADModelFile(std::string cadModelFi
 	render_views.getPoses(views_poses_);
 }
 
-boost::filesystem::path CADModelTreatmentCell::findCADModelFile(std::string cadModelFile_)
+boost::filesystem::path CADModelTreatmentCell::findCADModelFile(
+		std::string cadModelFile_)
 {
 	namespace fs = boost::filesystem;
 
@@ -190,7 +193,6 @@ void CADModelTreatmentCell::addToDataBase()
 {
 	namespace fs = boost::filesystem;
 	typedef boost::format frm;
-	std::cout << "addToDataBase"<< std::endl;
 
 	//Check for the database existence and create it if necessary
 	fs::path databasePath ((frm("%1%/%2%")
@@ -202,11 +204,12 @@ void CADModelTreatmentCell::addToDataBase()
 	}
 
 	//Check for the yaml database file and create it if necessary
-	fs::path dbYamlFilePath ((frm("%1%/%2%.db.yaml") % databasePath.string() % databaseName_).str());
+	fs::path dbYamlFilePath (
+		(frm("%1%/%2%.db.yaml") % databasePath.string() % databaseName_).str());
 	if (!fs::exists(dbYamlFilePath))
 	{
 		fs::ofstream dbYamlInitFile(dbYamlFilePath);
-		std::cout << (frm("%1% \nhas been created") % dbYamlFilePath).str() << std::endl;
+		std::cout << (frm("%1% \nhas been created\n") % dbYamlFilePath).str();
 	}
 
 	//Search in the document for the objectName and add it if necessary
@@ -249,21 +252,122 @@ void CADModelTreatmentCell::addToDataBase()
 		return;
 	}
 
-	std::cout<< "adding " << objectName_ << std::endl;
-	YAML::Emitter out;
-	out << YAML::BeginSeq;
+	std::cout<< "Adding " << objectName_ << " to " << databaseName_;
+	YAML::Emitter outDatabase;
+	outDatabase << YAML::BeginSeq;
 	for (YAML::Iterator it = doc.begin (); it != doc.end (); ++it)
 	{
 		std::string scalar;
 		*it >> scalar;
-		out << scalar;
+		outDatabase << scalar;
 	}
-	out << objectName_;
-	out << YAML::EndSeq;
+	outDatabase << objectName_;
+	outDatabase << YAML::EndSeq;
 	fs::ofstream dbYamlWriteFile(dbYamlFilePath);
-	dbYamlWriteFile << out.c_str();
+	dbYamlWriteFile << outDatabase.c_str();
 
+	//Add the folders for the object in the DB
+	fs::path objectPath(
+				(frm("%1%/%2%") % databasePath.string() % objectName_).str());
+	fs::create_directory(objectPath);
 
-	std::cout << "addToDataBase Done"<< std::endl;
+	fs::path viewsPath((frm("%1%/views") % objectPath.string()).str());
+	fs::path normalsPath((frm("%1%/normals") % objectPath.string()).str());
+	fs::path descriptorsPath((frm("%1%/descriptors") % objectPath.string()).str());
+	fs::path keypointsPath((frm("%1%/keypoints") % objectPath.string()).str());
+	fs::path posesPath((frm("%1%/poses") % objectPath.string()).str());
+	fs::create_directory(viewsPath);
+	fs::create_directory(normalsPath);
+	fs::create_directory(descriptorsPath);
+	fs::create_directory(keypointsPath);
+	fs::create_directory(posesPath);
+
+	//Add the object yaml file
+	YAML::Emitter outObject;
+	outObject << YAML::BeginMap;
+	outObject << YAML::Key << "cadModel";
+	outObject << YAML::Value << (findCADModelFile(cadModelFile_)).string();
+	outObject << YAML::Key << "views";
+	outObject << YAML::Value << viewsPath.string();
+	outObject << YAML::Key << "poses";
+	outObject << YAML::Value << posesPath.string();
+	outObject << YAML::Key << "normals";
+	outObject << YAML::Value << normalsPath.string();
+	outObject << YAML::Key << "keypoints";
+	outObject << YAML::Value << keypointsPath.string();
+	outObject << YAML::Key << "descriptors";
+	outObject << YAML::Value << descriptorsPath.string();
+	outObject << YAML::EndMap;
+
+	fs::path objYamlFilePath (
+		(frm("%1%/%2%.obj.yaml") % objectPath.string() % objectName_ ).str());
+	if (!fs::exists(objYamlFilePath))
+	{
+		fs::ofstream objYamlFile(objYamlFilePath);
+		objYamlFile << outObject.c_str();
+	}
+
+	//Filling the folders
+
+	for (size_t i = 0; i < views_.size(); ++i)
+	{
+		fs::path viewFilePath(
+					(frm("%1%/view%2%.pcd") % viewsPath.string() % i).str());
+		pcl::io::savePCDFile(viewFilePath.string(), *(views_[i]));
+
+		fs::path poseFilePath(
+					(frm("%1%/pose%2%.txt") % posesPath.string() % i).str());
+		fs::ofstream poseFile(poseFilePath);
+		poseFile << views_poses_[i];
+
+		fs::path normalFilePath(
+					(frm("%1%/normals%2%.pcd") % normalsPath.string() % i).str());
+		pcl::io::savePCDFile(normalFilePath.string(), *(views_normals_[i]));
+
+		fs::path keypointFilePath(
+					(frm("%1%/keypoints%2%.pcd") % keypointsPath.string() % i).str());
+		pcl::io::savePCDFile(keypointFilePath.string(), *(views_keypoints_[i]));
+
+		fs::path descriptorFilePath(
+					(frm("%1%/descriptors%2%.pcd") % descriptorsPath.string() % i).str());
+		pcl::io::savePCDFile(descriptorFilePath.string(), *(views_descriptors_[i]));
+	}
+	std::cout << ": Done\n";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

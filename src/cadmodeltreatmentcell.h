@@ -21,7 +21,7 @@ public:
 	planCloudsPtr_t compute(planCloudsPtr_t);
 
 private:
-	void generateViewsFromCADModelFile (std::string cadModelFile);
+	void generateViewsFromCADModelFile (boost::filesystem::path cadModelPath);
 	boost::filesystem::path findCADModelFile(std::string cadModelFile);
 	normalCloudPtr_t computeNormals(const pointCloudPtr_t& pointCloudPtr);
 	pointCloudPtr_t computeKeypoints(const pointCloudPtr_t& pointCloudPtr,

@@ -3,8 +3,10 @@ pipeline:
   - type: CADModelTreatmentCell
     parameters:
       name: CADModelTreatmentCell
-      cadModelFile: bunny.ply
-      views_resolution: 100
-      number_of_neighbours_normal_estimation: 10
-      keypoint_search_radius_model: 0.1
-      descriptor_search_radius_model: 0.1
+      databaseName: testingDatabase
+      objectName: chair200
+      cadModelFile: chair.ply
+      views_resolution: 200
+      number_of_neighbours_normal_estimation: 3
+      keypoint_search_radius_model: 0.5
+      descriptor_search_radius_model: 0.5
