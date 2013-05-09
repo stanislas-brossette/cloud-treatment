@@ -1,12 +1,14 @@
 #include <vector>
 #include <string>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
+
+#include <yaml-cpp/yaml.h>
 
 #include <eigen3/Eigen/Dense>
 
@@ -38,6 +40,8 @@ CADModelTreatmentCell::CADModelTreatmentCell():
 
 {
 	parameters()["name"] = "CADModelTreatmentCell";
+	parameters()["databaseName"] = "testingDatabase";
+	parameters()["objectName"] = "bunny";
 	parameters()["cadModelFile"] = "bunny.ply";
 	parameters()["views_resolution"] = 100;
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
@@ -48,6 +52,8 @@ CADModelTreatmentCell::CADModelTreatmentCell():
 planCloudsPtr_t CADModelTreatmentCell::compute(planCloudsPtr_t planCloudListPtr)
 {
 	cell_name_ = boost::get<std::string>(parameters()["name"]);
+	databaseName_ = boost::get<std::string>(parameters()["databaseName"]);
+	objectName_ = boost::get<std::string>(parameters()["objectName"]);
 	cadModelFile_ = boost::get<std::string>(parameters()["cadModelFile"]);
 	views_resolution_ =
 			static_cast<int>(boost::get<double>(
@@ -85,6 +91,9 @@ planCloudsPtr_t CADModelTreatmentCell::compute(planCloudsPtr_t planCloudListPtr)
 				<<views_keypoints_[i]->size() << " keypoints\n"
 				<<views_descriptors_[i]->size() << "descriptors \n\n";
 	}
+
+	addToDataBase();
+
 	return planCloudListPtr;
 }
 
@@ -177,4 +186,84 @@ boost::filesystem::path CADModelTreatmentCell::findCADModelFile(std::string cadM
 	return cadModelPath;
 }
 
+void CADModelTreatmentCell::addToDataBase()
+{
+	namespace fs = boost::filesystem;
+	typedef boost::format frm;
+	std::cout << "addToDataBase"<< std::endl;
+
+	//Check for the database existence and create it if necessary
+	fs::path databasePath ((frm("%1%/%2%")
+							% RECOGNITION_DATABASE_PATH % databaseName_).str());
+	if (!fs::is_directory(databasePath))
+	{
+		fs::create_directory(databasePath);
+		std::cout << databaseName_ << " database has been created" << std::endl;
+	}
+
+	//Check for the yaml database file and create it if necessary
+	fs::path dbYamlFilePath ((frm("%1%/%2%.db.yaml") % databasePath.string() % databaseName_).str());
+	if (!fs::exists(dbYamlFilePath))
+	{
+		fs::ofstream dbYamlInitFile(dbYamlFilePath);
+		std::cout << (frm("%1% \nhas been created") % dbYamlFilePath).str() << std::endl;
+	}
+
+	//Search in the document for the objectName and add it if necessary
+	fs::ifstream dbYamlFile(dbYamlFilePath);
+	if (!dbYamlFile.good ())
+		throw std::runtime_error ("bad stream (database content reading)");
+	YAML::Parser parser (dbYamlFile);
+
+	YAML::Node doc;
+
+	if (!parser.GetNextDocument (doc))
+	{
+		YAML::Emitter out;
+		out << YAML::BeginSeq;
+		out << objectName_;
+		out << YAML::EndSeq;
+		fs::ofstream dbYamlWriteFile(dbYamlFilePath);
+		dbYamlWriteFile << out.c_str();
+	}
+
+	bool objectFound = false;
+	for (YAML::Iterator it = doc.begin (); it != doc.end (); ++it)
+	{
+		std::string scalar;
+		*it >> scalar;
+		if(scalar == objectName_)
+		{
+			std::string errorMessage(boost::str(frm(
+				"ERROR: The object %1% already exists in the database %2%!")
+									  % objectName_ % databaseName_));
+			throw std::runtime_error(errorMessage);
+
+			objectFound = true;
+			break;
+		}
+	}
+
+	if(objectFound)
+	{
+		return;
+	}
+
+	std::cout<< "adding " << objectName_ << std::endl;
+	YAML::Emitter out;
+	out << YAML::BeginSeq;
+	for (YAML::Iterator it = doc.begin (); it != doc.end (); ++it)
+	{
+		std::string scalar;
+		*it >> scalar;
+		out << scalar;
+	}
+	out << objectName_;
+	out << YAML::EndSeq;
+	fs::ofstream dbYamlWriteFile(dbYamlFilePath);
+	dbYamlWriteFile << out.c_str();
+
+
+	std::cout << "addToDataBase Done"<< std::endl;
+}
 

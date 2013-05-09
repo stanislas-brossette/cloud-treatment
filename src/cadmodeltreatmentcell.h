@@ -31,6 +31,7 @@ private:
 			const normalCloudPtr_t& normalCloudPtr,
 			const pointCloudPtr_t& keypointCloudPtr,
 			const float& search_radius);
+	void addToDataBase();
 
 	std::vector< pointCloudPtr_t > views_;
 	std::vector< Eigen::Matrix4f, Eigen::aligned_allocator< Eigen::Matrix4f > > views_poses_;
@@ -43,6 +44,8 @@ private:
 	pcl::search::Search<pcl::PointXYZ>::Ptr tree_;
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimator_;
 
+	std::string databaseName_;
+	std::string objectName_;
 	std::string cadModelFile_;
 	int views_resolution_;
 	int number_of_neighbours_normal_estimation_;

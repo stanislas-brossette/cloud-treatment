@@ -69,4 +69,5 @@ OTHER_FILES += \
     share/cloud-treatment/pipeline/crapahut.yaml \
     share/cloud-treatment/pipeline/cloudviewer.yaml \
     share/cloud-treatment/pipeline/cadmodeltreatment.yaml \
-    bin/add-to-model-database
+    bin/add-to-model-database \
+    var/CMakeLists.txt

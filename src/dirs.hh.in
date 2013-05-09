@@ -10,4 +10,14 @@
 #define CAD_MODEL_PATH "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/cad-model"
 #define CAD_MODEL_BUILD_PATH "@CMAKE_SOURCE_DIR@/share/cloud-treatment/cad-model"
 
+// Read-only database coming from the initial source package.
+// Installed in shared.
+#define STATIC_RECOGNITION_DATABASE_PATH "@CMAKE_INSTALL_FULL_DATADIR@/cloud-treatment/recognition-database"
+#define STATIC_RECOGNITION_DATABASE_BUILD_PATH "@CMAKE_SOURCE_DIR@/share/cloud-treatment/recognition-database"
+
+// Dynamically modifiable database created at run-time through the utility tool.
+// Files can be placed in var.
+#define RECOGNITION_DATABASE_PATH "@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/cloud-treatment/recognition-database"
+//#define RECOGNITION_DATABASE_BUILD_PATH "@CMAKE_SOURCE_DIR@/var/cloud-treatment/recognition-database"
+
 #endif //! CLOUD_TREATMENT_DIRS_HH

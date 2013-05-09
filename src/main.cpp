@@ -68,10 +68,10 @@ int main(int argc, char** argv)
 
 	if (fs::is_regular_file (pointCloudPath))
 	  {}
-	else if (fs::is_regular_file (pointCloudPathInstall))
-	  pointCloudPath = pointCloudPathInstall;
 	else if (fs::is_regular_file (pointCloudPathBuild))
 	  pointCloudPath = pointCloudPathBuild;
+	else if (fs::is_regular_file (pointCloudPathInstall))
+	  pointCloudPath = pointCloudPathInstall;
 	else
 	  {
 	    std::cout
@@ -91,10 +91,10 @@ int main(int argc, char** argv)
 
 	if (fs::is_regular_file (pipelinePath))
 	  app.createFromYaml (pipelinePath.native ());
-	else if (fs::is_regular_file (pipelinePathInstall))
-	  app.createFromYaml (pipelinePathInstall.native ());
 	else if (fs::is_regular_file (pipelinePathBuild))
 	  app.createFromYaml (pipelinePathBuild.native ());
+	else if (fs::is_regular_file (pipelinePathInstall))
+	  app.createFromYaml (pipelinePathInstall.native ());
 	else
 	  {
 	    std::cout
