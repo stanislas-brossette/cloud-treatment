@@ -1,0 +1,10 @@
+*~
+\#*\#
+build*/
+share/cloud-treatment/point-cloud/*
+share/cloud-treatment/cad-model/*
+share/cloud-treatment/pipeline/*
+src/custompclvisualizor*
+surffiles/*
+treatedCloudFiles/*
+cloud-treatment.pro.user
