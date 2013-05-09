@@ -285,6 +285,17 @@ void CADModelTreatmentCell::addToDataBase()
 	//Add the object yaml file
 	YAML::Emitter outObject;
 	outObject << YAML::BeginMap;
+	outObject << YAML::Key << "parameters";
+	outObject << YAML::Value << YAML::BeginMap;
+		outObject << YAML::Key << "views_resolution";
+		outObject << YAML::Value << views_resolution_;
+		outObject << YAML::Key << "number_of_neighbours_normal_estimation";
+		outObject << YAML::Value << number_of_neighbours_normal_estimation_;
+		outObject << YAML::Key << "keypoint_search_radius_model";
+		outObject << YAML::Value << keypoint_search_radius_model_;
+		outObject << YAML::Key << "descriptor_search_radius_model";
+		outObject << YAML::Value << descriptor_search_radius_model_;
+		outObject << YAML::EndMap;
 	outObject << YAML::Key << "cadModel";
 	outObject << YAML::Value << (findCADModelFile(cadModelFile_)).string();
 	outObject << YAML::Key << "views";
