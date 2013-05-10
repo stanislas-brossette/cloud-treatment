@@ -467,6 +467,8 @@ void ModelCalibrationCell::loadModelFromDatabase()
 				"keypointsPath = "<< keypointsPath << std::endl <<
 				"descriptorsPath = "<< descriptorsPath << std::endl;
 
+
+
 }
 
 boost::filesystem::path ModelCalibrationCell::findCADModelFile(std::string cadModelFile)

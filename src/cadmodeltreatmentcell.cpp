@@ -323,24 +323,24 @@ void CADModelTreatmentCell::addToDataBase()
 	for (size_t i = 0; i < views_.size(); ++i)
 	{
 		fs::path viewFilePath(
-					(frm("%1%/view%2%.pcd") % viewsPath.string() % i).str());
+					(frm("%s/view%05i.pcd") % viewsPath.string() % i).str());
 		pcl::io::savePCDFile(viewFilePath.string(), *(views_[i]));
 
 		fs::path poseFilePath(
-					(frm("%1%/pose%2%.txt") % posesPath.string() % i).str());
+					(frm("%s/pose%05i.txt") % posesPath.string() % i).str());
 		fs::ofstream poseFile(poseFilePath);
 		poseFile << views_poses_[i];
 
 		fs::path normalFilePath(
-					(frm("%1%/normals%2%.pcd") % normalsPath.string() % i).str());
+					(frm("%s/normals%05i.pcd") % normalsPath.string() % i).str());
 		pcl::io::savePCDFile(normalFilePath.string(), *(views_normals_[i]));
 
 		fs::path keypointFilePath(
-					(frm("%1%/keypoints%2%.pcd") % keypointsPath.string() % i).str());
+					(frm("%s/keypoints%05i.pcd") % keypointsPath.string() % i).str());
 		pcl::io::savePCDFile(keypointFilePath.string(), *(views_keypoints_[i]));
 
 		fs::path descriptorFilePath(
-					(frm("%1%/descriptors%2%.pcd") % descriptorsPath.string() % i).str());
+					(frm("%s/descriptors%05i.pcd") % descriptorsPath.string() % i).str());
 		pcl::io::savePCDFile(descriptorFilePath.string(), *(views_descriptors_[i]));
 	}
 	std::cout << ": Done\n";
