@@ -1,11 +1,13 @@
 #ifndef MODELCALIBRATIONCELL_H
 #define MODELCALIBRATIONCELL_H
 
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/format.hpp>
 
 #include <pcl/correspondence.h>
 #include <pcl/keypoints/uniform_sampling.h>
 #include <pcl/features/shot_omp.h>
+#include <pcl/io/pcd_io.h>
 
 #include "cell.h"
 #include "typedefs.h"
@@ -59,6 +61,37 @@ private:
 	int number_of_neighbours_normal_estimation_model_;
 	float keypoint_search_radius_model_;
 	float descriptor_search_radius_model_;
+
+
+	template <typename T>
+	void loadCloudsFromDirectory (
+			const boost::filesystem::path& path,
+			std::vector<typename pcl::PointCloud<T>::Ptr>& container)
+	{
+		namespace fs = boost::filesystem;
+		if (fs::exists(path))
+		{
+			fs::directory_iterator end ;
+			std::vector<std::string> accumulator;
+			for( fs::directory_iterator iter(path) ; iter != end ; ++iter ) {
+				if ( !fs::is_directory( *iter ) )
+				{
+					accumulator.push_back((iter->path()).string());
+				}
+			}
+			std::sort(accumulator.begin(), accumulator.end());
+			std::vector<std::string>::iterator iter;
+			for (iter = accumulator.begin(); iter != accumulator.end(); ++iter)
+			{
+				typename pcl::PointCloud<T>::Ptr view = boost::make_shared<pcl::PointCloud<T> > ();
+				if(pcl::io::loadPCDFile<T> (*iter, *view) != -1)
+					container.push_back(view);
+				else
+					throw std::runtime_error(
+							(boost::format("Failed to load file %1%") % *iter).str());
+			}
+		}
+	}
 };
 
 #endif // MODELCALIBRATIONCELL_H

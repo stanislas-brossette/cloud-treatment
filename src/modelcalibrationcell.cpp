@@ -467,8 +467,59 @@ void ModelCalibrationCell::loadModelFromDatabase()
 				"keypointsPath = "<< keypointsPath << std::endl <<
 				"descriptorsPath = "<< descriptorsPath << std::endl;
 
+	this->loadCloudsFromDirectory<pcl::PointXYZ>(viewsPath, views_);
+	this->loadCloudsFromDirectory<pcl::Normal>(normalsPath, views_normals_);
+	this->loadCloudsFromDirectory<pcl::PointXYZ>(keypointsPath, views_keypoints_);
+	this->loadCloudsFromDirectory<DescriptorType>(descriptorsPath, views_descriptors_);
 
 
+	views_poses_.resize(views_.size());
+	if (fs::exists(posesPath))
+	{
+		fs::directory_iterator end ;
+		std::vector<std::string> accumulator;
+		for( fs::directory_iterator iter(posesPath) ; iter != end ; ++iter ) {
+			if ( !fs::is_directory( *iter ) )
+			{
+				accumulator.push_back((iter->path()).string());
+			}
+		}
+		std::sort(accumulator.begin(), accumulator.end());
+		std::vector<std::string>::iterator iter;
+//		std::size_t k = 0;
+		for (iter = accumulator.begin(); iter != accumulator.end(); ++iter)
+		{
+			fs::ifstream f(*iter);
+			std::cout << *iter << std::endl;
+//			views_poses_[k] = Eigen::Matrix4f();
+			for(std::size_t i=0; i<4; ++i)
+			{
+				for(std::size_t j=0; j<4; ++j)
+				{
+					float q;
+					f >> q;
+//					f >> views_poses_[k](
+//							 static_cast<long>(i),static_cast<long>(j));
+					std::cout << q << "  ";
+				}
+				cout << "\n";
+			}
+//			std::cout << views_poses_[k] << std:: endl;
+		}
+	}
+//	for (std::size_t i = 0; i < views_.size(); ++i)
+//	{
+//		boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
+//		viewer->initCameraParameters ();
+//		viewer->addPointCloud<pcl::PointXYZ> (views_[i], "cloudName");
+//		viewer->addPointCloud<pcl::PointXYZ> (views_keypoints_[i], "cloudNameK");
+//		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, "cloudNameK");
+//		while (!viewer->wasStopped ())
+//		{
+//			viewer->spinOnce (100);
+//			boost::this_thread::sleep (boost::posix_time::microseconds (10000));
+//		}
+//	}
 }
 
 boost::filesystem::path ModelCalibrationCell::findCADModelFile(std::string cadModelFile)
