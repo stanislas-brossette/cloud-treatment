@@ -6,12 +6,16 @@
 # include <vector>
 
 # include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
 
 # include <eigen3/Eigen/Dense>
 
 # include <pcl/features/normal_3d.h>
 # include <pcl/ModelCoefficients.h>
 # include <pcl/point_types.h>
+
+#include <vtkSmartPointer.h>
+#include <vtkTransform.h>
 
 # include "typedefs.h"
 # include "verbose.h"
@@ -146,6 +150,18 @@ public:
 		return N_;
 	}
 
+	std::vector<boost::shared_ptr<
+		std::pair <std::string, vtkSmartPointer<vtkTransform> > > >& cad_models()
+	{
+		return cad_models_;
+	}
+
+	const std::vector<boost::shared_ptr<
+		std::pair <std::string, vtkSmartPointer<vtkTransform> > > >& cad_models() const
+	{
+		return cad_models_;
+	}
+
 private:
 	/// The point cloud itself
 	pointCloudPtr_t cloud_;
@@ -158,6 +174,9 @@ private:
 
 	/// The descriptors of the cloud
 	descriptorCloudPtr_t descriptors_;
+
+	/// The vector of cad models and their poses in the scene
+	std::vector<boost::shared_ptr<std::pair <std::string, vtkSmartPointer<vtkTransform> > > > cad_models_;
 
 	/// Coefficients of the plan carrying the cloud, values are computed by PlanExtractionCell
 	pcl::ModelCoefficients::Ptr coefficients_;

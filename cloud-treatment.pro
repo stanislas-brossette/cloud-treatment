@@ -22,7 +22,8 @@ SOURCES += \
     src/displaynormalcloudcell.cpp \
     src/normalestimationcell.cpp \
     src/displaykeypointcloudcell.cpp \
-    src/cadmodeltreatmentcell.cpp
+    src/cadmodeltreatmentcell.cpp \
+    src/displaycadmodelcell.cpp
 
 HEADERS += \
     src/application.h \
@@ -50,7 +51,8 @@ HEADERS += \
     src/displaynormalcloudcell.h \
     src/normalestimationcell.h \
     src/displaykeypointcloudcell.h \
-    src/cadmodeltreatmentcell.h
+    src/cadmodeltreatmentcell.h \
+    src/displaycadmodelcell.h
 
 OTHER_FILES += \
     CMakeLists.txt \

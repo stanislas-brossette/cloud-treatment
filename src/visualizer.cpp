@@ -31,11 +31,6 @@ Visualizer::Visualizer()
 
 void Visualizer::add_xyz_clouds(planCloudsPtr_t planCloudList)
 {
-//	planClouds_t newPlanCloudList;
-//	for (unsigned int i = 0; i<planCloudList->size(); ++i)
-//	{
-//		newPlanCloudList.push_back(planCloudList->at(i));
-//	}
 	cloud_groups_.push_back(*planCloudList);
 }
 
@@ -60,6 +55,11 @@ void Visualizer::add_keypoint_clouds(planCloudsPtr_t planCloudList)
 void Visualizer::add_normals_clouds(planCloudsPtr_t planCloudList)
 {
 	normals_groups_.push_back(*planCloudList);
+}
+
+void Visualizer::add_cad_model(planCloudsPtr_t planCloudList)
+{
+	cad_models_.push_back(planCloudList);
 }
 
 void Visualizer::display_all()
@@ -142,6 +142,7 @@ void Visualizer::display_all()
 		}
 	}
 
+	//displaying normals clouds
 	for(unsigned int i = 0; i<normals_groups_.size(); ++i)
 	{
 		for(unsigned int j = 0; j<normals_groups_[i].size(); j++)
@@ -167,6 +168,25 @@ void Visualizer::display_all()
 						 1.0, 0.0, 0.0,
 						 "normals_" + boost::lexical_cast<std::string>(i) +
 						 "_" + boost::lexical_cast<std::string>(j));
+			}
+		}
+	}
+
+	for(unsigned int i = 0; i<cad_models_.size(); ++i)
+	{
+		for(unsigned int j = 0; j<cad_models_[i]->size(); j++)
+		{
+			for(unsigned int k = 0; k<cad_models_[i]->at(j).cad_models().size(); k++)
+			{
+				std::string cloudName = "model_" +
+						boost::lexical_cast<std::string>(i) + "_" +
+						boost::lexical_cast<std::string>(j) + "_" +
+						boost::lexical_cast<std::string>(k);
+
+				viewer->addModelFromPLYFile(
+							cad_models_[i]->at(j).cad_models().at(k)->first,
+							cad_models_[i]->at(j).cad_models().at(k)->second,
+							cloudName);
 			}
 		}
 	}

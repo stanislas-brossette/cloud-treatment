@@ -9,6 +9,7 @@ add_library(cloud-treatment SHARED
     application.cpp
     cell.cpp
     cadmodeltreatmentcell.cpp
+    displaycadmodelcell.cpp
     displayconvexcloudcell.cpp
     displaykeypointcloudcell.cpp
     displaynormalcloudcell.cpp

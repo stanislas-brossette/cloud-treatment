@@ -5,13 +5,13 @@ pipeline:
       leafX: 0.01
       leafY: 0.01
       leafZ: 0.01
-#  - type: DisplayXYZCloudCell
+  - type: DisplayXYZCloudCell
   - type: PassThroughFilterCell
     parameters:
       axis: z
       min: 0
       max: 4
-  - type: DisplayXYZCloudCell
+#  - type: DisplayXYZCloudCell
   - type: DominantPlaneSegmentationCell
     parameters:
       max_iteration: 100
@@ -30,5 +30,6 @@ pipeline:
       correspondence_grouping_size: 0.2
       correspondence_grouping_threshhold: 5
 #  - type: DisplayXYZCloudCell
-  - type: DisplayNormalCloudCell
+#  - type: DisplayNormalCloudCell
+  - type: DisplayCADModelCell
 #  - type: DisplayKeypointCloudCell

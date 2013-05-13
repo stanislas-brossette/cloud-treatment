@@ -13,6 +13,7 @@
 #include "application.h"
 #include "cadmodeltreatmentcell.h"
 #include "cell.h"
+#include "displaycadmodelcell.h"
 #include "displayconvexcloudcell.h"
 #include "displaykeypointcloudcell.h"
 #include "displaynormalcloudcell.h"
@@ -44,6 +45,9 @@ public:
 	{
 		factories_["CADModelTreatmentCell"] =
 				boost::factory < boost::shared_ptr < CADModelTreatmentCell > > ();
+		factories_["DisplayCADModelCell"] = boost::bind
+				(boost::factory < boost::shared_ptr < DisplayCADModelCell > > (),
+				 boost::ref(application_ref));
 		factories_["DisplayConvexCloudCell"] = boost::bind
 				(boost::factory < boost::shared_ptr < DisplayConvexCloudCell > > (),
 				 boost::ref(application_ref));

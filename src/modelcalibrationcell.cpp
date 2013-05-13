@@ -85,14 +85,13 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 	if(model_ == "")
 		throw std::runtime_error("Model name is mandatory");
 
+	//Chech the database to extract the parameters of the model and the paths
+	//to the different folders containing the views, descriptors, normals,
+	//cad model and keypoints
 	loadDatabaseInfo();
 
-//	this->loadCloudsFromDirectory<pcl::PointXYZ>(views_path_, views_);
-//	this->loadCloudsFromDirectory<pcl::Normal>(normals_path_, views_normals_);
-//	this->loadCloudsFromDirectory<pcl::PointXYZ>(keypoints_path_, views_keypoints_);
+	//Loads all the descriptor clouds of the object to calibrate
 	this->loadCloudsFromDirectory<DescriptorType>(descriptors_path_, views_descriptors_);
-//	loadPosesFromDirectory(poses_path_, views_poses_);
-
 
 	for(pointCloudPoints_t::size_type j = 0; j<planCloudListPtr->size(); ++j)
 	{
@@ -220,45 +219,12 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 		pointCloudPtr_t bestView = boost::make_shared<pointCloud_t> ();
 		this->loadOneCloudFromDirectory<pcl::PointXYZ>( views_path_, "view",
 								   bestView, best_view_index);
-		//Dummy visualization
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
-		viewer->setBackgroundColor (255, 255, 255);
-		viewer->initCameraParameters ();
 
-		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> scene_color(planCloudListPtr->at(j).cloud(), 140, 138, 134);
-		viewer->addPointCloud<pcl::PointXYZ> (planCloudListPtr->at(j).cloud(), scene_color, "Scene");
-		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, "Scene");
-
-		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> sceneKey_color(planCloudListPtr->at(j).keyPoints(), 0, 0, 255);
-		viewer->addPointCloud<pcl::PointXYZ> (planCloudListPtr->at(j).keyPoints(), sceneKey_color, "SceneKey");
-		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, "SceneKey");
-
-		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> model_color(bestView, 0, 138, 134);
-		viewer->addPointCloud<pcl::PointXYZ> (bestView, model_color, "Model");
-		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, "Model");
-
-		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> modelKey_color(bestKeypoints, 0, 255, 0);
-		viewer->addPointCloud<pcl::PointXYZ> (bestKeypoints, modelKey_color, "ModelKey");
-		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, "ModelKey");
-
+		//Adding the cad model to the planCloudList
 		for (size_t i = 0; i < rototranslations.size (); ++i)
 		{
-			pcl::PointCloud<pcl::PointXYZ>::Ptr rotated_model =
-					boost::make_shared<pcl::PointCloud<pcl::PointXYZ> > ();
-			pcl::transformPointCloud (*bestView, *rotated_model,
-									  rototranslations[i]);
-
-			std::stringstream ss_cloud;
-			ss_cloud << "instance" << i;
-
 			std::stringstream ss_model;
 			ss_model << "model_instance" << i;
-
-			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-					rotated_model_color_handler (rotated_model, 255, 0, 0);
-			viewer->addPointCloud<pcl::PointXYZ> (
-						rotated_model, rotated_model_color_handler,
-						ss_cloud.str ());
 
 			vtkSmartPointer< vtkMatrix4x4 > rototransBestViewToScene =
 					vtkSmartPointer< vtkMatrix4x4 >::New();
@@ -271,19 +237,15 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 						loadOnePoseFromDirectory(poses_path_, best_view_index),
 						rototransPlyToBestView);
 
-			vtkSmartPointer<vtkTransform> transformPly = vtkSmartPointer<vtkTransform>::New();
+			vtkSmartPointer<vtkTransform> transformPly =
+					vtkSmartPointer<vtkTransform>::New();
 			transformPly->SetMatrix(rototransBestViewToScene);
 			transformPly->Concatenate(rototransPlyToBestView);
 
-			viewer->addModelFromPLYFile(
-						cad_model_path_.string(),
-						transformPly, ss_model.str());
-		}
-
-		while (!viewer->wasStopped ())
-		{
-			viewer->spinOnce (100);
-			boost::this_thread::sleep (boost::posix_time::microseconds (10000));
+			planCloudListPtr->at(j).cad_models().push_back(
+						boost::make_shared<std::pair<std::string, vtkSmartPointer<vtkTransform> > >(
+							std::make_pair(
+								cad_model_path_.string(),transformPly)));
 		}
 	}
 
@@ -453,17 +415,17 @@ void ModelCalibrationCell::loadDatabaseInfo()
 			throw std::runtime_error("non-recognized field in model yaml file");
 	}
 
-	std::cout<<
-				"views_resolution_model_ = "<< views_resolution_model_ << std::endl <<
-				"number_of_neighbours_normal_estimation_model_ = "<< number_of_neighbours_normal_estimation_model_ << std::endl <<
-				"keypoint_search_radius_model_ = "<< keypoint_search_radius_model_ << std::endl <<
-				"descriptor_search_radius_model_ = "<< descriptor_search_radius_model_ << std::endl <<
-				"cadModelPath = "<< cad_model_path_ << std::endl <<
-				"viewsPath = "<< views_path_ << std::endl <<
-				"posesPath = "<< poses_path_ << std::endl <<
-				"normalsPath = "<< normals_path_ << std::endl <<
-				"keypointsPath = "<< keypoints_path_ << std::endl <<
-				"descriptorsPath = "<< descriptors_path_ << std::endl;
+//	std::cout<<
+//				"views_resolution_model_ = "<< views_resolution_model_ << std::endl <<
+//				"number_of_neighbours_normal_estimation_model_ = "<< number_of_neighbours_normal_estimation_model_ << std::endl <<
+//				"keypoint_search_radius_model_ = "<< keypoint_search_radius_model_ << std::endl <<
+//				"descriptor_search_radius_model_ = "<< descriptor_search_radius_model_ << std::endl <<
+//				"cadModelPath = "<< cad_model_path_ << std::endl <<
+//				"viewsPath = "<< views_path_ << std::endl <<
+//				"posesPath = "<< poses_path_ << std::endl <<
+//				"normalsPath = "<< normals_path_ << std::endl <<
+//				"keypointsPath = "<< keypoints_path_ << std::endl <<
+//				"descriptorsPath = "<< descriptors_path_ << std::endl;
 }
 
 void ModelCalibrationCell::loadPosesFromDirectory (
