@@ -25,7 +25,7 @@ public:
 
 private:
 
-	void loadModelFromDatabase();
+	void loadDatabaseInfo();
 	boost::filesystem::path findCADModelFile(std::string cadModelFile);
 	normalCloudPtr_t computeNormals(const pointCloudPtr_t& pointCloudPtr);
 	pointCloudPtr_t computeKeypoints(const pointCloudPtr_t& pointCloudPtr,
@@ -50,6 +50,14 @@ private:
 
 	std::string database_;
 	std::string model_;
+	boost::filesystem::path cad_model_path_;
+	boost::filesystem::path views_path_;
+	boost::filesystem::path poses_path_;
+	boost::filesystem::path normals_path_;
+	boost::filesystem::path keypoints_path_;
+	boost::filesystem::path descriptors_path_;
+
+
 	int number_of_neighbours_normal_estimation_;
 	float keypoint_search_radius_;
 	float descriptor_search_radius_;
@@ -92,6 +100,28 @@ private:
 			}
 		}
 	}
+
+	template <typename T>
+	void loadOneCloudFromDirectory (
+			const boost::filesystem::path& path,
+			const std::string& type,
+			typename pcl::PointCloud<T>::Ptr& container,
+			unsigned long index)
+	{
+		namespace fs = boost::filesystem;
+		fs::path cloudPath((boost::format("%s/%s%05i.pcd") % path.string() % type % index).str());
+		if(pcl::io::loadPCDFile<T> (cloudPath.string(), *container) != -1)
+			;
+		else
+			throw std::runtime_error(
+					(boost::format("Failed to load file %1%") % cloudPath).str());
+	}
+
+	void loadPosesFromDirectory (
+			const boost::filesystem::path& posesPath,
+			std::vector< Eigen::Matrix4f, Eigen::aligned_allocator< Eigen::Matrix4f > >& container);
+	Eigen::Matrix4f loadOnePoseFromDirectory (
+			const boost::filesystem::path& posesPath, unsigned long index);
 };
 
 #endif // MODELCALIBRATIONCELL_H
