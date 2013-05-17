@@ -3,6 +3,8 @@
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/thread.hpp>
+
+#include <pcl/io/pcd_io.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/point_cloud.h>
 #include <pcl/visualization/cloud_viewer.h>
@@ -64,10 +66,22 @@ void Visualizer::add_cad_model(planCloudsPtr_t planCloudList)
 
 void Visualizer::display_all()
 {
+
 	srand (static_cast<unsigned int> (time(NULL)));
 	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
 	viewer->setBackgroundColor (255, 255, 255);
 	viewer->initCameraParameters ();
+
+//	pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudColored (new pcl::PointCloud<pcl::PointXYZRGBA>);
+
+//	if (pcl::io::loadPCDFile<pcl::PointXYZRGBA> ("../share/cloud-treatment/point-cloud/Scene_Chair_2.pcd", *cloudColored) == -1) //* load the file
+//	{
+//		PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+//	}
+//	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGBA> rgb(cloudColored);
+//	viewer->addPointCloud<pcl::PointXYZRGBA> (cloudColored, rgb, "cloudColored" );
+//	viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, "cloudColored");
+
 	// displaying normal clouds
 	for(unsigned int i = 0; i<cloud_groups_.size(); ++i)
 	{

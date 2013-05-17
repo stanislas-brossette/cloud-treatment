@@ -4,9 +4,9 @@ pipeline:
     parameters:
       name: CADModelTreatmentCell
       databaseName: testingDatabase
-      objectName: chair
+      objectName: chair150
       cadModelFile: chair.ply
-      views_resolution: 200
+      views_resolution: 150
       number_of_neighbours_normal_estimation: 10
-      keypoint_search_radius_model: 0.1
-      descriptor_search_radius_model: 0.1
+      keypoint_search_radius_model: 0.05
+      descriptor_search_radius_model: 0.2

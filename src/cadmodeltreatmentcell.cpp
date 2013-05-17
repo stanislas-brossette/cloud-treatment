@@ -47,6 +47,7 @@ CADModelTreatmentCell::CADModelTreatmentCell():
 	parameters()["views_resolution"] = 100;
 	parameters()["number_of_neighbours_normal_estimation"] = 10;
 	parameters()["keypoint_search_radius_model"] = 0.1f;
+	parameters()["descriptor_type"] = "SHOT352";
 	parameters()["descriptor_search_radius_model"] = 0.1f;
 }
 
@@ -143,13 +144,16 @@ descriptorCloudPtr_t CADModelTreatmentCell::computeDescriptors(
 
 void CADModelTreatmentCell::generateViewsFromCADModelFile(boost::filesystem::path cadModelPath)
 {
-	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New ();
+	vtkSmartPointer<vtkPLYReader> reader =
+			vtkSmartPointer<vtkPLYReader>::New ();
 	reader->SetFileName (cadModelPath.c_str());
-	vtkSmartPointer < vtkPolyDataMapper > mapper = vtkSmartPointer<vtkPolyDataMapper>::New ();
+	vtkSmartPointer < vtkPolyDataMapper > mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New ();
 	mapper->SetInputConnection (reader->GetOutputPort ());
 	mapper->Update ();
 
-	vtkSmartPointer< vtkPolyData > polydata = vtkSmartPointer< vtkPolyData > (mapper->GetInput ());
+	vtkSmartPointer< vtkPolyData > polydata =
+			vtkSmartPointer< vtkPolyData > (mapper->GetInput ());
 
 	pcl::apps::RenderViewsTesselatedSphere render_views;
 	render_views.setResolution(views_resolution_);

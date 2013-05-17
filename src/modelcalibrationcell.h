@@ -8,6 +8,7 @@
 #include <pcl/keypoints/uniform_sampling.h>
 #include <pcl/features/shot_omp.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/visualization/pcl_visualizer.h>
 
 #include "cell.h"
 #include "typedefs.h"

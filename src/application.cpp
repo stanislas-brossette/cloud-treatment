@@ -57,6 +57,7 @@ void Application::run()
 		if(cellName == "DisplayConvexCloudCell"
 				|| cellName == "DisplayKeypointCloudCell"
 				|| cellName == "DisplayNormalCloudCell"
+				|| cellName == "DisplayCADModelCell"
 				|| cellName == "DisplayXYZCloudCell")
 		{
 			visualizer_.display_all();
