@@ -82,6 +82,8 @@ void Visualizer::display_all()
 //	viewer->addPointCloud<pcl::PointXYZRGBA> (cloudColored, rgb, "cloudColored" );
 //	viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, "cloudColored");
 
+
+
 	// displaying normal clouds
 	for(unsigned int i = 0; i<cloud_groups_.size(); ++i)
 	{
@@ -204,6 +206,9 @@ void Visualizer::display_all()
 			}
 		}
 	}
+//	viewer->addModelFromPLYFile(
+//				"../share/cloud-treatment/cad-model/chair_rotated.ply",
+//				"chair_rotated");
 
 	while (!viewer->wasStopped ())
 	{

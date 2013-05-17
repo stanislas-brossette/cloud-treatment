@@ -74,7 +74,7 @@ planCloudsPtr_t CADModelTreatmentCell::compute(planCloudsPtr_t planCloudListPtr)
 
 	generateViewsFromCADModelFile(cadModelPath);
 	std::cout << std::endl << "Generated " << views_.size() <<
-				 " views of " << cadModelFile_ << std::endl;
+				 " views of " << cadModelPath << std::endl;
 
 	views_poses_.resize(views_.size());
 	views_normals_.resize(views_.size());

@@ -18,14 +18,14 @@ pipeline:
       distance_threshold: 0.03
   - type: EuclidianClustersExtractionCell
     parameters:
-      min_cluster_size: 1000
+      min_cluster_size: 3000
 #  - type: DisplayXYZCloudCell
   - type: ModelCalibrationCell
     parameters:
       database: testingDatabase
-      model: chair
+      model: chair005
       number_of_neighbours_normal_estimation: 10
-      keypoint_search_radius: 0.1
+      keypoint_search_radius: 0.05
       descriptor_search_radius: 0.1
       correspondence_grouping_size: 0.2
       correspondence_grouping_threshhold: 5

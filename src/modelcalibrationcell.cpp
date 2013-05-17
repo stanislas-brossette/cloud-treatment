@@ -176,8 +176,8 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 				best_view_index = k;
 			}
 		}
-		std::cout << "Best view: " << best_view_index << " with " <<
-					 max_correspondences << " correspondences.\n";
+//		std::cout << "Best view: " << best_view_index << " with " <<
+//					 max_correspondences << " correspondences.\n";
 
 		//
 		//  Actual Clustering
@@ -274,25 +274,25 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 			//gc_clusterer.cluster (clustered_corrs);
 			gc_clusterer.recognize (rototranslations, clustered_corrs);
 		}
-		std::cout << "Model instances found: " << rototranslations.size ()
-				  << std::endl;
-		for (size_t i = 0; i < rototranslations.size (); ++i)
-		{
-			std::cout << "\n    Instance " << i + 1 << ":" << std::endl;
-			std::cout << "        Correspondences belonging to this instance: "
-					  << clustered_corrs[i].size () << std::endl;
+//		std::cout << "Model instances found: " << rototranslations.size ()
+//				  << std::endl;
+//		for (size_t i = 0; i < rototranslations.size (); ++i)
+//		{
+//			std::cout << "\n    Instance " << i + 1 << ":" << std::endl;
+//			std::cout << "        Correspondences belonging to this instance: "
+//					  << clustered_corrs[i].size () << std::endl;
 
-			// Print the rotation matrix and translation vector
-			Eigen::Matrix3f rotation = rototranslations[i].block<3,3>(0, 0);
-			Eigen::Vector3f translation = rototranslations[i].block<3,1>(0, 3);
+//			// Print the rotation matrix and translation vector
+//			Eigen::Matrix3f rotation = rototranslations[i].block<3,3>(0, 0);
+//			Eigen::Vector3f translation = rototranslations[i].block<3,1>(0, 3);
 
-			printf ("\n");
-			printf ("            | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
-			printf ("        R = | %6.3f %6.3f %6.3f | \n", rotation (1,0), rotation (1,1), rotation (1,2));
-			printf ("            | %6.3f %6.3f %6.3f | \n", rotation (2,0), rotation (2,1), rotation (2,2));
-			printf ("\n");
-			printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
-		}
+//			printf ("\n");
+//			printf ("            | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
+//			printf ("        R = | %6.3f %6.3f %6.3f | \n", rotation (1,0), rotation (1,1), rotation (1,2));
+//			printf ("            | %6.3f %6.3f %6.3f | \n", rotation (2,0), rotation (2,1), rotation (2,2));
+//			printf ("\n");
+//			printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
+//		}
 
 
 //		pointCloudPtr_t bestKeypoints = boost::make_shared<pointCloud_t> ();
@@ -304,21 +304,26 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 //		this->loadOneCloudFromDirectory<pcl::PointXYZ>( views_path_, "view",
 //								   bestView, best_view_index);
 
-		pcl::PointCloud<pointT>::Ptr rotated_model (new pcl::PointCloud<pointT> ());
-		pcl::transformPointCloud (*bestView, *rotated_model, rototranslations[0]);
-
-		pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
-		icp.setInputCloud(rotated_model);
-		icp.setInputTarget(planCloudListPtr->at(j).cloud());
-		pcl::PointCloud<pcl::PointXYZ>::Ptr Final(new pcl::PointCloud<pcl::PointXYZ> ());
-		icp.align(*Final);
-		std::cout << "has converged:" << icp.hasConverged() << " score: " <<
-					 icp.getFitnessScore() << std::endl;
-		std::cout << icp.getFinalTransformation() << std::endl;
 
 		//Adding the cad model to the planCloudList
+
+		double bestFitnessScore = 100000000000;
+		std::pair<std::string, vtkSmartPointer<vtkTransform> > bestCadModel;
 		for (size_t i = 0; i < rototranslations.size (); ++i)
 		{
+			pcl::PointCloud<pointT>::Ptr rotated_model (new pcl::PointCloud<pointT> ());
+			pcl::transformPointCloud (*bestView, *rotated_model, rototranslations[i]);
+
+			pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
+			icp.setInputCloud(rotated_model);
+			icp.setInputTarget(planCloudListPtr->at(j).cloud());
+			pcl::PointCloud<pcl::PointXYZ>::Ptr Final(new pcl::PointCloud<pcl::PointXYZ> ());
+			icp.align(*Final);
+//			std::cout << "has converged:" << icp.hasConverged() << " score: " <<
+//						 icp.getFitnessScore() << std::endl;
+//			std::cout << icp.getFinalTransformation() << std::endl;
+
+
 			std::stringstream ss_model;
 			ss_model << "model_instance" << i;
 
@@ -344,81 +349,83 @@ planCloudsPtr_t ModelCalibrationCell::compute(planCloudsPtr_t planCloudListPtr)
 			transformPly->Concatenate(rototransBestViewToScene);
 			transformPly->Concatenate(rototransPlyToBestView);
 
-			planCloudListPtr->at(j).cad_models().push_back(
-						boost::make_shared<
-						std::pair<std::string, vtkSmartPointer<vtkTransform> > >(
-							std::make_pair(
-								cad_model_path_.string(),transformPly)));
-		}
-
-
-
-		//Visualization
-
-		bool show_correspondences_ = true;
-		bool show_keypoints_ = true;
-
-		pcl::visualization::PCLVisualizer viewer ("Correspondence Grouping");
-		viewer.addPointCloud (planCloudListPtr->at(j).cloud(), "scene_cloud");
-
-		pcl::visualization::PointCloudColorHandlerCustom<pointT> final_color_handler (Final, 0, 255, 0);
-		viewer.addPointCloud (Final, final_color_handler, "final");
-
-		pcl::PointCloud<pointT>::Ptr off_scene_model (new pcl::PointCloud<pointT> ());
-		pcl::PointCloud<pointT>::Ptr off_scene_model_keypoints (new pcl::PointCloud<pointT> ());
-
-		if (show_correspondences_ || show_keypoints_)
-		{
-			//  We are translating the model so that it doesn't end in the middle of the scene representation
-			pcl::transformPointCloud (*bestView, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-			pcl::transformPointCloud (*bestKeypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-
-			pcl::visualization::PointCloudColorHandlerCustom<pointT> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
-			viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
-		}
-
-		if (show_keypoints_)
-		{
-			pcl::visualization::PointCloudColorHandlerCustom<pointT> scene_keypoints_color_handler (planCloudListPtr->at(j).keyPoints(), 0, 0, 255);
-			viewer.addPointCloud (planCloudListPtr->at(j).keyPoints(), scene_keypoints_color_handler, "scene_keypoints");
-			viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
-
-			pcl::visualization::PointCloudColorHandlerCustom<pointT> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
-			viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
-			viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
-		}
-
-		for (size_t i = 0; i < rototranslations.size (); ++i)
-		{
-//			pcl::PointCloud<pointT>::Ptr rotated_model (new pcl::PointCloud<pointT> ());
-//			pcl::transformPointCloud (*bestView, *rotated_model, rototranslations[i]);
-
-			std::stringstream ss_cloud;
-			ss_cloud << "instance" << i;
-
-			pcl::visualization::PointCloudColorHandlerCustom<pointT> rotated_model_color_handler (rotated_model, 255, 0, 0);
-			viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
-
-			if (show_correspondences_)
+			if(icp.getFitnessScore() < bestFitnessScore)
 			{
-				for (size_t k = 0; k < clustered_corrs[i].size (); ++k)
-				{
-					std::stringstream ss_line;
-					ss_line << "correspondence_line" << i << "_" << k;
-					pointT& model_point = off_scene_model_keypoints->at (static_cast<std::size_t>(clustered_corrs[i][k].index_query));
-					pointT& scene_point = planCloudListPtr->at(j).keyPoints()->at (static_cast<std::size_t>(clustered_corrs[i][k].index_match));
-
-					//  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-					viewer.addLine<pointT, pointT> (model_point, scene_point, 0, 255, 0, ss_line.str ());
-				}
+				bestFitnessScore = icp.getFitnessScore();
+				bestCadModel = std::make_pair(
+							cad_model_path_.string(),transformPly);
 			}
 		}
+		planCloudListPtr->at(j).cad_models().push_back(
+					boost::make_shared<
+					std::pair<std::string, vtkSmartPointer<vtkTransform> > >(bestCadModel));
 
-		while (!viewer.wasStopped ())
-		{
-			viewer.spinOnce (100);
-			boost::this_thread::sleep (boost::posix_time::microseconds (10000));
-		}
+//			//Visualization
+
+//			bool show_correspondences_ = true;
+//			bool show_keypoints_ = true;
+
+//			pcl::visualization::PCLVisualizer viewer ("Correspondence Grouping");
+//			viewer.addPointCloud (planCloudListPtr->at(j).cloud(), "scene_cloud");
+
+//			pcl::visualization::PointCloudColorHandlerCustom<pointT> final_color_handler (Final, 0, 255, 0);
+//			viewer.addPointCloud (Final, final_color_handler, "final");
+
+//			pcl::PointCloud<pointT>::Ptr off_scene_model (new pcl::PointCloud<pointT> ());
+//			pcl::PointCloud<pointT>::Ptr off_scene_model_keypoints (new pcl::PointCloud<pointT> ());
+
+//			if (show_correspondences_ || show_keypoints_)
+//			{
+//				//  We are translating the model so that it doesn't end in the middle of the scene representation
+//				pcl::transformPointCloud (*bestView, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+//				pcl::transformPointCloud (*bestKeypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+
+//				pcl::visualization::PointCloudColorHandlerCustom<pointT> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
+//				viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
+//			}
+
+//			if (show_keypoints_)
+//			{
+//				pcl::visualization::PointCloudColorHandlerCustom<pointT> scene_keypoints_color_handler (planCloudListPtr->at(j).keyPoints(), 0, 0, 255);
+//				viewer.addPointCloud (planCloudListPtr->at(j).keyPoints(), scene_keypoints_color_handler, "scene_keypoints");
+//				viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
+
+//				pcl::visualization::PointCloudColorHandlerCustom<pointT> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
+//				viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
+//				viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
+//			}
+
+//			for (size_t i = 0; i < rototranslations.size (); ++i)
+//			{
+//	//			pcl::PointCloud<pointT>::Ptr rotated_model (new pcl::PointCloud<pointT> ());
+//	//			pcl::transformPointCloud (*bestView, *rotated_model, rototranslations[i]);
+
+//				std::stringstream ss_cloud;
+//				ss_cloud << "instance" << i;
+
+//				pcl::visualization::PointCloudColorHandlerCustom<pointT> rotated_model_color_handler (rotated_model, 255, 0, 0);
+//				viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
+
+//				if (show_correspondences_)
+//				{
+//					for (size_t k = 0; k < clustered_corrs[i].size (); ++k)
+//					{
+//						std::stringstream ss_line;
+//						ss_line << "correspondence_line" << i << "_" << k;
+//						pointT& model_point = off_scene_model_keypoints->at (static_cast<std::size_t>(clustered_corrs[i][k].index_query));
+//						pointT& scene_point = planCloudListPtr->at(j).keyPoints()->at (static_cast<std::size_t>(clustered_corrs[i][k].index_match));
+
+//						//  We are drawing a line for each pair of clustered correspondences found between the model and the scene
+//						viewer.addLine<pointT, pointT> (model_point, scene_point, 0, 255, 0, ss_line.str ());
+//					}
+//				}
+//			}
+
+//			while (!viewer.wasStopped ())
+//			{
+//				viewer.spinOnce (100);
+//				boost::this_thread::sleep (boost::posix_time::microseconds (10000));
+//			}
 	}
 
 	return planCloudListPtr;
