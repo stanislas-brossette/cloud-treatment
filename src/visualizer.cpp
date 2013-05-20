@@ -68,9 +68,9 @@ void Visualizer::display_all()
 {
 
 	srand (static_cast<unsigned int> (time(NULL)));
-	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
-	viewer->setBackgroundColor (255, 255, 255);
-	viewer->initCameraParameters ();
+	viewer_ = boost::make_shared<pcl::visualization::PCLVisualizer> ("3D Viewer");
+	viewer_->setBackgroundColor (255, 255, 255);
+	viewer_->initCameraParameters ();
 
 //	pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudColored (new pcl::PointCloud<pcl::PointXYZRGBA>);
 
@@ -105,8 +105,13 @@ void Visualizer::display_all()
 				Color.b = colors[colorIndex].b;
 			}
 			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(cloud_groups_[i][j].cloud(), Color.r, Color.g, Color.b);
-			viewer->addPointCloud<pcl::PointXYZ> (cloud_groups_[i][j].cloud(), single_color,  cloudName);
-			viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, cloudName);
+
+
+			viewer_->addPointCloud<pcl::PointXYZ> (cloud_groups_[i][j].cloud(), single_color,  cloudName);
+//			viewer_->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, cloudName);
+
+			viewer_->resetCameraViewpoint ("cloud");
+
 		}
 	}
 
@@ -117,8 +122,8 @@ void Visualizer::display_all()
 		{
 			std::string cloudName = "keypoints_" + boost::lexical_cast<std::string>(i) + "_"+ boost::lexical_cast<std::string>(j);
 			pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(keypoint_groups_[i][j].keyPoints(), 0, 0, 255);
-			viewer->addPointCloud<pcl::PointXYZ> (keypoint_groups_[i][j].keyPoints(), single_color,  cloudName);
-			viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, cloudName);
+			viewer_->addPointCloud<pcl::PointXYZ> (keypoint_groups_[i][j].keyPoints(), single_color,  cloudName);
+			viewer_->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 4, cloudName);
 		}
 	}
 
@@ -128,8 +133,8 @@ void Visualizer::display_all()
 	{
 		std::string cloudName = "cloudColor" + boost::lexical_cast<std::string>(i);
 		pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGBA> rgb(color_clouds_[i]);
-		viewer->addPointCloud<pcl::PointXYZRGBA> (color_clouds_[i], rgb, cloudName);
-		viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, cloudName);
+		viewer_->addPointCloud<pcl::PointXYZRGBA> (color_clouds_[i], rgb, cloudName);
+		viewer_->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, cloudName);
 	}
 
 	// displaying convex clouds
@@ -152,7 +157,7 @@ void Visualizer::display_all()
 			for(pointCloudPoints_t::size_type i = 0; i < convex_clouds_[k][l].cloud()->points.size(); ++i)
 			{
 				id = "Line" + boost::lexical_cast<std::string>(i)+ boost::lexical_cast<std::string>(j)+ boost::lexical_cast<std::string>(k)+ boost::lexical_cast<std::string>(l);
-				viewer->addLine<pcl::PointXYZ> (convex_clouds_[k][l].cloud()->points[j], convex_clouds_[k][l].cloud()->points[i], 255, 0, 0, id);
+				viewer_->addLine<pcl::PointXYZ> (convex_clouds_[k][l].cloud()->points[j], convex_clouds_[k][l].cloud()->points[i], 255, 0, 0, id);
 				j = i;
 			}
 		}
@@ -176,10 +181,10 @@ void Visualizer::display_all()
 						static_cast<unsigned int>(
 							normals_groups_[i][j].normals()->points.size());
 				normals_groups_[i][j].normals()->height = 1;
-				viewer->addPointCloudNormals< pcl::PointXYZ, pcl::Normal >
+				viewer_->addPointCloudNormals< pcl::PointXYZ, pcl::Normal >
 						(normals_groups_[i][j].cloud(),
 						 normals_groups_[i][j].normals(), 10, 0.05f, cloudName);
-				viewer->setPointCloudRenderingProperties
+				viewer_->setPointCloudRenderingProperties
 						(pcl::visualization::PCL_VISUALIZER_COLOR,
 						 1.0, 0.0, 0.0,
 						 "normals_" + boost::lexical_cast<std::string>(i) +
@@ -199,7 +204,7 @@ void Visualizer::display_all()
 						boost::lexical_cast<std::string>(j) + "_" +
 						boost::lexical_cast<std::string>(k);
 
-				viewer->addModelFromPLYFile(
+				viewer_->addModelFromPLYFile(
 							cad_models_[i]->at(j).cad_models().at(k)->first,
 							cad_models_[i]->at(j).cad_models().at(k)->second,
 							cloudName);
@@ -210,9 +215,9 @@ void Visualizer::display_all()
 //				"../share/cloud-treatment/cad-model/chair_rotated.ply",
 //				"chair_rotated");
 
-	while (!viewer->wasStopped ())
+	while (!viewer_->wasStopped ())
 	{
-		viewer->spinOnce (100);
-		boost::this_thread::sleep (boost::posix_time::microseconds (10000));
+		viewer_->spinOnce (100);
+		boost::this_thread::sleep (boost::posix_time::microseconds (1000));
 	}
 }

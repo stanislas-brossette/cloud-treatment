@@ -1,9 +1,25 @@
 version: 1.0
 pipeline:
-  - type: OrganizedSegmentationCell
-  - type: FilterCell
+  - type: PassThroughFilterCell
     parameters:
-      leafX: 0.02
-      leafY: 0.02
-      leafZ: 0.02
-  - type: DisplayXYZCloudCell
+      axis: z
+      min: 0
+      max: 4
+  - type: OrganizedSegmentationCell
+    parameters:
+      display_normals: 1
+      display_curvature: 0
+      display_distance_map: 0
+      use_planar_refinement: 1
+      use_clustering: 1
+      plane_min_inliers: 1000
+      plane_angular_threshold: 3.0
+      plane_distance_threshold: 0.03
+      euclidian_cluster_distance_threshold: 0.01
+      edge_aware_distance_threshold: 0.01
+#  - type: FilterCell
+#    parameters:
+#      leafX: 0.02
+#      leafY: 0.02
+#      leafZ: 0.02
+#  - type: DisplayXYZCloudCell

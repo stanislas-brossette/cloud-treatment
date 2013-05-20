@@ -33,7 +33,8 @@ Application::Application(std::string path):
 
 void Application::run()
 {
-	planCloudsPtr_t planCloudListPtr = boost::make_shared < planClouds_t > ();
+	planCloudsPtr_t planCloudListPtr =
+			boost::make_shared < planClouds_t > ();
 
 	FileCell fileCell = FileCell();
 
@@ -47,13 +48,15 @@ void Application::run()
 	//Triggers the display only if a display cell is found
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
-		if(cells_[i]->parameters().find("name") == cells_[i]->parameters().end())
+		if(cells_[i]->parameters().find("name") ==
+				cells_[i]->parameters().end())
 		{
 			boost::format fmt ("cell number %1% doesn't have a name!");
 			fmt % i;
 			throw std::runtime_error(fmt.str());
 		}
-		std::string cellName = boost::get<std::string>(cells_[i]->parameters()["name"]);
+		std::string cellName = boost::get<std::string>(
+					cells_[i]->parameters()["name"]);
 		if(cellName == "DisplayConvexCloudCell"
 				|| cellName == "DisplayKeypointCloudCell"
 				|| cellName == "DisplayNormalCloudCell"
@@ -105,7 +108,8 @@ void Application::createFromYaml(const std::string& yamlFilename)
 				{
 					double value;
 					paramIt.second() >> value;
-					if(cell->parameters().find(key) != cell->parameters().end())
+					if(cell->parameters().find(key) !=
+							cell->parameters().end())
 						cell->parameters()[key] = value;
 					else
 						throw(std::runtime_error("wrong parameter key in yaml"));
@@ -114,7 +118,8 @@ void Application::createFromYaml(const std::string& yamlFilename)
 				{
 					std::string value;
 					paramIt.second() >> value;
-					if(cell->parameters().find(key) != cell->parameters().end())
+					if(cell->parameters().find(key) !=
+							cell->parameters().end())
 						cell->parameters()[key] = value;
 					else
 						throw(std::runtime_error("wrong parameter key in yaml"));
@@ -132,7 +137,8 @@ void Application::setCellParameter(const std::string& cellName,
 {
 	for(std::size_t i = 0; i < cells_.size(); ++i)
 	{
-		if(cells_[i]->parameters().find("name") == cells_[i]->parameters().end())
+		if(cells_[i]->parameters().find("name") ==
+				cells_[i]->parameters().end())
 		{
 			boost::format fmt ("cell number %1% doesn't have a name!");
 			fmt % i;

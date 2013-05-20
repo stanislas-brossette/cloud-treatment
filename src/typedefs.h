@@ -15,6 +15,8 @@ typedef pointCloud_t::VectorType pointCloudPoints_t;
 typedef pcl::PointCloud<pointT>::Ptr pointCloudPtr_t;
 typedef pointCloudPoints_t::size_type pointCloudSize_t;
 
+typedef pcl::PointCloud<pointT>::ConstPtr CloudConstPtr;
+
 typedef std::vector<PlanCloud> planClouds_t;
 typedef boost::shared_ptr<PlanCloud > planCloudPtr_t;
 typedef boost::shared_ptr<planClouds_t> planCloudsPtr_t;

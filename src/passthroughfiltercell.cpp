@@ -1,10 +1,12 @@
 #include <iostream>
 
 #include <boost/make_shared.hpp>
+
 #include <pcl/filters/passthrough.h>
 
 #include "passthroughfiltercell.h"
 #include "plancloud.h"
+#include "typedefs.h"
 
 PassThroughFilterCell::PassThroughFilterCell():
 	Cell()
@@ -28,7 +30,8 @@ planCloudsPtr_t PassThroughFilterCell::compute(planCloudsPtr_t planCloudListPtr)
 		j<planCloudListPtr->size(); ++j)
 	{
 		cloud_ptr_ = planCloudListPtr->at(j).cloud();
-		pcl::PassThrough<pcl::PointXYZ> pass;
+		pcl::PassThrough<pointT> pass;
+		pass.setKeepOrganized (true);
 		pass.setInputCloud (cloud_ptr_);
 		pass.setFilterFieldName (axis_);
 		pass.setFilterLimits (min_, max_);

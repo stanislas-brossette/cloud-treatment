@@ -30,7 +30,7 @@ private:
 	/// Shared pointer that contains the pointCloud object
 	pointCloudPtr_t cloud_ptr_;
 	/// Sizes of the voxel-grid
-	float leafX_, leafY_, leafZ_;
+	float leafX_, leafY_, leafZ_, leafSize_;
 };
 
 #endif // FILTERCELL_H

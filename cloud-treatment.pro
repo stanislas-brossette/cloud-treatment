@@ -74,4 +74,5 @@ OTHER_FILES += \
     share/cloud-treatment/pipeline/cloudviewer.yaml \
     share/cloud-treatment/pipeline/cadmodeltreatment.yaml \
     bin/add-to-model-database \
-    var/CMakeLists.txt
+    var/CMakeLists.txt \
+    share/cloud-treatment/pipeline/organizedsegmentation.yaml

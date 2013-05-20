@@ -17,6 +17,7 @@ FilterCell::FilterCell():
 	parameters()["leafX"] = 0.01;
 	parameters()["leafY"] = 0.01;
 	parameters()["leafZ"] = 0.01;
+	parameters()["leafSize"] = 0;
 }
 
 planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
@@ -26,6 +27,14 @@ planCloudsPtr_t FilterCell::compute(planCloudsPtr_t planCloudListPtr)
 	leafX_ = static_cast<float>(boost::get<double>(parameters()["leafX"]));
 	leafY_ = static_cast<float>(boost::get<double>(parameters()["leafY"]));
 	leafZ_ = static_cast<float>(boost::get<double>(parameters()["leafZ"]));
+	leafSize_ = static_cast<float>(boost::get<double>(parameters()["leafSize"]));
+
+	if (leafSize_ != 0)
+	{
+		leafX_ = leafSize_;
+		leafY_ = leafSize_;
+		leafZ_ = leafSize_;
+	}
 
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)

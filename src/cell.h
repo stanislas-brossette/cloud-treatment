@@ -6,7 +6,7 @@
 # include <vector>
 
 # include <boost/shared_ptr.hpp>
-#include <boost/variant.hpp>
+# include <boost/variant.hpp>
 
 # include "plancloud.h"
 # include "typedefs.h"
