@@ -26,6 +26,7 @@
 #include "hullconvexcell.h"
 #include "modelcalibrationcell.h"
 #include "normalestimationcell.h"
+#include "organizedsegmentationcell.h"
 #include "orientationcell.h"
 #include "passthroughfiltercell.h"
 #include "planextractioncell.h"
@@ -78,6 +79,8 @@ public:
 				boost::factory < boost::shared_ptr < NormalEstimationCell > > ();
 		factories_["OrientationCell"] =
 				boost::factory < boost::shared_ptr < OrientationCell > > ();
+		factories_["OrganizedSegmentationCell"] =
+				boost::factory < boost::shared_ptr < OrganizedSegmentationCell > > ();
 		factories_["PassThroughFilterCell"] =
 				boost::factory < boost::shared_ptr < PassThroughFilterCell > > ();
 		factories_["PlanExtractionCell"] =

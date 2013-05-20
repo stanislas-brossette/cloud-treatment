@@ -74,7 +74,7 @@ void Visualizer::display_all()
 
 //	pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudColored (new pcl::PointCloud<pcl::PointXYZRGBA>);
 
-//	if (pcl::io::loadPCDFile<pcl::PointXYZRGBA> ("../share/cloud-treatment/point-cloud/Scene_Chair_2.pcd", *cloudColored) == -1) //* load the file
+//	if (pcl::io::loadPCDFile<pcl::PointXYZRGBA> ("../share/cloud-treatment/point-cloud/Scene_Chair_1.pcd", *cloudColored) == -1) //* load the file
 //	{
 //		PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
 //	}

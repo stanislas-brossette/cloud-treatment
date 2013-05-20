@@ -1,26 +1,9 @@
 version: 1.0
 pipeline:
+  - type: OrganizedSegmentationCell
   - type: FilterCell
     parameters:
-      leafX: 0.01
-      leafY: 0.01
-      leafZ: 0.01
+      leafX: 0.02
+      leafY: 0.02
+      leafZ: 0.02
   - type: DisplayXYZCloudCell
-  - type: PassThroughFilterCell
-    parameters:
-      axis: z
-      min: 0
-      max: 4
-#  - type: DisplayXYZCloudCell
-#  - type: DominantPlaneSegmentationCell
-#    parameters:
-#      max_iteration: 100
-#      distance_threshold: 0.03
-#  - type: EuclidianClustersExtractionCell
-#    parameters:
-#      min_cluster_size: 1000
-#  - type: DisplayXYZCloudCell
-  - type: NormalEstimationCell
-    parameters:
-      number_of_neighbours_normal_estimation: 50
-  - type: DisplayNormalCloudCell

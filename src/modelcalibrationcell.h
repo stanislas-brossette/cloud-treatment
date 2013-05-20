@@ -13,6 +13,12 @@
 #include "cell.h"
 #include "typedefs.h"
 
+/// \brief Calibrate the position of a 3D model object on a given point-cloud
+/// cluster. First the model data are extracted from a database, the the best
+/// view of the model is selected based on the correspondences between its
+/// descriptors and the clouds descriptors and finally the optimal position
+/// of the model is estimated
+
 class ModelCalibrationCell : public Cell
 {
 public:

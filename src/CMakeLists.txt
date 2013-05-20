@@ -22,6 +22,7 @@ add_library(cloud-treatment SHARED
     hullconvexcell.cpp
     modelcalibrationcell.cpp
     normalestimationcell.cpp
+    organizedsegmentationcell.cpp
     orientationcell.cpp
     passthroughfiltercell.cpp
     plancloud.cpp

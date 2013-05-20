@@ -5,7 +5,7 @@ pipeline:
       leafX: 0.01
       leafY: 0.01
       leafZ: 0.01
-  - type: DisplayXYZCloudCell
+#  - type: DisplayXYZCloudCell
   - type: PassThroughFilterCell
     parameters:
       axis: z
