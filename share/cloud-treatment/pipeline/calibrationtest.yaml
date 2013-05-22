@@ -5,17 +5,18 @@ pipeline:
       leafX: 0.01
       leafY: 0.01
       leafZ: 0.01
-#  - type: DisplayXYZCloudCell
+  - type: DisplayXYZCloudCell
   - type: PassThroughFilterCell
     parameters:
       axis: z
       min: 0
       max: 4
+      keep_organized: 0
 #  - type: DisplayXYZCloudCell
   - type: DominantPlaneSegmentationCell
     parameters:
       max_iteration: 100
-      distance_threshold: 0.03
+      distance_threshold: 0.05
   - type: EuclidianClustersExtractionCell
     parameters:
       min_cluster_size: 3000

@@ -234,8 +234,9 @@ planCloudsPtr_t OrganizedSegmentationCell::compute(
 
 			for (size_t i = 0; i < euclidean_label_indices.size (); i++)
 			{
-				if (euclidean_label_indices[i].indices.size () >euclidian_cluster_min_size_)
+				if (euclidean_label_indices[i].indices.size () > euclidian_cluster_min_size_)
 				{
+					std::cout << euclidean_label_indices[i].indices.size () << " > " << euclidian_cluster_min_size_ << std::endl;
 					pcl::PointCloud<pointT> cluster;
 					pcl::copyPointCloud (
 								*cloud,euclidean_label_indices[i].indices,cluster);

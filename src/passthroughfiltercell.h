@@ -25,6 +25,7 @@ private:
 	std::string axis_;
 	float min_;
 	float max_;
+	int keep_organized_;
 };
 
 #endif // PASSTHROUGHFILTERCELL_H

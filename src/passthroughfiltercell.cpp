@@ -16,6 +16,7 @@ PassThroughFilterCell::PassThroughFilterCell():
 	parameters()["axis"] = "z";
 	parameters()["min"] = 0;
 	parameters()["max"] = 2.7;
+	parameters()["keep_organized"] = 0;
 }
 
 planCloudsPtr_t PassThroughFilterCell::compute(planCloudsPtr_t planCloudListPtr)
@@ -25,13 +26,15 @@ planCloudsPtr_t PassThroughFilterCell::compute(planCloudsPtr_t planCloudListPtr)
 	axis_ = boost::get<std::string>(parameters()["axis"]);
 	min_ = static_cast<float>(boost::get<double>(parameters()["min"]));
 	max_ = static_cast<float>(boost::get<double>(parameters()["max"]));
+	keep_organized_ = static_cast<int>(boost::get<double>(parameters()["keep_organized"]));
 
 	for(pointCloudPoints_t::size_type j = 0;
 		j<planCloudListPtr->size(); ++j)
 	{
 		cloud_ptr_ = planCloudListPtr->at(j).cloud();
 		pcl::PassThrough<pointT> pass;
-		pass.setKeepOrganized (true);
+		if(keep_organized_)
+			pass.setKeepOrganized (true);
 		pass.setInputCloud (cloud_ptr_);
 		pass.setFilterFieldName (axis_);
 		pass.setFilterLimits (min_, max_);

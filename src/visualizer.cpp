@@ -110,7 +110,7 @@ void Visualizer::display_all()
 			viewer_->addPointCloud<pcl::PointXYZ> (cloud_groups_[i][j].cloud(), single_color,  cloudName);
 //			viewer_->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1.5, cloudName);
 
-			viewer_->resetCameraViewpoint ("cloud");
+//			viewer_->resetCameraViewpoint (cloudName);
 
 		}
 	}

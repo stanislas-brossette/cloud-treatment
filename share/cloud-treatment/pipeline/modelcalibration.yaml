@@ -1,17 +1,35 @@
 version: 1.0
 pipeline:
-  - type: PassThroughFilterCell
-    parameters:
-      min: 0
-      max: 2
   - type: FilterCell
     parameters:
       leafX: 0.01
+      leafY: 0.01
+      leafZ: 0.01
   - type: DisplayXYZCloudCell
-  - type: RegionGrowingSegmentationCell
+  - type: PassThroughFilterCell
     parameters:
-      min_cluster_size: 500
-  - type: PlanExtractionCell
-  - type: PlanProjectionCell
-  - type: HullConvexCell
-  - type: DisplayConvexCloudCell
+      axis: z
+      min: 0
+      max: 4
+#  - type: DisplayXYZCloudCell
+  - type: DominantPlaneSegmentationCell
+    parameters:
+      max_iteration: 100
+      distance_threshold: 0.03
+  - type: EuclidianClustersExtractionCell
+    parameters:
+      min_cluster_size: 3000
+#  - type: DisplayXYZCloudCell
+  - type: ModelCalibrationCell
+    parameters:
+      database: testingDatabase
+      model: chair005
+      number_of_neighbours_normal_estimation: 10
+      keypoint_search_radius: 0.05
+      descriptor_search_radius: 0.1
+      correspondence_grouping_size: 0.2
+      correspondence_grouping_threshhold: 5
+#  - type: DisplayXYZCloudCell
+#  - type: DisplayNormalCloudCell
+  - type: DisplayCADModelCell
+#  - type: DisplayKeypointCloudCell
